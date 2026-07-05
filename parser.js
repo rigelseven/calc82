@@ -98,6 +98,19 @@ export default class Parser {
             };
         }
 
+        if (this.match("FUNCTION")) {
+            const name = this.getPreviousToken().value;
+            this.consume("LPAREN");
+            const argument = this.expression();
+            this.consume("RPAREN");
+
+            return {
+                type: "FunctionCall",
+                name,
+                argument
+            }
+        }
+
         if (this.match("LPAREN")) {
             const expr = this.expression();
             this.consume("RPAREN");
