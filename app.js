@@ -12,32 +12,37 @@ const tokensDisplay = document.querySelector("#tokens");
 const astDisplay = document.querySelector("#ast");
 
 testInput.addEventListener("input", function(event) {
-    const expression = event.target.value;
+    try {
+        const expression = event.target.value;
 
-    display.textContent="=";
-    tokensDisplay.textContent="";
-    astDisplay.textContent="";
-        
-    const tokeniser = new Tokeniser(expression);
-    const tokens = tokeniser.tokenise();
+        display.textContent="=";
+        tokensDisplay.textContent="";
+        astDisplay.textContent="";
+            
+        const tokeniser = new Tokeniser(expression);
+        const tokens = tokeniser.tokenise();
 
-    const textTokens = "Token visualisation\n" + generateTextTokens(tokens);
-    console.table(tokens);
-    console.log(textTokens);
-    tokensDisplay.textContent = textTokens;
+        const textTokens = "Token visualisation\n" + generateTextTokens(tokens);
+        console.table(tokens);
+        console.log(textTokens);
+        tokensDisplay.textContent = textTokens;
 
-    const parser = new Parser(tokens);
-    const ast = parser.parse();
+        const parser = new Parser(tokens);
+        const ast = parser.parse();
 
-    const textAST = "AST visualisation\n" + generateTextAST(ast);
-    console.log(ast);
-    console.log(textAST);
-    astDisplay.textContent = textAST;
+        const textAST = "AST visualisation\n" + generateTextAST(ast);
+        console.log(ast);
+        console.log(textAST);
+        astDisplay.textContent = textAST;
 
-    const evaluator = new Evaluator();
-    const result = evaluator.evaluate(ast);
+        const evaluator = new Evaluator();
+        const result = evaluator.evaluate(ast);
 
-    console.log(result)
+        console.log(result)
 
-    display.textContent=`= ${result}`;
+        display.textContent=`= ${result}`;
+    } catch (error) {
+        display.textContent=`= ${error.message}`;
+        console.error(error)
+    }
 });
