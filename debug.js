@@ -1,3 +1,15 @@
+// Tokens visualiser
+export function generateTextTokens(tokens) {
+    let output = "";
+
+    tokens.forEach((token, index) => {
+        output += `${index} ${token.type}${token.value===undefined ? "" : `(${token.value})`} \n`;
+    });
+
+    return output;
+}
+
+// AST visualiser
 export function generateTextAST(ast) {
     return buildTree(ast);
 }
