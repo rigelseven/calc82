@@ -1,0 +1,63 @@
+import { BINARY } from "./binary.js";
+import { CONSTANTS } from "./constants.js";
+import { FUNCTIONS } from "./functions.js";
+import { POSTFIX } from "./postfix.js";
+
+export default class Evaluator {
+    evaluate(node) {
+        switch (node.type) {
+            case "NumberLiteral":
+                return node.value;
+            case "Constant":
+                return this.evaluateConstant(node);
+            case "UnaryExpression":
+                return this.evaluateUnary(node);
+            case "BinaryExpression":
+                return this.evaluateBinary(node);
+            case "FunctionCall":
+                return this.evaluateFunction(node);
+            case "PostfixExpression":
+                return this.evaluatePostfix(node);
+            default:
+                throw new Error(`Unknown node ${node.type}`)
+        }
+    }
+
+    evaluateConstant(node) {
+        return CONSTANTS[node.value]
+    }
+
+    evaluateUnary(node) {
+        const value = this.evaluate(node.argument);
+
+        switch(node.operator) {
+            case "MINUS":
+                return -value;
+        }
+    }
+
+    evaluateBinary(node) {
+        const left = this.evaluate(node.left);
+        const right = this.evaluate(node.right);
+
+        const operation = BINARY[node.operator];
+
+        return operation(left, right);
+    }
+
+    evaluateFunction(node) {
+        const value = this.evaluate(node.argument);
+
+        const fn = FUNCTIONS[node.name];
+
+        return fn(this.evaluate(node.argument))
+    }
+
+    evaluatePostfix(node) {
+        const value = this.evaluate(node.argument);
+
+        const operation = POSTFIX[node.operator];
+
+        return operation(value);
+    }
+}
