@@ -18,30 +18,42 @@ export default class Tokeniser {
 
             // Number
             if (/\d/.test(c) || (c === "." && /\d/.test(this.getNextCharacter()))) {
-                this.tokens.push(this.scanNumber());
+                this.addToken(this.scanNumber());
                 continue;
             }
 
             // Identifier
             if (/[a-z]/i.test(c)) {
-                this.tokens.push(this.scanIdentifier());
+                this.addToken(this.scanIdentifier());
                 continue;
             }
 
             // Single character operators
             const token = SYMBOLS[c];
             if (token) {
-                this.tokens.push(token);
+                this.addToken(token);
                 this.advance();
                 continue;
             }
 
             throw new Error(`Unexpected char ${c}`)
         }
-        this.tokens.push({
+        this.addToken({
             type: "EOF"
         })
         return this.tokens;
+    }
+
+    addToken(token) {
+        // Handle implicit multiplication: if the last token and current token need implicit mult
+        const previous = this.tokens.at(-1);
+        if (previous && this.needsImpMult(previous, token)) {
+            this.tokens.push({
+                type: "MULTIPLY"
+            });
+        }
+
+        this.tokens.push(token);
     }
 
     scanNumber() {
@@ -113,4 +125,20 @@ export default class Tokeniser {
         return this.position >= this.input.length;
     }
 
+    needsImpMult(left, right) {
+        const leftEnd = [
+            "NUMBER",
+            "CONSTANT",
+            "RPAREN"
+        ];
+
+        const rightStart = [
+            "NUMBER",
+            "CONSTANT",
+            "FUNCTION",
+            "LPAREN"
+        ];
+
+        return leftEnd.includes(left.type) && rightStart.includes(right.type);
+    }
 }
