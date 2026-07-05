@@ -72,7 +72,7 @@ export default class Parser {
     }
 
     unary() {
-        if(this.match("MINUS")) {
+        if (this.match("MINUS")) {
             return {
                 type: "UnaryExpression",
                 operator: "MINUS",
@@ -80,7 +80,26 @@ export default class Parser {
             };
 
         }
-        return this.primary();
+        return this.postfix();
+    }
+
+    postfix() {
+        let expr = this.primary();
+
+        while (true) {
+            if (this.match("FACTORIAL")) {
+                expr = {
+                    type: "PostfixExpression",
+                    operator: "FACTORIAL",
+                    argument: expr
+                };
+
+                continue;
+            }
+            break;
+        }
+
+        return expr;
     }
 
     primary() {

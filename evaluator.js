@@ -1,3 +1,5 @@
+import factorial  from "./math/factorial.js";
+
 export default class Evaluator {
     evaluate(node) {
         switch (node.type) {
@@ -11,6 +13,8 @@ export default class Evaluator {
                 return this.evaluateBinary(node);
             case "FunctionCall":
                 return this.evaluateFunction(node);
+            case "PostfixExpression":
+                return this.evaluatePostfix(node);
             default:
                 throw new Error(`Unknown node ${node.type}`)
         }
@@ -27,7 +31,7 @@ export default class Evaluator {
 
     evaluateUnary(node) {
         const value = this.evaluate(node.argument);
-        
+
         switch(node.operator) {
             case "MINUS":
                 return -value;
@@ -73,5 +77,17 @@ export default class Evaluator {
         }
 
         return fn(this.evaluate(node.argument))
+    }
+
+    evaluatePostfix(node) {
+        const value = this.evaluate(node.argument);
+
+        switch (node.operator) {
+            case "FACTORIAL":
+                return factorial(value);
+
+            default:
+                throw new Error(`Unknown postfix: ${node.operator}`);
+        }
     }
 }
