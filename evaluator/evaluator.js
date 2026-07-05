@@ -24,7 +24,7 @@ export default class Evaluator {
     }
 
     evaluateConstant(node) {
-        return CONSTANTS[node.value]
+        return CONSTANTS[node.name]
     }
 
     evaluateUnary(node) {
