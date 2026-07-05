@@ -33,6 +33,8 @@ export default class Evaluator {
                 return left * right;
             case "DIVIDE":
                 return left / right;
+            case "POWER":
+                return Math.pow(left, right)
         }
     }
 }
