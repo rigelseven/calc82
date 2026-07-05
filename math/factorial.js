@@ -1,6 +1,6 @@
 export default function factorial(n) {
     if (!Number.isInteger(n) || n < 0) {
-        throw new Error("Math ERROR (factorial undefined)")
+        throw new Error("Math error: factorial undefined")
     }
 
     let result = 1;

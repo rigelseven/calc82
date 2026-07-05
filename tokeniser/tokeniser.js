@@ -36,7 +36,7 @@ export default class Tokeniser {
                 continue;
             }
 
-            throw new Error(`Unexpected char ${c}`)
+            throw new Error(`Syntax error: Unexpected char ${c}`)
         }
         this.addToken({
             type: "EOF"
@@ -58,10 +58,15 @@ export default class Tokeniser {
 
     scanNumber() {
         let value = "";
+        let seenDecimal = false;
 
         while (!this.isAtEnd()) {
             const c = this.getCharacter();
-            if (/\d/.test(c) || c === ".") {
+            if (/\d/.test(c)) {
+                value += c;
+                this.advance();
+            } else if (c === "." && !seenDecimal) {
+                seenDecimal = true;
                 value += c;
                 this.advance();
             } else {
@@ -104,7 +109,7 @@ export default class Tokeniser {
             }
         }
 
-        throw new Error(`Unexpected identifier ${text}`)
+        throw new Error(`Syntax error: Unexpected identifier ${text}`)
     }
 
     getCharacter() {

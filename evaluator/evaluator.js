@@ -19,7 +19,7 @@ export default class Evaluator {
             case "PostfixExpression":
                 return this.evaluatePostfix(node);
             default:
-                throw new Error(`Unknown node ${node.type}`)
+                throw new Error(`Syntax error: Unknown node ${node.type}`)
         }
     }
 
