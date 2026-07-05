@@ -19,7 +19,8 @@ export default class Parser {
 
     addition() {
         let expr = this.multiplication();
-            while(this.match("PLUS", "MINUS")) {
+        
+        while(this.match("PLUS", "MINUS")) {
             const operator = this.getPreviousToken();
             const right = this.multiplication();
 
@@ -35,9 +36,27 @@ export default class Parser {
     }
 
     multiplication() {
-        let expr = this.unary();
+        let expr = this.power();
 
         while (this.match("MULTIPLY", "DIVIDE")) {
+            const operator = this.getPreviousToken();
+            const right = this.unary();
+
+            expr = {
+                type: "BinaryExpression",
+                operator: operator.type,
+                left: expr,
+                right
+            }
+
+        }
+        return expr;
+    }
+
+    power() {
+        let expr = this.unary();
+
+        while(this.match("POWER")) {
             const operator = this.getPreviousToken();
             const right = this.unary();
 
