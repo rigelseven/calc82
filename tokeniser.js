@@ -38,6 +38,9 @@ export default class Tokeniser {
 
             throw new Error(`Unexpected char ${c}`)
         }
+        this.tokens.push({
+            type: "EOF"
+        })
         return this.tokens;
     }
 
