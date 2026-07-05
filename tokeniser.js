@@ -17,7 +17,7 @@ export default class Tokeniser {
             }
 
             // Number
-            if (/\d/.test(c)) {
+            if (/\d/.test(c) || (c === "." && /\d/.test(this.getNextCharacter()))) {
                 this.tokens.push(this.scanNumber());
                 continue;
             }
@@ -98,6 +98,10 @@ export default class Tokeniser {
     getCharacter() {
         // Get current character
         return this.input[this.position];
+    }
+
+    getNextCharacter() {
+        return this.input[this.position + 1];
     }
 
     advance() {
