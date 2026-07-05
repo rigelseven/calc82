@@ -113,7 +113,7 @@ export default class Parser {
         if (this.match("CONSTANT")) {
             return {
                 type: "Constant",
-                value: this.getPreviousToken().value
+                name: this.getPreviousToken().value
             };
         }
 
