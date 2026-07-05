@@ -88,6 +88,8 @@ export default class Tokeniser {
                 value: text
             }
         }
+
+        throw new Error(`Unexpected identifier ${text}`)
     }
 
     getCharacter() {

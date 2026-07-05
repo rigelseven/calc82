@@ -1,4 +1,5 @@
 import Tokeniser from "./tokeniser.js";
+import Parser from "./parser.js"
 
 const display = document.querySelector("#display");
 
@@ -12,7 +13,10 @@ testInput.addEventListener("input", function(event) {
     const tokeniser = new Tokeniser(expression);
     const tokens = tokeniser.tokenise();
 
-
-
     console.table(tokens);
+
+    const parser = new Parser(tokens);
+    const ast = parser.parse();
+
+    console.log(ast);
 });
