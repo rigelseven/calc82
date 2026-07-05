@@ -3,12 +3,23 @@ export default class Evaluator {
         switch (node.type) {
             case "NumberLiteral":
                 return node.value;
+            case "Constant":
+                return this.evaluateConstant(node);
             case "UnaryExpression":
                 return this.evaluateUnary(node);
             case "BinaryExpression":
                 return this.evaluateBinary(node);
             default:
                 throw new Error(`Unknown node ${node.type}`)
+        }
+    }
+
+    evaluateConstant(node) {
+        switch(node.value) {
+            case "pi":
+                return Math.PI
+            case "e":
+                return Math.E
         }
     }
 
