@@ -20,6 +20,8 @@ export default class Parser {
     addition() {
         let expr = this.multiplication();
         
+        console.log(this.getToken().type);
+        console.log(this.isAtEnd())
         while(this.match("PLUS", "MINUS")) {
             const operator = this.getPreviousToken();
             const right = this.multiplication();
@@ -54,8 +56,6 @@ export default class Parser {
     }
 
     unary() {
-        let expr = this.primary()
-
         if(this.match("MINUS")) {
             return {
                 type: "UnaryExpression",
@@ -64,7 +64,7 @@ export default class Parser {
             };
 
         }
-        return expr;
+        return this.primary();
     }
 
     primary() {
@@ -128,9 +128,6 @@ export default class Parser {
     }
 
     isAtEnd() {
-        if (this.current >= this.tokens.length) {
-            return true;
-        }
         return this.getToken().type === "EOF";
     }
 }
