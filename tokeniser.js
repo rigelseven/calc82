@@ -74,18 +74,19 @@ export default class Tokeniser {
                 break;
             }
         }
-        this.advance();
 
-        if (FUNCTIONS.has(text)) {
+        if (CONSTANTS.has(text)) {
             return {
                 type: "CONSTANT",
                 value: text
             }
         }
 
-        return {
-            type: "FUNCTION",
-            value: text
+        if (FUNCTIONS.has(text)) {
+            return {
+                type: "FUNCTION",
+                value: text
+            }
         }
     }
 
@@ -100,7 +101,7 @@ export default class Tokeniser {
     }
 
     isAtEnd() {
-        return this.position > this.input.length-1;
+        return this.position >= this.input.length;
     }
 
 }
