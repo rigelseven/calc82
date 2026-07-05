@@ -1,6 +1,6 @@
-import Tokeniser from "./tokeniser.js";
+import Tokeniser from "./tokeniser/tokeniser.js";
 import Parser from "./parser.js"
-import Evaluator from "./evaluator.js";
+import Evaluator from "./evaluator/evaluator.js";
 
 const display = document.querySelector("#display");
 
