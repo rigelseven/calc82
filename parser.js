@@ -91,6 +91,13 @@ export default class Parser {
             };
         }
 
+        if (this.match("CONSTANT")) {
+            return {
+                type: "Constant",
+                value: this.getPreviousToken().value
+            };
+        }
+
         if (this.match("LPAREN")) {
             const expr = this.expression();
             this.consume("RPAREN");

@@ -133,7 +133,6 @@ export default class Tokeniser {
         ];
 
         const rightStart = [
-            "NUMBER",
             "CONSTANT",
             "FUNCTION",
             "LPAREN"
