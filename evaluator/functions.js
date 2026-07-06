@@ -3,6 +3,6 @@ export const FUNCTIONS = {
     cos: Math.cos,
     tan: Math.tan,
     sqrt: Math.sqrt,
-    ln: Math.log10,
-    log: Math.log
+    ln: Math.log,
+    log: Math.log10
 }
