@@ -12,37 +12,41 @@ const tokensDisplay = document.querySelector("#tokens");
 const astDisplay = document.querySelector("#ast");
 
 testInput.addEventListener("input", function(event) {
+    calculate(event.target.value);
+});
+
+function calculate(value) {
     try {
-        const expression = event.target.value;
+        const expression = value;
 
         display.textContent="=";
-        tokensDisplay.textContent="";
-        astDisplay.textContent="";
+        tokensDisplay.textContent="Token visualisation\n";
+        astDisplay.textContent="AST visualisation\n";
             
         const tokeniser = new Tokeniser(expression);
         const tokens = tokeniser.tokenise();
 
-        const textTokens = "Token visualisation\n" + generateTextTokens(tokens);
+        const textTokens = generateTextTokens(tokens);
         console.table(tokens);
-        console.log(textTokens);
-        tokensDisplay.textContent = textTokens;
+        tokensDisplay.textContent += textTokens;
 
         const parser = new Parser(tokens);
         const ast = parser.parse();
 
-        const textAST = "AST visualisation\n" + generateTextAST(ast);
+        const textAST = generateTextAST(ast);
         console.log(ast);
-        console.log(textAST);
-        astDisplay.textContent = textAST;
+        astDisplay.textContent += textAST;
 
         const evaluator = new Evaluator();
         const result = evaluator.evaluate(ast);
 
         console.log(result)
 
-        display.textContent=`= ${result}`;
+        display.textContent=`= ${result.toPrecision(10)}`;
     } catch (error) {
         display.textContent=`= ${error.message}`;
         console.error(error)
     }
-});
+}
+
+calculate(testInput.value);
