@@ -40,7 +40,7 @@ export default class Parser {
 
         while (this.match("MULTIPLY", "DIVIDE")) {
             const operator = this.getPreviousToken();
-            const right = this.unary();
+            const right = this.power();
 
             expr = {
                 type: "BinaryExpression",
