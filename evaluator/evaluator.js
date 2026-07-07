@@ -2,6 +2,7 @@ import { BINARY } from "./binary.js";
 import { CONSTANTS } from "./constants.js";
 import { FUNCTIONS } from "./functions.js";
 import { POSTFIX } from "./postfix.js";
+import { UNARY } from "./unary.js"
 
 
 export default class Evaluator {
