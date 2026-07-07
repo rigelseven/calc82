@@ -3,6 +3,8 @@ import Parser from "./parser.js"
 import Evaluator from "./evaluator/evaluator.js";
 import { generateTextAST, generateTextTokens } from "./debug.js";
 
+Decimal.set({ precision: 15 })
+
 const display = document.querySelector("#display");
 
 const testInput = document.querySelector("#test-input");

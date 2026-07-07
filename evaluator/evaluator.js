@@ -3,6 +3,7 @@ import { CONSTANTS } from "./constants.js";
 import { FUNCTIONS } from "./functions.js";
 import { POSTFIX } from "./postfix.js";
 
+
 export default class Evaluator {
     evaluate(node) {
         switch (node.type) {

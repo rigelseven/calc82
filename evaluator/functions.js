@@ -1,8 +1,8 @@
 export const FUNCTIONS = {
-    sin: Math.sin,
-    cos: Math.cos,
-    tan: Math.tan,
-    sqrt: Math.sqrt,
-    ln: Math.log,
-    log: Math.log10
+    sin: a => a.sin(),
+    cos: a => a.cos(),
+    tan: a => a.tan(),
+    sqrt: a => a.sqrt(),
+    ln: a => a.ln(),
+    log: a => a.log10()
 }
