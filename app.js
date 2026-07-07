@@ -42,7 +42,7 @@ function calculate(value) {
 
         console.log(result)
 
-        display.textContent=`= ${result.toPrecision(10)}`;
+        display.textContent=`= ${result}`;
     } catch (error) {
         display.textContent=`= ${error.message}`;
         console.error(error)

@@ -7,7 +7,7 @@ export default class Evaluator {
     evaluate(node) {
         switch (node.type) {
             case "NumberLiteral":
-                return node.value;
+                return new Decimal(node.value);
             case "Constant":
                 return this.evaluateConstant(node);
             case "UnaryExpression":
