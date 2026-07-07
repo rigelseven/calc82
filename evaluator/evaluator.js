@@ -30,10 +30,9 @@ export default class Evaluator {
     evaluateUnary(node) {
         const value = this.evaluate(node.argument);
 
-        switch(node.operator) {
-            case "MINUS":
-                return -value;
-        }
+        const operation = UNARY[node.operator];
+
+        return operation(value);
     }
 
     evaluateBinary(node) {
