@@ -1,12 +1,12 @@
 export default function factorial(n) {
-    if (!Number.isInteger(n) || n < 0) {
+    if (!Decimal.isDecimal(n) || n.lessThan(0)) {
         throw new Error("Math error: factorial undefined")
     }
 
-    let result = 1;
+    let result = new Decimal(1);
     for(let i=2;i<=n;++i) {
-        result *= i;
+        result = result.times(Decimal(i));
     }
-
+    console.log(result)
     return result;
 }
