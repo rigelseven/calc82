@@ -1,5 +1,8 @@
 export default function computeTrig(fn, a) {
-    const mathErrorLimit = (Decimal.acos(-1)).times(Decimal(0.5)).times(Decimal(1e8));
+    const PI = Decimal.acos(-1);
+    const HALF_PI = PI.div(2);
+
+    const mathErrorLimit = HALF_PI.times(Decimal(1e8));
     if (a.abs().gte(mathErrorLimit)) {
         throw new Error("Math error: trig argument too large")
     }
@@ -22,26 +25,53 @@ export default function computeTrig(fn, a) {
             output = a.sin(); break;
         case "cos":
             output = a.cos(); break;
-        case "tan":
-            output = a.tan(); break;
+        case "tan": {
+            // Reduce to nearest +/-pi/2 pole
+            const k = a.div(PI).round();
+            const offset = a.sub(k.mul(PI));
+
+            const x = offset.sub(HALF_PI.mul(offset.s));
+
+            // Near tan pole
+            if (x.abs().lt("1e-4")) {
+                output = x;
+            } else {
+                output = a.tan();
+            }
+        }
     }
 
     
-    // Round the output
-    const precision = 12-Decimal.log10(a.div(Decimal.acos(-1)).abs().div(2)).floor();
-
+    // Compute precision based on trig rotation
+    const rotations = a.abs().div(PI.mul(2));
+    const precision = "1e-".concat(13 - Decimal.log10(rotations).floor());
+    
+    // Evaluate when tan goes to infinity by cosine denominator
     if (fn === "tan") {
         const cosValue = Decimal.cos(a);
 
-        if (cosValue.abs().lt("1e-"+precision)) {
+        if (cosValue.abs().lt(precision)) {
             throw new Error("Math error: tan infinity");
         }
     }
 
-    if (output.abs().lt("1e-"+precision)) {
-        output = new Decimal(0);
+    // Snap to clean values
+    if (fn === "sin" || fn === "cos") {
+        console.log(output.abs().toNumber(), precision)
+        if (output.sub(1).abs().lt(precision)) {
+            output = new Decimal(1);
+        } else if (output.add(1).abs().lt(precision)) {
+            output = new Decimal(-1);
+        } else if (output.abs().lt(precision)) {
+            output = new Decimal(0);
+        }
     }
-    // If the function was tan and the result exponent is greater than precision break
+
+    if (fn === "tan") {
+        if (output.abs().lt(precision)) {
+            output = new Decimal(0);
+        }
+    }
 
     return output;
 }
