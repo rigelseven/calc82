@@ -25,10 +25,22 @@ export default function computeTrig(fn, a) {
         case "tan":
             output = a.tan(); break;
     }
+
     
     // Round the output
-    const precision = 13-Decimal.log10(a.div(Decimal.acos(-1))).floor();
-    output = output.toDP(precision);
-    
+    let precision = 12-Decimal.log10(a.div(Decimal.acos(-1))).floor();
+
+    if (fn === "tan") {
+        precision-=1; // Additional precision needed for tan
+        if (output.e >= precision) {
+            throw new Error("Math error: tan infinity");
+        }
+    }
+
+    if (output.abs().lt("1e-"+precision)) {
+        output = new Decimal(0);
+    }
+    // If the function was tan and the result exponent is greater than precision break
+
     return output;
 }
