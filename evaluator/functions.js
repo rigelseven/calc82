@@ -18,7 +18,9 @@ export const FUNCTIONS = {
 
     sqrt: a => safeSquareRoot(a),
     root: (value, n) => safeRoot(value, n),
-    
+
     ln: a => a.ln(),
-    log: a => a.log10()
+    log: a => a.log10(),
+
+    abs: a=>a.abs()
 }
