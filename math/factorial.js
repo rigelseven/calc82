@@ -1,5 +1,5 @@
 export default function factorial(n) {
-    if (!Decimal.isDecimal(n) || n.lessThan(0)) {
+    if (!Decimal.isDecimal(n) || !n.isInt() || n.lessThan(0)) {
         throw new Error("Math error: factorial undefined")
     }
 
