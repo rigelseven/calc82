@@ -50,7 +50,7 @@ export default class Evaluator {
         const values = node.args.map(arg => this.evaluate(arg));
         const fn = FUNCTIONS[node.name];
 
-        return fn(this.evaluate(...values));
+        return fn(...values);
     }
 
     evaluatePostfix(node) {
