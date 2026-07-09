@@ -1,4 +1,4 @@
-import safeSquareRoot from "../math/root.js";
+import { safeRoot, safeSquareRoot } from "../math/root.js";
 import { computeTrig, computeInverseTrig, computeHypTrig, computeInverseHypTrig } from "../math/trigonometry.js"
 
 export const FUNCTIONS = {
@@ -17,6 +17,8 @@ export const FUNCTIONS = {
     atanh: a => computeInverseHypTrig("atanh", a),
 
     sqrt: a => safeSquareRoot(a),
+    root: (value, n) => safeRoot(value, n),
+    
     ln: a => a.ln(),
     log: a => a.log10()
 }

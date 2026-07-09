@@ -27,7 +27,8 @@ export const FUNCTIONS = new Set([
 
     "log",
     "ln",
-    "sqrt"
+    "sqrt",
+    "root"
 ]);
 
 export const CONSTANTS = new Set([
