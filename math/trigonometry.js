@@ -93,3 +93,39 @@ export function computeInverseTrig(fn, a) {
 
     return output;
 }
+
+export function computeHypTrig(fn, a) {
+    let output;
+
+    if (fn === "sinh") {
+        output = a.sinh();
+    } else if (fn === "cosh") {
+        output = a.cosh();
+    } else if (fn === "tanh") {
+        output = a.tanh();
+    }
+
+    if (isNaN(output)) {
+        throw new Error("Math error: hyp trig out of range")
+    }
+
+    return output;
+}
+
+export function computeInverseHypTrig(fn, a) {
+    let output;
+
+    if (fn === "asinh") {
+        output = a.asinh();
+    } else if (fn === "acosh") {
+        output = a.acosh();
+    } else if (fn === "atanh") {
+        output = a.atanh();
+    }
+
+    if (isNaN(output)) {
+        throw new Error("Math error: inverse hyp trig out of range")
+    }
+
+    return output;
+}

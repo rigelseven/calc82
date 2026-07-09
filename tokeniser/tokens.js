@@ -16,6 +16,14 @@ export const FUNCTIONS = new Set([
     "asin",
     "acos",
     "atan",
+
+    "sinh",
+    "cosh",
+    "tanh",
+    "asinh",
+    "acosh",
+    "atanh",
+
     "log",
     "ln",
     "sqrt"

@@ -1,5 +1,5 @@
 import safeSquareRoot from "../math/root.js";
-import { computeInverseTrig, computeTrig } from "../math/trigonometry.js"
+import { computeTrig, computeInverseTrig, computeHypTrig, computeInverseHypTrig } from "../math/trigonometry.js"
 
 export const FUNCTIONS = {
     sin: a => computeTrig("sin", a),
@@ -8,6 +8,14 @@ export const FUNCTIONS = {
     asin: a => computeInverseTrig("asin", a),
     acos: a => computeInverseTrig("acos", a),
     atan: a => computeInverseTrig("atan", a),
+
+    sinh: a => computeHypTrig("sinh", a),
+    cosh: a => computeHypTrig("cosh", a),
+    tanh: a => computeHypTrig("tanh", a),
+    asinh: a => computeInverseHypTrig("asinh", a),
+    acosh: a => computeInverseHypTrig("acosh", a),
+    atanh: a => computeInverseHypTrig("atanh", a),
+
     sqrt: a => safeSquareRoot(a),
     ln: a => a.ln(),
     log: a => a.log10()
