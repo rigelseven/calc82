@@ -13,6 +13,9 @@ export const FUNCTIONS = new Set([
     "sin",
     "cos",
     "tan",
+    "asin",
+    "acos",
+    "atan",
     "log",
     "ln",
     "sqrt"

@@ -1,4 +1,4 @@
-export default function computeTrig(fn, a) {
+export function computeTrig(fn, a) {
     const PI = Decimal.acos(-1);
     const HALF_PI = PI.div(2);
 
@@ -71,6 +71,24 @@ export default function computeTrig(fn, a) {
         if (output.abs().lt(precision)) {
             output = new Decimal(0);
         }
+    }
+
+    return output;
+}
+
+export function computeInverseTrig(fn, a) {
+    let output;
+
+    if (fn === "asin") {
+        output = a.asin();
+    } else if (fn === "acos") {
+        output = a.acos();
+    } else if (fn === "atan") {
+        output = a.atan();
+    }
+
+    if (isNaN(output)) {
+        throw new Error("Math error: inverse trig out of range")
     }
 
     return output;
