@@ -120,13 +120,22 @@ export default class Parser {
         if (this.match("FUNCTION")) {
             const name = this.getPreviousToken().value;
             this.consume("LPAREN");
-            const argument = this.expression();
+
+            let args = [];
+
+            // Get upcoming commas
+            if (!this.checkType("RPAREN")) {
+                do {
+                    args.push(this.expression());
+                } while (this.match("COMMA"));
+            }
+
             this.consume("RPAREN");
 
             return {
                 type: "FunctionCall",
                 name,
-                argument
+                args
             }
         }
 
