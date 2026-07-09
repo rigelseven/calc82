@@ -2,10 +2,7 @@ export function computeTrig(fn, a) {
     const PI = Decimal.acos(-1);
     const HALF_PI = PI.div(2);
 
-    const mathErrorLimit = HALF_PI.times(Decimal(1e8));
-    if (a.abs().gte(mathErrorLimit)) {
-        throw new Error("Math error: trig argument too large")
-    }
+    checkTrigRange(a);
 
     const smallAngleThreshold = new Decimal("1e-11");
     const smallAngleMax = new Decimal("1e-98");
@@ -79,6 +76,8 @@ export function computeTrig(fn, a) {
 export function computeInverseTrig(fn, a) {
     let output;
 
+    checkTrigRange(a);
+
     if (fn === "asin") {
         output = a.asin();
     } else if (fn === "acos") {
@@ -95,7 +94,14 @@ export function computeInverseTrig(fn, a) {
 }
 
 export function computeHypTrig(fn, a) {
+    const MAX_HYP_INPUT = 240;
     let output;
+
+    checkTrigRange(a);
+
+    if ((fn === "sinh" || fn === "cosh") && a.abs().gt(MAX_HYP_INPUT)) {
+        throw new Error("Math error: hyperbolic trig out of range");
+    }
 
     if (fn === "sinh") {
         output = a.sinh();
@@ -128,4 +134,12 @@ export function computeInverseHypTrig(fn, a) {
     }
 
     return output;
+}
+
+function checkTrigRange(a) {
+    const HALF_PI = Decimal.acos(-1).div(2);
+    const mathErrorLimit = HALF_PI.times(Decimal(1e8));
+    if (a.abs().gte(mathErrorLimit)) {
+        throw new Error("Math error: trig argument too large")
+    }
 }
