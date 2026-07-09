@@ -1,4 +1,4 @@
 export const CONSTANTS = {
-    pi: Math.PI,
-    e: Math.E
+    pi: Decimal.acos(-1),
+    e: new Decimal(1).exp()
 }

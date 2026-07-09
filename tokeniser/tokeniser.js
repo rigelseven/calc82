@@ -76,7 +76,7 @@ export default class Tokeniser {
         
         return {
             type: "NUMBER",
-            value: Number(value)
+            value: value
         };
     }
 

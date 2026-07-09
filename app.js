@@ -3,6 +3,8 @@ import Parser from "./parser.js"
 import Evaluator from "./evaluator/evaluator.js";
 import { generateTextAST, generateTextTokens } from "./debug.js";
 
+Decimal.set({ precision: 15 })
+
 const display = document.querySelector("#display");
 
 const testInput = document.querySelector("#test-input");
@@ -42,7 +44,7 @@ function calculate(value) {
 
         console.log(result)
 
-        display.textContent=`= ${result.toPrecision(10)}`;
+        display.textContent=`= ${result.toSD(10)}`;
     } catch (error) {
         display.textContent=`= ${error.message}`;
         console.error(error)

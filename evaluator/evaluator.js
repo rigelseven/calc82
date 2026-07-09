@@ -2,12 +2,14 @@ import { BINARY } from "./binary.js";
 import { CONSTANTS } from "./constants.js";
 import { FUNCTIONS } from "./functions.js";
 import { POSTFIX } from "./postfix.js";
+import { UNARY } from "./unary.js"
+
 
 export default class Evaluator {
     evaluate(node) {
         switch (node.type) {
             case "NumberLiteral":
-                return node.value;
+                return new Decimal(node.value);
             case "Constant":
                 return this.evaluateConstant(node);
             case "UnaryExpression":
@@ -30,10 +32,9 @@ export default class Evaluator {
     evaluateUnary(node) {
         const value = this.evaluate(node.argument);
 
-        switch(node.operator) {
-            case "MINUS":
-                return -value;
-        }
+        const operation = UNARY[node.operator];
+
+        return operation(value);
     }
 
     evaluateBinary(node) {
