@@ -44,7 +44,7 @@ export default function computeTrig(fn, a) {
     
     // Compute precision based on trig rotation
     const rotations = a.abs().div(PI.mul(2));
-    const precision = "1e-".concat(13 - Decimal.log10(rotations).floor());
+    const precision = "1e-".concat(12 - Decimal.log10(rotations).floor());
     
     // Evaluate when tan goes to infinity by cosine denominator
     if (fn === "tan") {
