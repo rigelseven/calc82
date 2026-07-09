@@ -96,6 +96,17 @@ export default class Parser {
 
                 continue;
             }
+
+            // TODO? Refactor
+            if (this.match("PERCENT")) {
+                expr = {
+                    type: "PostfixExpression",
+                    operator: "PERCENT",
+                    argument: expr
+                };
+
+                continue;
+            }
             break;
         }
 

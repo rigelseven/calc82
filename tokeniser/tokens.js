@@ -6,8 +6,9 @@ export const SYMBOLS = {
     "^": { type: "POWER" },
     "(": { type: "LPAREN" },
     ")": { type: "RPAREN" },
-    "!": { type: "FACTORIAL"},
-    ",": { type: "COMMA"}
+    "!": { type: "FACTORIAL" },
+    "%": { type: "PERCENT" },
+    ",": { type: "COMMA" }
 }
 
 export const FUNCTIONS = new Set([
