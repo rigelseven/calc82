@@ -59,19 +59,43 @@ export default class Tokeniser {
     scanNumber() {
         let value = "";
         let seenDecimal = false;
-
+        let seenExponent = false;
+        let exponentSignAllowed = false;
+        let canEnd = true;
+        
         while (!this.isAtEnd()) {
             const c = this.getCharacter();
+            
             if (/\d/.test(c)) {
+                exponentSignAllowed = false
                 value += c;
+                canEnd = true;
                 this.advance();
+
             } else if (c === "." && !seenDecimal) {
                 seenDecimal = true;
+                exponentSignAllowed = false
+                value += c;
+                this.advance();
+
+            } else if (c === "E" && !seenExponent) {
+                seenExponent = true;
+                exponentSignAllowed = true;
+                canEnd = false;
+                value += c;
+                this.advance();
+
+            } else if ((c === "+" || c === "-") && exponentSignAllowed) {
+                exponentSignAllowed = false;
+                canEnd = false;
                 value += c;
                 this.advance();
             } else {
                 break;
             }
+        }
+        if (!canEnd) {
+            throw new Error(`Syntax error: incomplete number`);
         }
         
         return {
