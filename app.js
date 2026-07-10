@@ -46,9 +46,10 @@ function calculate(value) {
         astDisplay.textContent += textAST;
 
         const evaluator = new Evaluator();
-        const result = evaluator.evaluate(ast);
+        let result = evaluator.evaluate(ast);
 
-        console.log(result)
+        // Attempt to convert to fraction (i.e. math io mode?? look more into this)
+        if (result instanceof Decimal) result = Fraction.fromDecimal(result);
 
         if (result instanceof Decimal) {
             display.textContent=`= ${result.toSD(10)}`;

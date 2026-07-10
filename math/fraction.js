@@ -72,9 +72,23 @@ export default class Fraction {
 
         const factor = new Decimal(10).pow(scale)
 
+        numerator.times(factor),
+        denominator.times(factor)
+
+        console.log(numerator,denominator)
+
+        if (numerator.e + denominator.e > 7) return numerator.div(denominator);
+
         return new Fraction(
             numerator.times(factor),
             denominator.times(factor)
         ).simplify();
+    }
+
+    static fromDecimal(a) {
+        const {0: numerator, 1: denominator} = a.toFraction(1e10);
+        const fraction = Fraction.fromDecimals(numerator, denominator);
+        if (fraction instanceof Fraction) return fraction;
+        return a;
     }
 }
