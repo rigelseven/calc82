@@ -21,7 +21,7 @@ class TrigSolver {
         const smallAngleMax = new Decimal("1e-98");
         if (fn === "sin" || fn === "tan"){
             if (a.abs().lt(smallAngleMax)) {
-                return 0;
+                return new Decimal(0);
             }
             if (a.abs().lt(smallAngleThreshold)) {
                 return a;
