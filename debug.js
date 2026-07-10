@@ -60,6 +60,12 @@ function getChildren(node) {
     switch(node.type) {
         case "BinaryExpression":
             return [node.left, node.right];
+
+        case "FractionExpression":
+            return [node.numerator, node.denominator];
+
+        case "MixedFractionExpression":
+            return [node.whole, node.numerator, node.denominator];
         
         case "UnaryExpression":
         case "PostfixExpression":
