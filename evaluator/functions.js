@@ -1,6 +1,6 @@
 import { safeRoot, safeSquareRoot } from "../math/root.js";
 import { computeTrig, computeInverseTrig, computeHypTrig, computeInverseHypTrig } from "../math/trigonometry.js"
-
+import { randomInteger } from "../math/random.js";
 export const FUNCTIONS = {
     sin: a => computeTrig("sin", a),
     cos: a => computeTrig("cos", a),
@@ -22,5 +22,7 @@ export const FUNCTIONS = {
     ln: a => a.ln(),
     log: a => a.log10(),
 
-    abs: a=>a.abs()
+    abs: a => a.abs(),
+
+    RanInt: (a, b) => randomInteger(a, b)
 }

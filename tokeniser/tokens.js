@@ -34,7 +34,9 @@ export const FUNCTIONS = new Set([
     "sqrt",
     "root",
 
-    "abs"
+    "abs",
+
+    "RanInt"
 ]);
 
 export const CONSTANTS = new Set([
