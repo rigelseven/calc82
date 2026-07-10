@@ -49,7 +49,8 @@ function label(node) {
             return `Function(${node.name})`;
         case "Constant":
             return `Constant(${node.name})`;
-        
+        case "Variable":
+            return `Variable(${node.name})`;
         default:
             return node.type;
     }
