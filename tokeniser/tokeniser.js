@@ -23,9 +23,13 @@ export default class Tokeniser {
             }
 
             // Identifier
-            if (/[a-z]/i.test(c) && !/[CPrgd]/.test(c)) {
-                this.addToken(this.scanIdentifier());
-                continue;
+            if (/[a-z]/i.test(c)) {
+                const iden = this.scanIdentifier();
+                console.log(iden)
+                if (iden != null) {
+                    (this.addToken(iden));
+                    continue;
+                }
             }
 
             // Single character operators
@@ -108,6 +112,7 @@ export default class Tokeniser {
     scanIdentifier() {
         // Read in the next function (sin, cos..)
         let text = "";
+        let count = 0;
 
         while (!this.isAtEnd()) {
             const c = this.getCharacter();
@@ -115,6 +120,7 @@ export default class Tokeniser {
             if (/[a-z]/i.test(c)) {
                 text += c;
                 this.advance();
+                count += 1;
             } else {
                 break;
             }
@@ -141,7 +147,8 @@ export default class Tokeniser {
             }
         }
 
-        throw new Error(`Syntax error: Unexpected identifier ${text}`)
+        this.rewind(count);
+        //throw new Error(`Syntax error: Unexpected identifier ${text}`);
     }
 
     getCharacter() {
@@ -178,5 +185,9 @@ export default class Tokeniser {
         ];
 
         return leftEnd.includes(left.type) && rightStart.includes(right.type);
+    }
+
+    rewind(count) {
+        return this.input[this.position-=count]; 
     }
 }
