@@ -4,6 +4,7 @@ import { VARIABLES } from "./variables.js"
 import { FUNCTIONS } from "./functions.js";
 import { POSTFIX } from "./postfix.js";
 import { UNARY } from "./unary.js"
+import Fraction from "../math/fraction.js";
 
 
 export default class Evaluator {
@@ -11,6 +12,8 @@ export default class Evaluator {
         switch (node.type) {
             case "NumberLiteral":
                 return new Decimal(node.value);
+            case "FractionExpression":
+                return this.evaluateFraction(node);
             case "Constant":
                 return this.evaluateConstant(node);
             case "Variable":
@@ -78,5 +81,13 @@ export default class Evaluator {
         const operation = VARIABLES[node.name];
 
         return operation();
+    }
+
+    evaluateFraction(node) {
+        // improper fraction
+        const numerator = this.evaluate(node.numerator);
+        const denominator = this.evaluate(node.denominator);
+
+        return new Fraction(numerator, denominator);
     }
 }

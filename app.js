@@ -3,6 +3,8 @@ import Parser from "./parser.js"
 import Evaluator from "./evaluator/evaluator.js";
 import { generateTextAST, generateTextTokens } from "./debug.js";
 import trigSolver from "./math/trigonometry.js";
+import Fraction from "./math/fraction.js";
+
 // TODO: Depends on Norm1/Norm2
 // Norm1: toExpNeg = -3
 Decimal.set({ precision: 15, maxE: 99, toExpNeg: -10, toExpPos: 10})
@@ -48,7 +50,10 @@ function calculate(value) {
 
         console.log(result)
 
-        display.textContent=`= ${result.toSD(10)}`;
+        if (result instanceof Decimal) {
+            display.textContent=`= ${result.toSD(10)}`;
+        } else if (result instanceof Fraction)
+            display.textContent=`= ${result.numerator} over ${result.denominator}`
     } catch (error) {
         display.textContent=`= ${error.message}`;
         console.error(error)
