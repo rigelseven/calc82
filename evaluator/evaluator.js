@@ -11,7 +11,7 @@ export default class Evaluator {
     evaluate(node) {
         switch (node.type) {
             case "NumberLiteral":
-                return new Decimal(node.value);
+                return this.evaluateDecimal(node);
             case "FractionExpression":
                 return this.evaluateFraction(node);
             case "Constant":
@@ -81,6 +81,12 @@ export default class Evaluator {
         const operation = VARIABLES[node.name];
 
         return operation();
+    }
+
+    evaluateDecimal(node) {
+        const value = new Decimal(node.value);
+
+        return Fraction.fromDecimal(value);
     }
 
     evaluateFraction(node) {

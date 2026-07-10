@@ -1,9 +1,14 @@
+import Fraction from "./fraction.js";
+
 export function plus(a, b) {
+    if (a instanceof Fraction || b instanceof Fraction) {
+        return Fraction.plus(a,b);
+    }
     return a.plus(b);
 }
 
 export function minus(a, b) {
-    return a.minus(b);
+    return plus(a, b.negated());
 }
 
 export function times(a, b) {
