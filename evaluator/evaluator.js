@@ -88,6 +88,6 @@ export default class Evaluator {
         const numerator = this.evaluate(node.numerator);
         const denominator = this.evaluate(node.denominator);
 
-        return new Fraction(numerator, denominator);
+        return Fraction.fromDecimals(numerator, denominator);
     }
 }

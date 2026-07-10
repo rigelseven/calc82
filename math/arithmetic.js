@@ -11,7 +11,7 @@ export function times(a, b) {
 }
 
 export function divide(a, b) {
-    throw new Error("Math error: div 0")
+    if (b.isZero()) throw new Error("Math error: div 0")
     return a.div(b);
 }
 
