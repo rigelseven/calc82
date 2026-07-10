@@ -62,6 +62,8 @@ function getChildren(node) {
         
         case "UnaryExpression":
         case "PostfixExpression":
+            return [node.argument];
+
         case "FunctionCall":
             return [...node.args];
 

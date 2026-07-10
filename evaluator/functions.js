@@ -3,27 +3,27 @@ import trigSolver from "../math/trigonometry.js";
 import { randomInteger } from "../math/random.js";
 
 export const FUNCTIONS = {
-    sin: a => trigSolver.computeTrig("sin", a),
-    cos: a => trigSolver.computeTrig("cos", a),
-    tan: a => trigSolver.computeTrig("tan", a),
-    asin: a => trigSolver.computeInverseTrig("asin", a),
-    acos: a => trigSolver.computeInverseTrig("acos", a),
-    atan: a => trigSolver.computeInverseTrig("atan", a),
+    sin: {fn: a => trigSolver.computeTrig("sin", a), args: 1},
+    cos: {fn: a => trigSolver.computeTrig("cos", a), args: 1},
+    tan: {fn: a => trigSolver.computeTrig("tan", a), args: 1},
+    asin: {fn: a => trigSolver.computeInverseTrig("asin", a), args: 1},
+    acos: {fn: a => trigSolver.computeInverseTrig("acos", a), args: 1},
+    atan: {fn: a => trigSolver.computeInverseTrig("atan", a), args: 1},
 
-    sinh: a => trigSolver.computeHypTrig("sinh", a),
-    cosh: a => trigSolver.computeHypTrig("cosh", a),
-    tanh: a => trigSolver.computeHypTrig("tanh", a),
-    asinh: a => trigSolver.computeInverseHypTrig("asinh", a),
-    acosh: a => trigSolver.computeInverseHypTrig("acosh", a),
-    atanh: a => trigSolver.computeInverseHypTrig("atanh", a),
+    sinh: {fn: a => trigSolver.computeHypTrig("sinh", a), args: 1},
+    cosh: {fn: a => trigSolver.computeHypTrig("cosh", a), args: 1},
+    tanh: {fn: a => trigSolver.computeHypTrig("tanh", a), args: 1},
+    asinh: {fn: a => trigSolver.computeInverseHypTrig("asinh", a), args: 1},
+    acosh: {fn: a => trigSolver.computeInverseHypTrig("acosh", a), args: 1},
+    atanh: {fn: a => trigSolver.computeInverseHypTrig("atanh", a), args: 1},
 
-    sqrt: a => safeSquareRoot(a),
-    root: (value, n) => safeRoot(value, n),
+    sqrt:{fn: a => safeSquareRoot(a), args: 1},
+    root: {fn: (value, n) => safeRoot(value, n), args: 2},
 
-    ln: a => a.ln(),
-    log: a => a.log10(),
+    ln: {fn: a => a.ln(), args: 1},
+    log: {fn: a => a.log10(), args: 1},
 
-    abs: a => a.abs(),
+    abs: {fn: a => a.abs(), args: 1},
 
-    RanInt: (a, b) => randomInteger(a, b)
+    RanInt: {fn: (a, b) => randomInteger(a, b), args: 2}
 }

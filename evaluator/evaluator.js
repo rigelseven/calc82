@@ -51,9 +51,19 @@ export default class Evaluator {
 
     evaluateFunction(node) {
         const values = node.args.map(arg => this.evaluate(arg));
-        const fn = FUNCTIONS[node.name];
+        const entry = FUNCTIONS[node.name];
 
-        return fn(...values);
+        if (!entry) {
+            throw new Error(`Unknown function: ${node.name}`);
+        }
+
+        if (values.length !== entry.args) {
+            throw new Error(
+                `Syntax error: ${node.name} expects ${entry.args} argument(s), got ${values.length}`
+            );
+        }
+
+        return entry.fn(...values);
     }
 
     evaluatePostfix(node) {
