@@ -6,7 +6,7 @@ export function safeSquareRoot(a) {
     return a.sqrt();
 }
 
-export function safeRoot(value, n) {
+export function safeRoot(n, value) {
 
     if (n.isZero()) {
         throw new Error("Math error: Zero root");

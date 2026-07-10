@@ -18,7 +18,7 @@ export const FUNCTIONS = {
     atanh: {fn: a => trigSolver.computeInverseHypTrig("atanh", a), args: 1},
 
     sqrt:{fn: a => safeSquareRoot(a), args: 1},
-    root: {fn: (value, n) => safeRoot(value, n), args: 2},
+    root: {fn: (n, value) => safeRoot(n, value), args: 2},
 
     ln: {fn: a => a.ln(), args: 1},
     log: {fn: a => a.log10(), args: 1},
