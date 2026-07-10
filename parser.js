@@ -20,7 +20,7 @@ export default class Parser {
     addition() {
         let expr = this.multiplication();
         
-        while(this.match("PLUS", "MINUS")) {
+        while(this.match("PLUS", "MINUS", "PERMUTATION", "COMBINATION")) {
             const operator = this.getPreviousToken();
             const right = this.multiplication();
 

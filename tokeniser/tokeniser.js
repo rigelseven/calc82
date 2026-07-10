@@ -23,7 +23,7 @@ export default class Tokeniser {
             }
 
             // Identifier
-            if (/[a-z]/i.test(c)) {
+            if (/[a-z]/i.test(c) && !/[CP]/.test(c)) {
                 this.addToken(this.scanIdentifier());
                 continue;
             }
