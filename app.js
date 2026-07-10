@@ -2,7 +2,7 @@ import Tokeniser from "./tokeniser/tokeniser.js";
 import Parser from "./parser.js"
 import Evaluator from "./evaluator/evaluator.js";
 import { generateTextAST, generateTextTokens } from "./debug.js";
-
+import trigSolver from "./math/trigonometry.js";
 // TODO: Depends on Norm1/Norm2
 // Norm1: toExpNeg = -3
 Decimal.set({ precision: 15, maxE: 99, toExpNeg: -10, toExpPos: 10})
@@ -10,6 +10,8 @@ Decimal.set({ precision: 15, maxE: 99, toExpNeg: -10, toExpPos: 10})
 const display = document.querySelector("#display");
 
 const testInput = document.querySelector("#test-input");
+
+const angleModeSelector = document.querySelector("#angle-mode-selector")
 
 // debug
 const tokensDisplay = document.querySelector("#tokens");
@@ -53,4 +55,16 @@ function calculate(value) {
     }
 }
 
+// Angle mode selector
+angleModeSelector.addEventListener("change", function(event) {
+    getAngleMode();
+    calculate(testInput.value);
+});
+
+function getAngleMode() {
+    const newMode = document.querySelector(`.angle-mode input[type="radio"]:checked`).value;
+    trigSolver.setAngleMode(newMode);
+}
+
 calculate(testInput.value);
+getAngleMode();
