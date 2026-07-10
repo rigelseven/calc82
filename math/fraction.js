@@ -86,7 +86,7 @@ export default class Fraction {
     }
 
     static fromDecimal(a) {
-        const {0: numerator, 1: denominator} = a.toFraction(1e10);
+        const {0: numerator, 1: denominator} = a.toFraction(1e12);
         const fraction = Fraction.fromDecimals(numerator, denominator);
         if (fraction instanceof Fraction) return fraction;
         return a;
