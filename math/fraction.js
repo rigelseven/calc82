@@ -28,14 +28,25 @@ export default class Fraction {
         return this;
     }
 
-    plus(other) {
-        // TODO
+    toDecimalIfExceeding() {
+        const threshold = 7;
+
+        if (Math.abs(this.numerator.e) + Math.abs(this.denominator.e) > 7) 
+            return this.numerator.div(this.denominator);
+        
+        return this;
     }
 
-    minus(other) {
-        // TODO
+    static plus(a, b) {
+        a = Fraction.toFraction(a, true);
+        b = Fraction.toFraction(b, true);
+        return new Fraction(
+            a.numerator.times(b.denominator)
+                .plus(b.numerator.times(a.denominator)),
+            a.denominator.times(b.denominator)
+        ).simplify();
     }
-    
+
     times(other) {
         // TODO
     }
@@ -48,7 +59,7 @@ export default class Fraction {
         return new Fraction(this.denominator, this.numerator);
     }
 
-    negate() {
+    negated() {
         return new Fraction(this.numerator.negated(), this.denominator);
     }
 
@@ -64,6 +75,10 @@ export default class Fraction {
         // TODO
     }
 
+    isZero() {
+        return this.numerator.isZero();
+    }
+
     static fromDecimals(numerator, denominator) {
         const nDp = numerator.decimalPlaces();
         const dDp = denominator.decimalPlaces();
@@ -75,20 +90,22 @@ export default class Fraction {
         numerator.times(factor),
         denominator.times(factor)
 
-        console.log(numerator,denominator)
-
-        if (numerator.e + denominator.e > 7) return numerator.div(denominator);
-
         return new Fraction(
             numerator.times(factor),
             denominator.times(factor)
-        ).simplify();
+        ).simplify().toDecimalIfExceeding();
     }
 
-    static fromDecimal(a) {
+    static fromDecimal(a, strict=false) {
         const {0: numerator, 1: denominator} = a.toFraction(1e12);
         const fraction = Fraction.fromDecimals(numerator, denominator);
-        if (fraction instanceof Fraction) return fraction;
+        if (fraction instanceof Fraction && (fraction.denominator.toNumber() !== 1)) return fraction;
+        if (strict) return new Fraction(a, new Decimal(1))
         return a;
+    }
+
+    static toFraction(a, strict=false) {
+        if (a instanceof Fraction) return a;
+        return Fraction.fromDecimal(a, strict);
     }
 }
