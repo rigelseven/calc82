@@ -3,7 +3,9 @@ import Parser from "./parser.js"
 import Evaluator from "./evaluator/evaluator.js";
 import { generateTextAST, generateTextTokens } from "./debug.js";
 
-Decimal.set({ precision: 15 })
+// TODO: Depends on Norm1/Norm2
+// Norm1: toExpNeg = -3
+Decimal.set({ precision: 15, maxE: 99, toExpNeg: -10, toExpPos: 10})
 
 const display = document.querySelector("#display");
 
