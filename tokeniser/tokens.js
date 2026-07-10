@@ -41,3 +41,14 @@ export const CONSTANTS = new Set([
     "pi",
     "e"
 ]);
+
+export const VARIABLES = new Set([
+    "vA",
+    "vB",
+    "vC",
+    "vD",
+    "vE",
+    "vF",
+    "M",
+    "Ran"
+])

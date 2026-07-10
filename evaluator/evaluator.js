@@ -1,5 +1,6 @@
 import { BINARY } from "./binary.js";
 import { CONSTANTS } from "./constants.js";
+import { VARIABLES } from "./variables.js"
 import { FUNCTIONS } from "./functions.js";
 import { POSTFIX } from "./postfix.js";
 import { UNARY } from "./unary.js"
@@ -12,6 +13,8 @@ export default class Evaluator {
                 return new Decimal(node.value);
             case "Constant":
                 return this.evaluateConstant(node);
+            case "Variable":
+                return this.evaluateVariable(node);
             case "UnaryExpression":
                 return this.evaluateUnary(node);
             case "BinaryExpression":
@@ -59,5 +62,11 @@ export default class Evaluator {
         const operation = POSTFIX[node.operator];
 
         return operation(value);
+    }
+
+    evaluateVariable(node) {
+        const operation = VARIABLES[node.name];
+
+        return operation();
     }
 }

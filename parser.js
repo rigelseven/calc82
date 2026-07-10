@@ -84,7 +84,7 @@ export default class Parser {
     }
 
     postfix() {
-        let expr = this.primary();
+        let expr = this.variable();
 
         while (true) {
             if (this.match("FACTORIAL")) {
@@ -111,6 +111,17 @@ export default class Parser {
         }
 
         return expr;
+    }
+
+    variable() {
+        if (this.match("VARIABLE")) {
+            return {
+                type: "Variable",
+                name: this.getPreviousToken().value
+            };
+        }
+    
+        return this.primary();
     }
 
     primary() {
