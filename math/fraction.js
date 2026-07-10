@@ -1,3 +1,5 @@
+import { gcd } from "./arithmetic.js";
+
 export default class Fraction {
     constructor(numerator, denominator) {
         if (denominator.isZero()) {
@@ -12,8 +14,17 @@ export default class Fraction {
         return new Fraction(this.numerator, this.denominator);
     }
 
-    simplfiy() {
-        // TODO
+    simplify() {
+        const ndGcd = gcd(this.numerator, this.denominator);
+
+        this.numerator = this.numerator.div(ndGcd);
+        this.denominator = this.denominator.div(ndGcd);
+
+        if (this.denominator.isNeg()) {
+            this.numerator = numerator.neg();
+            this.denominator = denominator.neg();
+        }
+
         return this;
     }
 
@@ -51,5 +62,19 @@ export default class Fraction {
 
     toStringMixed() {
         // TODO
+    }
+
+    static fromDecimals(numerator, denominator) {
+        const nDp = numerator.decimalPlaces();
+        const dDp = denominator.decimalPlaces();
+
+        const scale = Decimal.max(nDp, dDp);
+
+        const factor = new Decimal(10).pow(scale)
+
+        return new Fraction(
+            numerator.times(factor),
+            denominator.times(factor)
+        ).simplify();
     }
 }
