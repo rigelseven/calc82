@@ -86,9 +86,9 @@ export default class Parser {
     postfix() {
         let expr = this.variable();
 
-        while (this.match("FACTORIAL", "PERCENT")) {
+        while (this.match("FACTORIAL", "PERCENT", "DEGREES", "RADIANS", "GRADIANS")) {
             const operator = this.getPreviousToken();
-            
+
             expr = {
                 type: "PostfixExpression",
                 operator: operator.type,

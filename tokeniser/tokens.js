@@ -10,7 +10,10 @@ export const SYMBOLS = {
     "%": { type: "PERCENT" },
     ",": { type: "COMMA" },
     "P": { type: "PERMUTATION" },
-    "C": { type: "COMBINATION" }
+    "C": { type: "COMBINATION" },
+    "r": { type: "RADIANS" },
+    "g": { type: "GRADIANS" },
+    "d": { type: "DEGREES" },
 }
 
 export const FUNCTIONS = new Set([

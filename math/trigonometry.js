@@ -158,7 +158,7 @@ class TrigSolver {
         }
     }
 
-    convertAngle(a, current, target) {
+    convertAngle(a, current=this.angleMode, target=this.angleMode) {
         switch (`${current}->${target}`) {
             case "deg->rad":
                 return a.mul(this.PI).div(180);
