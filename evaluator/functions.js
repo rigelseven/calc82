@@ -1,6 +1,7 @@
 import { safeRoot, safeSquareRoot } from "../math/root.js";
 import trigSolver from "../math/trigonometry.js";
 import { randomInteger } from "../math/random.js";
+import { lcm, gcd } from "../math/arithmetic.js";
 
 export const FUNCTIONS = {
     sin: {fn: a => trigSolver.computeTrig("sin", a), args: 1},
@@ -25,5 +26,8 @@ export const FUNCTIONS = {
 
     abs: {fn: a => a.abs(), args: 1},
 
-    RanInt: {fn: (a, b) => randomInteger(a, b), args: 2}
+    RanInt: {fn: (a, b) => randomInteger(a, b), args: 2},
+
+    lcm: {fn: (a, b) => lcm(a, b), args: 2},
+    gcd: {fn: (a, b) => gcd(a, b), args: 2},
 }

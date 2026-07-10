@@ -40,7 +40,10 @@ export const FUNCTIONS = new Set([
 
     "abs",
 
-    "RanInt"
+    "RanInt",
+
+    "lcm",
+    "gcd"
 ]);
 
 export const CONSTANTS = new Set([
