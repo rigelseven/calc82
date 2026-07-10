@@ -36,7 +36,7 @@ export default class Parser {
     }
 
     multiplication() {
-        let expr = this.power();
+        let expr = this.fraction();
 
         while (this.match("MULTIPLY", "DIVIDE")) {
             const operator = this.getPreviousToken();
@@ -50,6 +50,33 @@ export default class Parser {
             }
 
         }
+        return expr;
+    }
+
+    fraction() {
+        let expr = this.power();
+
+        while (this.match("FRACTION")) {
+            const middle = this.power();
+
+            if (!this.match("FRACTION")) {
+                return {
+                    type: "FractionExpression",
+                    numerator: expr,
+                    denominator: middle
+                };
+            }
+
+            const right = this.power();
+
+            return {
+                type: "mixedFractionExpression",
+                whole: expr,
+                numerator: middle,
+                denominator: right
+            };
+        }
+
         return expr;
     }
 

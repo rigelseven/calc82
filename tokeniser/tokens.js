@@ -14,6 +14,7 @@ export const SYMBOLS = {
     "r": { type: "RADIANS" },
     "g": { type: "GRADIANS" },
     "d": { type: "DEGREES" },
+    "f": { type: "FRACTION" }
 }
 
 export const FUNCTIONS = new Set([
