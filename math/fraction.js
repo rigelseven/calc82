@@ -21,8 +21,8 @@ export default class Fraction {
         this.denominator = this.denominator.div(ndGcd);
 
         if (this.denominator.isNeg()) {
-            this.numerator = numerator.neg();
-            this.denominator = denominator.neg();
+            this.numerator = this.numerator.neg();
+            this.denominator = this.denominator.neg();
         }
 
         return this;
