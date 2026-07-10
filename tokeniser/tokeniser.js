@@ -166,7 +166,8 @@ export default class Tokeniser {
         const leftEnd = [
             "NUMBER",
             "CONSTANT",
-            "RPAREN"
+            "RPAREN",
+            "VARIABLE"
         ];
 
         const rightStart = [
