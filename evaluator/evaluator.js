@@ -5,6 +5,7 @@ import { FUNCTIONS } from "./functions.js";
 import { POSTFIX } from "./postfix.js";
 import { UNARY } from "./unary.js"
 import Fraction from "../math/fraction.js";
+import { plus, times } from "../math/arithmetic.js";
 
 
 export default class Evaluator {
@@ -91,8 +92,13 @@ export default class Evaluator {
 
     evaluateFraction(node) {
         // improper fraction
-        const numerator = this.evaluate(node.numerator);
+        let numerator = this.evaluate(node.numerator);
         const denominator = this.evaluate(node.denominator);
+
+        if (node.whole !== undefined) {
+            const whole = this.evaluate(node.whole);
+            numerator = plus(numerator, times(whole, denominator))
+        }
 
         return Fraction.fromDecimals(numerator, denominator);
     }

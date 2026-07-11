@@ -62,9 +62,7 @@ function getChildren(node) {
             return [node.left, node.right];
 
         case "FractionExpression":
-            return [node.numerator, node.denominator];
-
-        case "MixedFractionExpression":
+            if (node.whole === undefined) return [node.numerator, node.denominator];
             return [node.whole, node.numerator, node.denominator];
         
         case "UnaryExpression":

@@ -70,7 +70,7 @@ export default class Parser {
             const right = this.power();
 
             return {
-                type: "MixedFractionExpression",
+                type: "FractionExpression",
                 whole: expr,
                 numerator: middle,
                 denominator: right
