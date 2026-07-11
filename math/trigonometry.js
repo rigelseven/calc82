@@ -67,7 +67,6 @@ class TrigSolver {
 
         // Snap to clean values
         if (fn === "sin" || fn === "cos") {
-            console.log(output.abs().toNumber(), precision)
             if (output.sub(1).abs().lt(precision)) {
                 output = new Decimal(1);
             } else if (output.add(1).abs().lt(precision)) {

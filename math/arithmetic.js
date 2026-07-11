@@ -2,7 +2,7 @@ import Fraction from "./fraction.js";
 
 export function plus(a, b) {
     if (a instanceof Fraction || b instanceof Fraction) {
-        return Fraction.plus(a,b);
+        return Fraction.plus(a, b);
     }
     return a.plus(b);
 }
@@ -12,11 +12,21 @@ export function minus(a, b) {
 }
 
 export function times(a, b) {
+    if (a instanceof Fraction || b instanceof Fraction) {
+        return Fraction.times(a, b);
+    }
     return a.times(b);
 }
 
 export function divide(a, b) {
-    if (b.isZero()) throw new Error("Math error: div 0")
+    if (b.isZero()) throw new Error("Math error: div 0");
+    if (a instanceof Fraction || b instanceof Fraction) {
+        return Fraction.divide(a, b);
+    }
+    // TODO fraction coercion for math io mode only
+    const frac = Fraction.fromDecimals(a, b)
+    if (frac instanceof Fraction) return frac;
+
     return a.div(b);
 }
 

@@ -1,4 +1,8 @@
+import Fraction from "./fraction.js";
+
 export function safePower(base, exponent) {
+
+    if (exponent instanceof Fraction) base = Fraction.toFraction(base, true);
 
     if (base.isNegative()) {
 
