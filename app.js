@@ -4,10 +4,12 @@ import Calculator from "./calculator.js";
 
 // TODO: Depends on Norm1/Norm2
 // Norm1: toExpNeg = -3
-Decimal.set({ precision: 15, maxE: 99, toExpNeg: -10, toExpPos: 10});
+Decimal.set({ precision: 15, maxE: 99, toExpNeg: -3, toExpPos: 10});
 
-const display = document.querySelector("#display");
+const textDisplay = document.querySelector("#text-display");
 const testInput = document.querySelector("#test-input");
+
+const outputDisplay = document.querySelector("#output-display");
 
 const angleModeSelector = document.querySelector("#angle-mode-selector");
 const calculateButton = document.querySelector("#calculate-button");
@@ -24,16 +26,17 @@ calculateButton.addEventListener("click", function(event) {
 const calculator = new Calculator;
 let currentResultType = null;
 let currentResult = null;
+let displayValue = null;
 
 function calculate(value) {
     try {
         const {res, decimalResult, fractionResult, tokens, ast} = calculator.calculate(value);
         currentResult = res;
 
-        display.textContent="=";
+        textDisplay.textContent="=";
         tokensDisplay.textContent="Token visualisation\n";
         astDisplay.textContent="AST visualisation\n";
-
+        
         const textAST = generateTextAST(ast);
         console.log(ast);
         astDisplay.textContent += textAST;
@@ -41,17 +44,13 @@ function calculate(value) {
         const textTokens = generateTextTokens(tokens);
         console.table(tokens);
         tokensDisplay.textContent += textTokens;
-
-        if (fractionResult) {
-            currentResultType = "fraction";
-            display.textContent=`= ${fractionResult.numerator} over ${fractionResult.denominator}`
-        } else {
-            currentResultType = "decimal";
-            display.textContent=`= ${decimalResult.toSD(10)}`;
-        }
-
+        
+        if (fractionResult) setOutput("fraction");
+        else setOutput("decimal");
+        
     } catch (error) {
-        display.textContent=`= ${error.message}`;
+        textDisplay.textContent=`= ${error.message}`;
+        outputDisplay.innerHTML="";
         currentResultType = null;
         console.error(error);
     }
@@ -71,14 +70,28 @@ function getAngleMode() {
 outputModeButton.addEventListener("click", switchAngleMode);
 
 function switchAngleMode() {
-    if (currentResultType === "fraction"  && calculator.decimalResult !== undefined) {
+    if (currentResultType === "fraction"  && calculator.decimalResult !== undefined)
+        setOutput("decimal");
+    else if (currentResultType === "decimal" && calculator.fractionResult !== undefined)
+        setOutput("fraction");
+}
+
+function setOutput(outputType) {
+    if (outputType === "decimal") {
         currentResultType = "decimal";
-        display.textContent = `= ${calculator.decimalResult.toSD(10)}`;
-    }
-    else if (currentResultType === "decimal" && calculator.fractionResult !== undefined) {
+        displayValue = `${calculator.decimalResult.toSD(10).toString().replace(/e\+?(-?\d+)/g, "\\times10^{$1}")}`;
+    } else if (outputType === "fraction") {
         currentResultType = "fraction";
-            display.textContent = `= ${calculator.fractionResult.numerator} over ${calculator.fractionResult.denominator}`
+        const numerator = calculator.fractionResult.numerator;
+        const denominator = calculator.fractionResult.denominator;
+        let sign = "";
+        if (numerator.isNeg()) sign = "-";
+        displayValue = `${sign}\\frac\{${numerator.abs()}\}\{${denominator}\}`;
     }
+    // textDisplay.textContent = displayValue;
+    katex.render(displayValue, outputDisplay, {
+        throwOnError: false
+    });
 }
 
 document.addEventListener('keydown', (event) => {
@@ -87,5 +100,4 @@ document.addEventListener('keydown', (event) => {
     }
 })
 
-calculate(testInput.value);
 getAngleMode();
