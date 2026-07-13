@@ -14,7 +14,8 @@ export const SYMBOLS = {
     "r": { type: "RADIANS" },
     "g": { type: "GRADIANS" },
     "d": { type: "DEGREES" },
-    "f": { type: "FRACTION" }
+    "f": { type: "FRACTION" },
+    "x": { type: "ROOT" } // arbitrary root (inline)
 }
 
 export const FUNCTIONS = new Set([

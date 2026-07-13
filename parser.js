@@ -83,7 +83,7 @@ export default class Parser {
     power() {
         let expr = this.unary();
 
-        while(this.match("POWER")) {
+        while(this.match("POWER", "ROOT")) {
             const operator = this.getPreviousToken();
             const right = this.unary();
 
