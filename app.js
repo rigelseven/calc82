@@ -9,6 +9,7 @@ Decimal.set({ precision: 15, maxE: 99, toExpNeg: -3, toExpPos: 10});
 const textDisplay = document.querySelector("#text-display");
 const testInput = document.querySelector("#test-input");
 
+const inputDisplay = document.querySelector("#input-display");
 const outputDisplay = document.querySelector("#output-display");
 
 const angleModeSelector = document.querySelector("#angle-mode-selector");
@@ -19,14 +20,14 @@ const outputModeButton = document.querySelector("#standard-decimal-button");
 const tokensDisplay = document.querySelector("#tokens");
 const astDisplay = document.querySelector("#ast");
 
-calculateButton.addEventListener("click", function(event) {
-    calculate(testInput.value);
-});
-
 const calculator = new Calculator;
 let currentResultType = null;
 let currentResult = null;
 let displayValue = null;
+
+calculateButton.addEventListener("click", function(event) {
+    calculate(testInput.value);
+});
 
 function calculate(value) {
     try {
@@ -54,6 +55,17 @@ function calculate(value) {
         currentResultType = null;
         console.error(error);
     }
+}
+
+testInput.addEventListener("input", function(event) {
+    updateInput(testInput.value);
+});
+
+function updateInput(value) {
+    let inputContents = testInput.value;
+    katex.render(inputContents, inputDisplay, {
+        throwOnError: false
+    })
 }
 
 // Angle mode selector
@@ -101,3 +113,4 @@ document.addEventListener('keydown', (event) => {
 })
 
 getAngleMode();
+updateInput();
