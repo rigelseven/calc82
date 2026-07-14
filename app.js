@@ -1,6 +1,7 @@
 import { generateTextAST, generateTextTokens } from "./debug.js";
 import trigSolver from "./math/trigonometry.js";
 import Calculator from "./calculator.js";
+import { InputHandler } from "./input/input.js";
 
 // TODO: Depends on Norm1/Norm2
 // Norm1: toExpNeg = -3
@@ -20,6 +21,7 @@ const outputModeButton = document.querySelector("#standard-decimal-button");
 const tokensDisplay = document.querySelector("#tokens");
 const astDisplay = document.querySelector("#ast");
 
+const inputHandler = new InputHandler;
 const calculator = new Calculator;
 let currentResultType = null;
 let currentResult = null;
@@ -37,7 +39,7 @@ function calculate(value) {
         textDisplay.textContent="=";
         tokensDisplay.textContent="Token visualisation\n";
         astDisplay.textContent="AST visualisation\n";
-        
+       
         const textAST = generateTextAST(ast);
         console.log(ast);
         astDisplay.textContent += textAST;
@@ -107,10 +109,20 @@ function setOutput(outputType) {
 }
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
+    const action = inputHandler.handleKey(event.key);
+    if (action !== "default") event.preventDefault();
+    console.log(inputHandler.getTokens(true))
+    let inputText = "";
+    for (let token of inputHandler.getTokens(true)) inputText += `{${token.rep}}`;
+    setInput(inputText);
+    if (action == "calculate") {
         calculate(testInput.value);
     }
 })
+
+function setInput(input) {
+    katex.render(input, inputDisplay, {throwOnError: false})
+}
 
 getAngleMode();
 updateInput();

@@ -1,0 +1,23 @@
+export const TOKENS = {
+    "+": { type: "PLUS", rep: "+" },
+    "-": { type: "MINUS", rep: "-" },
+    "*": { type: "MULTIPLY", rep: "\\times" },
+    "/": { type: "DIVIDE", rep: "\\div" },
+    "^": { type: "POWER", rep: "\\text{POWER}" },
+    "(": { type: "LPAREN", rep: "(" },
+    ")": { type: "RPAREN", rep: ")" },
+    "!": { type: "FACTORIAL", rep: "!" },
+    "%": { type: "PERCENT", rep: "\\%" },
+    ",": { type: "COMMA", rep: "," },
+    "P": { type: "PERMUTATION", rep: "P" },
+    "C": { type: "COMBINATION", rep: "C" },
+    "r": { type: "RADIANS", rep: "\\mathrm{rad}" },
+    "g": { type: "GRADIANS", rep: "\\mathrm{grad}" },
+    "d": { type: "DEGREES", rep: "^\\circ" },
+    "f": { type: "FRACTION", rep: "/" },
+    "E": { type: "DIGIT", rep: "\\times10"},
+    ".": { type: "DIGIT", rep: "."},
+    "s": { type: "FUNCTION", exp: "SIN", rep: "\\sin("},
+    "c": { type: "FUNCTION", exp: "COS", rep: "\\cos("},
+    "t": { type: "FUNCTION", exp: "TAN", rep: "\\tan("}
+}
