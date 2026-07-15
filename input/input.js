@@ -92,13 +92,14 @@
         let currentHeight = 0;
         while (this.cursorPosition < this.inputTokens.length) {
             const currentToken = this.getCursorToken("right");
-            console.log(this.getCursorToken("right"));
+            console.log(this.getCursorToken("right"), currentHeight);
             if (currentToken.type === "FRACTION") {
+                if (currentToken.exp === "start") currentHeight++;
                 if (currentHeight === 0) {
                     this.inputTokens.splice(this.cursorPosition, 1);
                     if (currentToken.exp === "middle") this.cursorPosition--;
-                }
-                if (currentToken.exp === "end") break;
+                    if (currentToken.exp === "end") break;
+                } else if (currentToken.exp === "end") currentHeight--;
             }
             this.moveCursor("right");
         }
