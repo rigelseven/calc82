@@ -22,18 +22,24 @@
             case "Enter": 
                 return "calculate";
             case "Backspace":
-                return this.delete("back");
+                return this.delete("left");
             case "Delete":
-                return this.delete("front");
+                return this.delete("right");
             default:
                 return "default";
         }
     }
 
     delete(direction) {
-        if (direction == "back") this.cursorPosition = Math.max(0, this.cursorPosition-1);
-        // TODO delete fractions
-        if (this.cursorPosition !== this.inputTokens.length) this.inputTokens.splice(this.cursorPosition, 1);
+        const deleteToken = this.getCursorToken(direction);
+        if (direction == "left") this.cursorPosition = Math.max(0, this.cursorPosition-1);
+        if (deleteToken && deleteToken.type == "FRACTION") {
+            if (deleteToken.exp == "start") {
+                this.deleteFraction();
+            }
+        } else {
+            if (this.cursorPosition !== this.inputTokens.length) this.inputTokens.splice(this.cursorPosition, 1);
+        }
     }
     
     addToken(token) {
@@ -56,10 +62,10 @@
     
     moveCursor(direction) {
         if (direction == "left") {
-            this.cursorPosition = Math.max(this.cursorPosition-1, 0);
+            return this.cursorPosition = Math.max(this.cursorPosition-1, 0);
         }
         if (direction == "right") {
-            this.cursorPosition = Math.min(this.cursorPosition+1, this.inputTokens.length);
+            return this.cursorPosition = Math.min(this.cursorPosition+1, this.inputTokens.length);
         }
     }
         
@@ -80,9 +86,26 @@
 
         if (moveToTop) this.cursorPosition = orig+1;  // Unless the top box is empty.
     }
+    
+    deleteFraction() {
+        this.inputTokens.splice(this.cursorPosition, 1);
+        let currentHeight = 0;
+        while (this.cursorPosition < this.inputTokens.length) {
+            const currentToken = this.getCursorToken("right");
+            console.log(this.getCursorToken("right"));
+            if (currentToken.type === "FRACTION") {
+                if (currentHeight === 0) {
+                    this.inputTokens.splice(this.cursorPosition, 1);
+                    if (currentToken.exp === "middle") this.cursorPosition--;
+                }
+                if (currentToken.exp === "end") break;
+            }
+            this.moveCursor("right");
+        }
+        this.cursorPosition = Math.max(this.cursorPosition, 0)
+    }
 
     toNonDigit(step) {
-        console.log(this.getCursorToken(step));
         while (this.getCursorToken(step)
             && (this.getCursorToken(step).type === "DIGIT"
             || this.getCursorToken(step).type == "CONSTANT")

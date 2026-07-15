@@ -112,7 +112,7 @@ document.addEventListener('keydown', (event) => {
 function setInput(input) {
     katex.render(input, inputDisplay, {throwOnError: false, strict: "ignore"})
     testInput.value = "";
-    for (let token of inputHandler.getTokens(false)) testInput.value += token.rep;
+    for (let token of inputHandler.getTokens(false)) testInput.value += token.type;
 }
 
 function addPlaceholders(latex) {
@@ -120,4 +120,3 @@ function addPlaceholders(latex) {
 }
 
 getAngleMode();
-updateInput();
