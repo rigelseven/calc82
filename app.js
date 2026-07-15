@@ -59,17 +59,6 @@ function calculate(value) {
     }
 }
 
-testInput.addEventListener("input", function(event) {
-    updateInput(testInput.value);
-});
-
-function updateInput(value) {
-    let inputContents = testInput.value;
-    katex.render(inputContents, inputDisplay, {
-        throwOnError: false
-    })
-}
-
 // Angle mode selector
 angleModeSelector.addEventListener("change", function(event) {
     getAngleMode();
@@ -111,9 +100,9 @@ function setOutput(outputType) {
 document.addEventListener('keydown', (event) => {
     const action = inputHandler.handleKey(event.key);
     if (action !== "default") event.preventDefault();
-    console.log(inputHandler.getTokens(true))
     let inputText = "";
-    for (let token of inputHandler.getTokens(true)) inputText += `{${token.rep}}`;
+    for (let token of inputHandler.getTokens(true)) inputText += `${token.rep}`;
+    inputText = addPlaceholders(inputText);
     setInput(inputText);
     if (action == "calculate") {
         calculate(testInput.value);
@@ -121,7 +110,13 @@ document.addEventListener('keydown', (event) => {
 })
 
 function setInput(input) {
-    katex.render(input, inputDisplay, {throwOnError: false})
+    katex.render(input, inputDisplay, {throwOnError: false, strict: "ignore"})
+    testInput.value = "";
+    for (let token of inputHandler.getTokens(false)) testInput.value += token.rep;
+}
+
+function addPlaceholders(latex) {
+    return latex.replace("{\\clap{\\rule{0.1em}{0.5em}}}", "{\\clap{\\rule{0.1em}{0.5em}}\\text{▯}}").replaceAll("{}", "{\\text{▯}}");
 }
 
 getAngleMode();
