@@ -31,8 +31,8 @@
     }
 
     delete(direction) {
-        const deleteToken = this.getCursorToken(direction);
         if (direction == "left") this.cursorPosition = Math.max(0, this.cursorPosition-1);
+        const deleteToken = this.getCursorToken("right");
         if (deleteToken && deleteToken.type == "FRACTION") {
             if (deleteToken.exp == "start") {
                 this.deleteFraction();
@@ -77,6 +77,7 @@
             moveToTop = true; // Flag to move to first box if empty
         this.addToken({type:"FRACTION", exp:"start", rep:"\\frac{"});
         
+        this.cursorPosition = orig + 1;
         this.toNonDigit("right");
         this.addToken({type:"FRACTION", exp:"end", rep:"}"});
         
@@ -88,6 +89,7 @@
     }
     
     deleteFraction() {
+        let orig = this.cursorPosition;
         this.inputTokens.splice(this.cursorPosition, 1);
         let currentHeight = 0;
         while (this.cursorPosition < this.inputTokens.length) {
@@ -103,15 +105,33 @@
             }
             this.moveCursor("right");
         }
-        this.cursorPosition = Math.max(this.cursorPosition, 0)
+        this.cursorPosition = orig;
     }
 
     toNonDigit(step) {
+        let currentHeight = 0;
+        let currentBracket = 0;
+        const increment = step == "left" ? -1 : 1;
         while (this.getCursorToken(step)
-            && (this.getCursorToken(step).type === "DIGIT"
-            || this.getCursorToken(step).type == "CONSTANT")
-            && this.cursorPosition !== 0)
+            && ((this.getCursorToken(step).type === "DIGIT"
+            || this.getCursorToken(step).type === "CONSTANT"
+            || (this.getCursorToken(step).type === "FUNCTION" && step == "right")
+            || this.getCursorToken(step).type === "LPAREN"
+            || this.getCursorToken(step).type === "RPAREN")
+            || this.getCursorToken(step).type === "FRACTION"
+            && this.cursorPosition !== 0
+            || currentBracket > 0 ))
             {
+                const currentToken = this.getCursorToken(step);
+                if (currentToken.type == "LPAREN") currentBracket += increment; 
+                if (currentToken.type == "RPAREN") currentBracket -= increment; 
+                if (currentToken.type == "FRACTION") {
+                    if (step == "left" && currentToken.exp !== "end" && currentHeight === 0) break; 
+                    if (step == "right" && currentToken.exp !== "start" && currentHeight === 0) break; 
+                    if (currentToken.end === "end") currentHeight += increment;
+                    if (currentToken.end === "start") currentHeight == increment;
+                }
+                if (currentToken.type == "FRACTION" && currentToken.exp == "end") currentHeight -= increment; 
                 this.moveCursor(step);
             }
         return this.cursorPosition;
