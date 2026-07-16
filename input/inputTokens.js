@@ -3,7 +3,6 @@ export const TOKENS = {
     "-": { type: "MINUS", rep: "{-}" },
     "*": { type: "MULTIPLY", rep: "{\\times}" },
     "/": { type: "DIVIDE", rep: "{\\div}" },
-    "^": { type: "POWER", rep: "^\\wedge" },
     "(": { type: "LPAREN", rep: "(" },
     ")": { type: "RPAREN", rep: ")" },
     "!": { type: "FACTORIAL", rep: "!" },

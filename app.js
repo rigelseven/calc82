@@ -101,8 +101,18 @@ document.addEventListener('keydown', (event) => {
     const action = inputHandler.handleKey(event.key);
     if (action !== "default") event.preventDefault();
     let inputText = "";
-    for (let token of inputHandler.getTokens(true)) inputText += `${token.rep}`;
+    let previousToken = "";
+    for (let token of inputHandler.getTokens(true)) {
+        console.log(previousToken);
+        if (token.type === "POWER" && token.exp === "start" && !previousToken.includes(["DIGIT"]))
+            inputText += "{}";
+        inputText += `${token.rep}`;
+
+        previousToken = token.type === "CURSOR" ? previousToken : token.type;
+    }
+    console.log(inputText);
     inputText = addPlaceholders(inputText);
+    console.log(inputText);
     setInput(inputText);
     if (action == "calculate") {
         calculate(testInput.value);
@@ -116,7 +126,8 @@ function setInput(input) {
 }
 
 function addPlaceholders(latex) {
-    return latex.replace("{\\clap{\\rule{0.1em}{0.5em}}}", "{\\clap{\\rule{0.1em}{0.5em}}\\text{▯}}").replaceAll("{}", "{\\text{▯}}");
+    return latex.replace("{\\clap{\\rule{0.1em}{0.5em}}}", "{\\clap{\\rule{0.1em}{0.5em}}\\text{▯}}")
+        .replaceAll("{}", "{\\text{▯}}")
 }
 
 getAngleMode();
