@@ -1,11 +1,11 @@
     import { TOKENS } from "./inputTokens.js";
 
-    export class InputHandler {
-        constructor(tokens=[]) {
-            this.inputTokens = tokens;
-            this.cursorPosition = 0;
-        }
-    
+export class InputHandler {
+    constructor(tokens=[]) {
+        this.inputTokens = tokens;
+        this.cursorPosition = 0;
+    }
+
     handleKey(key) {
         const token = TOKENS[key];
         if (token) return this.addToken(token);
@@ -16,9 +16,13 @@
             case "E":
                 return this.addToken({type:"DIGIT", rep: ""})
             case "ArrowLeft":
-                return this.moveCursor("left");
+                return this.moveCursor("left", true);
             case "ArrowRight":
-                return this.moveCursor("right");
+                return this.moveCursor("right", true);
+            case "ArrowUp":  // TODO multi answer navigation
+                return this.traverseFraction("up");
+            case "ArrowDown":
+                return this.traverseFraction("down");
             case "Enter": 
                 return "calculate";
             case "Backspace":
@@ -60,12 +64,25 @@
         else throw new Error("Direction not specified");
     }
     
-    moveCursor(direction) {
-        if (direction == "left") {
-            return this.cursorPosition = Math.max(this.cursorPosition-1, 0);
-        }
-        if (direction == "right") {
-            return this.cursorPosition = Math.min(this.cursorPosition+1, this.inputTokens.length);
+    moveCursor(direction, wrap=false) {
+        if (wrap) {
+            if (direction == "left") {
+                this.cursorPosition -=1;
+                if (this.cursorPosition < 0) this.cursorPosition = this.inputTokens.length;
+                return this.cursorPosition;
+            }
+            if (direction == "right") {
+                this.cursorPosition += 1;
+                if(this.cursorPosition > this.inputTokens.length) this.cursorPosition = 0;
+                return this.cursorPosition;
+            }
+        } else {
+            if (direction == "left") {
+                return this.cursorPosition = Math.max(this.cursorPosition-1, 0);
+            }
+            if (direction == "right") {
+                return this.cursorPosition = Math.min(this.cursorPosition+1, this.inputTokens.length);
+            }
         }
     }
         
@@ -108,10 +125,36 @@
         this.cursorPosition = orig;
     }
 
+    traverseFraction(direction) {
+        const orig = this.cursorPosition;
+        let currentHeight = 0;
+        const step = direction === "up" ? "left" : "right";
+        const increment = direction === "up" ? -1 : 1;
+        // Traverse until i find a middle on the same or lower currentHeight
+        while(this.getCursorToken(step)) {
+            const currentToken = this.getCursorToken(step);
+            if (currentToken.type === "FRACTION") {
+                if (currentToken.exp === "middle" && currentHeight <= 0) {
+                    this.moveCursor(step);
+                    return true;
+                } else {
+                if (currentToken.exp === "end") currentHeight -= increment;
+                if (currentToken.exp === "start") currentHeight += increment;
+                }
+            }
+            this.moveCursor(step);
+        }
+        // Reset the cursor if a matching middle wasn't found.
+        if (this.cursorPosition === 0 || this.cursorPosition === this.inputTokens.length)
+            this.cursorPosition = orig;
+        // Return that we failed, so the equation list can be traversed instead.
+        return false;
+    }
+
     toNonDigit(step) {
         let currentHeight = 0;
         let currentBracket = 0;
-        const increment = step == "left" ? -1 : 1;
+        const increment = step === "left" ? -1 : 1;
         while (this.getCursorToken(step)
             && ((this.getCursorToken(step).type === "DIGIT"
             || this.getCursorToken(step).type === "CONSTANT"
@@ -120,7 +163,7 @@
             || this.getCursorToken(step).type === "RPAREN")
             || this.getCursorToken(step).type === "FRACTION"
             && this.cursorPosition !== 0
-            || currentBracket > 0 ))
+            || currentBracket > 0 || currentHeight > 0))
             {
                 const currentToken = this.getCursorToken(step);
                 if (currentToken.type == "LPAREN") currentBracket += increment; 
@@ -128,8 +171,8 @@
                 if (currentToken.type == "FRACTION") {
                     if (step == "left" && currentToken.exp !== "end" && currentHeight === 0) break; 
                     if (step == "right" && currentToken.exp !== "start" && currentHeight === 0) break; 
-                    if (currentToken.end === "end") currentHeight += increment;
-                    if (currentToken.end === "start") currentHeight == increment;
+                    if (currentToken.exp === "end") currentHeight -= increment;
+                    if (currentToken.exp === "start") currentHeight += increment;
                 }
                 if (currentToken.type == "FRACTION" && currentToken.exp == "end") currentHeight -= increment; 
                 this.moveCursor(step);
