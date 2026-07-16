@@ -104,9 +104,9 @@ document.addEventListener('keydown', (event) => {
     let previousToken = "";
     for (let token of inputHandler.getTokens(true)) {
         console.log(previousToken);
-        if (token.type === "POWER" && token.exp === "start"
-            && (!(["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES", "FRACTION", "SQRT", "ROOT"].includes(previousToken))
-            && !(["FRACTION", "SQRT", "ROOT"].includes(previousToken) && previousToken.exp === "end")))
+        if ((token.type === "POWER") && token.exp === "start"
+            && (!(["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES", "FRACTION", "MIXEDFRAC", "SQRT", "ROOT"].includes(previousToken))
+            && !(["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(previousToken) && previousToken.exp === "end")))
             inputText += "{}";
         inputText += `${token.rep}`;
 
@@ -129,8 +129,8 @@ function setInput(input) {
 
 function addPlaceholders(latex) {
     return latex
-        .replace("{\\clap{\\rule{0.1em}{0.5em}}}", "{\\clap{\\rule{0.1em}{0.5em}}\\text{▯}}")
-        .replaceAll("{}", "{\\text{▯}}")
+        .replace("{\\clap{\\rule{0.1em}{0.5em}}}", "{\\clap{\\rule{0.1em}{0.5em}}\\square}")
+        .replaceAll("{}", "{\\square}")
 }
 
 getAngleMode();
