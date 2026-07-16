@@ -17,9 +17,14 @@ export class InputHandler {
             case "^":
                 return this.createSpecial("POWER", "\\vphantom{}^{", null, "}");
             case "q":
-                return this.createSpecial("SQRT", "\\sqrt{", null, "}");
+                return this.createSpecial("SQRT", "\\sqrt{", null, "}\\,");
             case "r":
-                return this.createSpecial("ROOT", "\\sqrt[{", "}]{", "}");
+                return this.createSpecial("ROOT", "\\sqrt[{", "}]{", "}\\,");
+            case "a":
+                this.addToken({type:"ABS", exp:"start", rep: "|{"});
+                this.addToken({type:"ABS", exp:"end", rep: "}|"});
+                this.moveCursor("left");
+                return
             case "E":
                 return this.addToken({type:"DIGIT", rep: ""})
             case "ArrowLeft":
@@ -45,7 +50,7 @@ export class InputHandler {
         if (direction == "left") this.cursorPosition = Math.max(0, this.cursorPosition-1);
         const deleteToken = this.getCursorToken("right");
         if (deleteToken.type == "POWER") return this.deletePower();
-        if (deleteToken && ["FRACTION", "SQRT", "ROOT"].includes(deleteToken.type)) {
+        if (deleteToken && ["FRACTION", "SQRT", "ROOT", "ABS"].includes(deleteToken.type)) {
             if (deleteToken.exp == "start") {
                 this.deleteSpecial(deleteToken.type);
             }
@@ -174,7 +179,7 @@ export class InputHandler {
     }
 
     toNonDigit(step) {
-        let currentHeight = {"FRACTION": 0, "POWER": 0, "ROOT": 0, "SQRT": 0};
+        let currentHeight = {"FRACTION": 0, "POWER": 0, "ROOT": 0, "SQRT": 0, "ABS": 0};
         let currentBracket = 0;
         const increment = step === "left" ? -1 : 1;
         let token;
@@ -189,20 +194,22 @@ export class InputHandler {
                     "FRACTION",
                     "POWER",
                     "ROOT",
-                    "SQRT"
+                    "SQRT",
+                    "ABS"
                 ].includes(token.type) ||
                 (token.type === "FUNCTION" && step === "right") ||
                 currentBracket > 0 ||
                 currentHeight.FRACTION > 0 ||
                 currentHeight.POWER > 0 ||
                 currentHeight.ROOT > 0 ||
-                currentHeight.SQRT > 0
+                currentHeight.SQRT > 0 ||
+                currentHeight.ABS > 0
             )
         ) {
             const currentToken = this.getCursorToken(step);
             if (token.type === "LPAREN") currentBracket += increment; 
             if (token.type === "RPAREN") currentBracket -= increment; 
-            if (["FRACTION", "POWER", "SQRT", "ROOT"].includes(token.type)) {
+            if (["FRACTION", "POWER", "SQRT", "ROOT", "ABS"].includes(token.type)) {
                 if (step === "left" && token.exp !== "end" && currentHeight[token.type] === 0) break; 
                 if (step === "right" && token.exp !== "start" && currentHeight[token.type] === 0) break; 
                 if (token.exp === "end") currentHeight[token.type] -= increment;

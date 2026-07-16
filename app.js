@@ -104,7 +104,9 @@ document.addEventListener('keydown', (event) => {
     let previousToken = "";
     for (let token of inputHandler.getTokens(true)) {
         console.log(previousToken);
-        if (token.type === "POWER" && token.exp === "start" && !(["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES"].includes(previousToken)))
+        if (token.type === "POWER" && token.exp === "start"
+            && (!(["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES", "FRACTION", "SQRT", "ROOT"].includes(previousToken))
+            && !(["FRACTION", "SQRT", "ROOT"].includes(previousToken) && previousToken.exp === "end")))
             inputText += "{}";
         inputText += `${token.rep}`;
 
