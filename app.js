@@ -126,7 +126,8 @@ function setInput(input) {
 }
 
 function addPlaceholders(latex) {
-    return latex.replace("{\\clap{\\rule{0.1em}{0.5em}}}", "{\\clap{\\rule{0.1em}{0.5em}}\\text{▯}}")
+    return latex
+        .replace("{\\clap{\\rule{0.1em}{0.5em}}}", "{\\clap{\\rule{0.1em}{0.5em}}\\text{▯}}")
         .replaceAll("{}", "{\\text{▯}}")
 }
 

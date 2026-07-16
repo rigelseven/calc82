@@ -16,6 +16,10 @@ export class InputHandler {
                 return this.createSpecial("FRACTION", "\\frac{", "}{", "}");
             case "^":
                 return this.createSpecial("POWER", "\\vphantom{}^{", null, "}");
+            case "q":
+                return this.createSpecial("SQRT", "\\sqrt{", null, "}");
+            case "r":
+                return this.createSpecial("ROOT", "\\sqrt[{", "}]{", "}");
             case "E":
                 return this.addToken({type:"DIGIT", rep: ""})
             case "ArrowLeft":
@@ -41,7 +45,7 @@ export class InputHandler {
         if (direction == "left") this.cursorPosition = Math.max(0, this.cursorPosition-1);
         const deleteToken = this.getCursorToken("right");
         if (deleteToken.type == "POWER") return this.deletePower();
-        if (deleteToken && deleteToken.type == "FRACTION") {
+        if (deleteToken && ["FRACTION", "SQRT", "ROOT"].includes(deleteToken.type)) {
             if (deleteToken.exp == "start") {
                 this.deleteSpecial(deleteToken.type);
             }
@@ -96,7 +100,7 @@ export class InputHandler {
         
         const leftDigit = this.toNonDigit("left");
         // Power should be made at the cursor current location.
-        if (type == "POWER") this.cursorPosition = orig;
+        if (type === "POWER" || type === "SQRT") this.cursorPosition = orig;
 
         this.addToken({type:type, exp:"start", rep:start});
         
@@ -110,10 +114,8 @@ export class InputHandler {
 
         if (leftDigit == orig && type == "FRACTION")
             moveToTop = true; // Flag to move to first box if empty
-        if (type === "POWER") {
+        if (type === "POWER" || type == "SQRT") {
             if (leftDigit !== orig) moveToTop = true
-            console.log(leftDigit, rightDigit, orig);
-            //if (this.getCursorToken("left"))
         }
 
         if (moveToTop && type === "FRACTION") this.cursorPosition = orig+1;  // Unless the top box is empty.
@@ -172,32 +174,42 @@ export class InputHandler {
     }
 
     toNonDigit(step) {
-        let currentHeight = {"FRACTION": 0, "POWER": 0};
+        let currentHeight = {"FRACTION": 0, "POWER": 0, "ROOT": 0, "SQRT": 0};
         let currentBracket = 0;
         const increment = step === "left" ? -1 : 1;
-        while (this.getCursorToken(step)
-            && ((this.getCursorToken(step).type === "DIGIT"
-            || this.getCursorToken(step).type === "CONSTANT"
-            || (this.getCursorToken(step).type === "FUNCTION" && step == "right")
-            || this.getCursorToken(step).type === "LPAREN"
-            || this.getCursorToken(step).type === "RPAREN")
-            || this.getCursorToken(step).type === "FRACTION"
-            || this.getCursorToken(step).type === "POWER"
-            && this.cursorPosition !== 0
-            || currentBracket > 0 || currentHeight > 0))
-            {
-                const currentToken = this.getCursorToken(step);
-                if (currentToken.type === "LPAREN") currentBracket += increment; 
-                if (currentToken.type === "RPAREN") currentBracket -= increment; 
-                if (currentToken.type === "FRACTION" || currentToken.type === "POWER") {
-                    if (step === "left" && currentToken.exp !== "end" && currentHeight[currentToken.type] === 0) break; 
-                    if (step === "right" && currentToken.exp !== "start" && currentHeight[currentToken.type] === 0) break; 
-                    if (currentToken.exp === "end") currentHeight[currentToken.type] -= increment;
-                    if (currentToken.exp === "start") currentHeight[currentToken.type] += increment;
-                }
-                if ((currentToken.type == "FRACTION" || currentToken.type == "FRACTION")&& currentToken.exp == "end") currentHeight[currentToken.type] -= increment; 
-                this.moveCursor(step);
+        let token;
+        while (
+            (token = this.getCursorToken(step)) &&
+            (
+                [
+                    "DIGIT",
+                    "CONSTANT",
+                    "LPAREN",
+                    "RPAREN",
+                    "FRACTION",
+                    "POWER",
+                    "ROOT",
+                    "SQRT"
+                ].includes(token.type) ||
+                (token.type === "FUNCTION" && step === "right") ||
+                currentBracket > 0 ||
+                currentHeight.FRACTION > 0 ||
+                currentHeight.POWER > 0 ||
+                currentHeight.ROOT > 0 ||
+                currentHeight.SQRT > 0
+            )
+        ) {
+            const currentToken = this.getCursorToken(step);
+            if (token.type === "LPAREN") currentBracket += increment; 
+            if (token.type === "RPAREN") currentBracket -= increment; 
+            if (["FRACTION", "POWER", "SQRT", "ROOT"].includes(token.type)) {
+                if (step === "left" && token.exp !== "end" && currentHeight[token.type] === 0) break; 
+                if (step === "right" && token.exp !== "start" && currentHeight[token.type] === 0) break; 
+                if (token.exp === "end") currentHeight[token.type] -= increment;
+                if (token.exp === "start") currentHeight[token.type] += increment;
             }
-        return this.cursorPosition;
+            this.moveCursor(step);
+        }
+    return this.cursorPosition;
     }
 }

@@ -9,8 +9,8 @@ export const TOKENS = {
     "%": { type: "PERCENT", rep: "\\%" },
     ",": { type: "COMMA", rep: "," },
     "P": { type: "PERMUTATION", rep: "P" },
-    "C": { type: "COMBINATION", rep: "C" },
-    "r": { type: "RADIANS", rep: "{^\\mathrm{r}}" },
+    // "C": { type: "COMBINATION", rep: "C" },  TODO: temporarily removed as this interferes w firefox
+    //"r": { type: "RADIANS", rep: "{^\\mathrm{r}}" },  TODO: temporarily removed as this is root key
     "g": { type: "GRADIANS", rep: "{^\\mathrm{g}}" },
     "d": { type: "DEGREES", rep: "{^\\circ}" },
     "p": { type: "CONSTANT", exp: "PI", rep: "{\\pi}" },
