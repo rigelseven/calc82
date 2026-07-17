@@ -10,25 +10,29 @@ import { plus, times } from "../math/arithmetic.js";
 
 export default class Evaluator {
     evaluate(node) {
-        switch (node.type) {
-            case "NumberLiteral":
-                return this.evaluateDecimal(node);
-            case "FractionExpression":
-                return this.evaluateFraction(node);
-            case "Constant":
-                return this.evaluateConstant(node);
-            case "Variable":
-                return this.evaluateVariable(node);
-            case "UnaryExpression":
-                return this.evaluateUnary(node);
-            case "BinaryExpression":
-                return this.evaluateBinary(node);
-            case "FunctionCall":
-                return this.evaluateFunction(node);
-            case "PostfixExpression":
-                return this.evaluatePostfix(node);
-            default:
-                throw new Error(`Syntax error: Unknown node ${node.type}`)
+        try {
+            switch (node.type) {
+                case "NumberLiteral":
+                    return this.evaluateDecimal(node);
+                case "FractionExpression":
+                    return this.evaluateFraction(node);
+                case "Constant":
+                    return this.evaluateConstant(node);
+                case "Variable":
+                    return this.evaluateVariable(node);
+                case "UnaryExpression":
+                    return this.evaluateUnary(node);
+                case "BinaryExpression":
+                    return this.evaluateBinary(node);
+                case "FunctionCall":
+                    return this.evaluateFunction(node);
+                case "PostfixExpression":
+                    return this.evaluatePostfix(node);
+                default:
+                    throw new Error(`Syntax error: Unknown node ${node.type}`);
+            }
+        } catch (error) {
+            throw new Error (error.message, {cause: {type: "Math ERROR", position: node.pos}});
         }
     }
 

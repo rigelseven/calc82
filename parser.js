@@ -27,6 +27,7 @@ export default class Parser {
             expr = {
                 type: "BinaryExpression",
                 operator: operator.type,
+                pos: operator.pos,
                 left: expr,
                 right
             };
@@ -45,6 +46,7 @@ export default class Parser {
             expr = {
                 type: "BinaryExpression",
                 operator: operator.type,
+                pos: operator.pos,
                 left: expr,
                 right
             }
@@ -58,10 +60,10 @@ export default class Parser {
 
         while (this.match("FRACTION")) {
             const middle = this.power();
-
             if (!this.match("FRACTION")) {
                 return {
                     type: "FractionExpression",
+                    pos: this.getPreviousToken().pos + 1,
                     numerator: expr,
                     denominator: middle
                 };
@@ -71,6 +73,7 @@ export default class Parser {
 
             return {
                 type: "FractionExpression",
+                pos: this.getPreviousToken().pos + 1,
                 whole: expr,
                 numerator: middle,
                 denominator: right
@@ -89,6 +92,7 @@ export default class Parser {
 
             expr = {
                 type: "BinaryExpression",
+                pos: operator.pos,
                 operator: operator.type,
                 left: expr,
                 right
@@ -102,6 +106,7 @@ export default class Parser {
         if (this.match("MINUS")) {
             return {
                 type: "UnaryExpression",
+                pos: this.getPreviousToken().pos,
                 operator: "MINUS",
                 argument: this.unary()
             };
@@ -118,6 +123,7 @@ export default class Parser {
 
             expr = {
                 type: "PostfixExpression",
+                pos: operator.pos,
                 operator: operator.type,
                 argument: expr,
             }
@@ -130,6 +136,7 @@ export default class Parser {
         if (this.match("VARIABLE")) {
             return {
                 type: "Variable",
+                pos: this.getPreviousToken().pos,
                 name: this.getPreviousToken().value
             };
         }
@@ -148,12 +155,15 @@ export default class Parser {
         if (this.match("CONSTANT")) {
             return {
                 type: "Constant",
+                pos: this.getPreviousToken().pos,
                 name: this.getPreviousToken().value
             };
         }
 
         if (this.match("FUNCTION")) {
             const name = this.getPreviousToken().value;
+            const pos = this.getPreviousToken().pos;
+
             this.consume("LPAREN");
 
             let args = [];
@@ -165,11 +175,12 @@ export default class Parser {
                 } while (this.match("COMMA"));
             }
 
-            this.consume("RPAREN");
+            const operator = this.consume("RPAREN");
 
             return {
                 type: "FunctionCall",
                 name,
+                pos: operator.pos,
                 args
             }
         }
