@@ -166,6 +166,7 @@ export default class Fraction {
 
     static fromDecimal(a, strict=false) {
         const {0: numerator, 1: denominator} = a.toFraction("1e12");
+        if (numerator === undefined) return a;
         const fraction = Fraction.fromDecimals(numerator, denominator);
         if (fraction instanceof Fraction && (fraction.denominator.toNumber() !== 1)) return fraction;
         if (strict) return new Fraction(a, new Decimal(1))
