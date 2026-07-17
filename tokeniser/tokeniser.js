@@ -49,7 +49,19 @@ export default class Tokeniser {
                 continue;
             }
 
-            if (c.type === "FUNCTION" || c.type === "CONSTANT") {
+            // Constants
+            if (c.type === "CONSTANT") {
+                this.addToken({
+                    type: c.type,
+                    value: c.exp,
+                    pos: this.position
+                });
+                this.advance();
+                continue;
+            }
+
+            // Functions.
+            if (c.type == "FUNCTION") {
                 this.addToken({
                     type: c.type,
                     value: c.exp,
@@ -77,7 +89,6 @@ export default class Tokeniser {
         if (previous && this.needsImpMult(previous, token)) {
             this.tokens.push({
                 type: "MULTIPLY",
-                implicit: true,
                 pos: this.position
             });
         }
