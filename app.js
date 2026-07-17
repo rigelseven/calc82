@@ -33,7 +33,7 @@ calculateButton.addEventListener("click", function(event) {
 
 function calculate() {
     try {
-        const value = inputHandler.getLineEquivalent();
+        const value = inputHandler.getTokens();
         const {res, decimalResult, fractionResult, tokens, ast} = calculator.calculate(value);
         currentResult = res;
 
@@ -51,7 +51,17 @@ function calculate() {
         else setOutput("decimal");
         
     } catch (error) {
-        textDisplay.textContent=`= ${error.message}`;
+        let errorMessage = error.message;
+        if (error.cause) {
+            if (error.cause.type !== undefined) errorMessage = error.cause.type;
+            if (error.cause.position !== undefined) {
+                inputHandler.cursorPosition = error.cause.position;
+                renderInput();
+            }
+        }
+        textDisplay.textContent=`= ${errorMessage}`;
+
+
         outputDisplay.innerHTML="";
         currentResultType = null;
         console.error(error);
@@ -99,6 +109,13 @@ function setOutput(outputType) {
 document.addEventListener('keydown', (event) => {
     const action = inputHandler.handleKey(event.key);
     if (action !== "default") event.preventDefault();
+    renderInput();
+    if (action == "calculate") {
+        calculate();
+    }
+});
+
+function renderInput() {
     let inputText = "";
     let previousToken = "";
     for (let token of inputHandler.getTokens(true)) {
@@ -112,10 +129,7 @@ document.addEventListener('keydown', (event) => {
     }
     inputText = addPlaceholders(inputText);
     setInput(inputText);
-    if (action == "calculate") {
-        calculate();
-    }
-})
+}
 
 function setInput(input) {
     katex.render(input, inputDisplay, {throwOnError: false, strict: "ignore"})

@@ -1,4 +1,4 @@
-    import { LINE_EQUIVALENTS, TOKENS } from "./inputTokens.js";
+    import { TOKENS } from "./inputTokens.js";
 
 export class InputHandler {
     constructor(tokens=[]) {
@@ -121,14 +121,14 @@ export class InputHandler {
         this.cursorPosition = orig + 1;
         if (middle !== null) this.addToken({type:type, exp:"middle", rep:middle});
 
-        if (leftDigit === orig && type === "FRACTION" || type === "MIXEDFRAC")
+        if (leftDigit === orig && (type === "FRACTION" || type === "MIXEDFRAC"))
             moveToTop = true; // Flag to move to first box if empty
         if (type === "POWER" || type === "SQRT") {
             if (leftDigit !== orig) moveToTop = true
         }
 
         if (moveToTop && type === "FRACTION") this.cursorPosition = orig+1;  // Unless the top box is empty.
-        if (moveToTop && type === "MIXEDFRAC") this.cursorPosition = orig+2;  // Unless the top box is empty.
+        if (moveToTop && type === "MIXEDFRAC") this.cursorPosition = orig+1;  // Unless the top box is empty.
         if (!moveToTop && type === "POWER") this.cursorPosition = orig;
     }
     

@@ -8,7 +8,7 @@ export default class Parser {
     parse() {
         const ast = this.expression();
         if(!this.isAtEnd()) {
-            throw new Error("Syntax error: Unexpected token");
+            throw new Error("Syntax error: Unexpected token", {cause: {type: "Syntax ERROR", position: this.getToken().pos}});
         }
         return ast;
     }
@@ -180,8 +180,7 @@ export default class Parser {
 
             return expr;
         }
-
-        throw new Error("Syntax error: Expected expression")
+        throw new Error(`Syntax error: Expected expression`, {cause: {type: "Syntax ERROR", position: this.getToken().pos}});
     }
 
     getToken() {
@@ -205,7 +204,7 @@ export default class Parser {
             return this.advance();
         }
         
-        throw new Error(`Syntax error: Expected ${type}`);
+        throw new Error(`Syntax error: Expected ${type}`, {cause: {type: "Syntax ERROR", position: this.getToken().pos}});
     }
 
     checkType(type) {

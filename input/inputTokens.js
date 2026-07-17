@@ -17,34 +17,7 @@ export const TOKENS = {
     "e": { type: "CONSTANT", exp: "E", rep: "{e}" },
     "E": { type: "DIGIT", rep: "{\\footnotesize\\times{\\texttt{10}}}", value: "E"},
     ".": { type: "DIGIT", rep: ".", value: "."},
-    "s": { type: "FUNCTION", exp: "SIN", rep: "\\sin("},
-    "c": { type: "FUNCTION", exp: "COS", rep: "\\cos("},
-    "t": { type: "FUNCTION", exp: "TAN", rep: "\\tan("}
-}
-
-export const LINE_EQUIVALENTS = {
-    "PLUS": "+",
-    "MINUS": "-",
-    "MULTIPLY": "*",
-    "DIVIDE": "/",
-    "LPAREN": "(",
-    "RPAREN": ")",
-    "FACTORIAL": "!",
-    "PERCENT": "%",
-    "COMMA": ",",
-    "PERMUTATION": "P",
-    "COMBINATION": "C",
-    "RADIANS": "r",
-    "GRADIANS": "g",
-    "DEGREES": "d",
-
-    "CONSTANT": {"PI": "(pi)", "E": "(e)"},
-    "FUNCTION": {"SIN": "sin(", "COS": "cos(", "TAN": "tan("},
-
-    "FRACTION": {"start": "(", "middle": "f", "end": ")"},
-    "MIXEDFRAC": {"start": "(", "middle": "f", "middle2": "f", "end": ")"},
-    "POWER": {"start": "^(", "end": ")"},
-    "SQRT": {"start": "sqrt(", "end": ")"},
-    "ROOT": {"start": "root(", "middle": ",", "end": ")"},
-    "ABS": {"start": "abs(", end:")"}
+    "s": { type: "FUNCTION", exp: "sin", rep: "\\sin("},
+    "c": { type: "FUNCTION", exp: "cos", rep: "\\cos("},
+    "t": { type: "FUNCTION", exp: "tan", rep: "\\tan("}
 }
