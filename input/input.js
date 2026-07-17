@@ -22,7 +22,7 @@ export class InputHandler {
                 return this.createSpecial("SQRT", "\\sqrt{", null, "}\\,");
             case "r":
                 return this.createSpecial("ROOT", "\\sqrt[{", "}]{", "}\\,");
-            case "a":
+            case "|":
                 this.addToken({type:"ABS", exp:"start", rep: "|{"});
                 this.addToken({type:"ABS", exp:"end", rep: "}|"});
                 this.moveCursor("left");

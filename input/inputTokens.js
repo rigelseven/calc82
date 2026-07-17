@@ -38,7 +38,7 @@ export const LINE_EQUIVALENTS = {
     "GRADIANS": "g",
     "DEGREES": "d",
 
-    "CONSTANT": {"PI": "pi", "E": "e"},
+    "CONSTANT": {"PI": "(pi)", "E": "(e)"},
     "FUNCTION": {"SIN": "sin(", "COS": "cos(", "TAN": "tan("},
 
     "FRACTION": {"start": "(", "middle": "f", "end": ")"},
@@ -46,4 +46,5 @@ export const LINE_EQUIVALENTS = {
     "POWER": {"start": "^(", "end": ")"},
     "SQRT": {"start": "sqrt(", "end": ")"},
     "ROOT": {"start": "root(", "middle": ",", "end": ")"},
+    "ABS": {"start": "abs(", end:")"}
 }
