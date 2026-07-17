@@ -5,7 +5,7 @@ import { FUNCTIONS } from "./functions.js";
 import { POSTFIX } from "./postfix.js";
 import { UNARY } from "./unary.js"
 import Fraction from "../math/fraction.js";
-import { plus, times } from "../math/arithmetic.js";
+import { divide, plus, times } from "../math/arithmetic.js";
 
 
 export default class Evaluator {
@@ -104,6 +104,6 @@ export default class Evaluator {
             numerator = plus(numerator, times(whole, denominator))
         }
 
-        return Fraction.fromDecimals(numerator, denominator);
+        return divide(numerator, denominator);
     }
 }
