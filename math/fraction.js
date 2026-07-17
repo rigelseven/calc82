@@ -147,7 +147,10 @@ export default class Fraction {
     isNeg() {this.isNegative();}
 
 
-    static fromDecimals(numerator, denominator) {
+    static fromDecimals(num, den) {
+        let numerator = num.toDecimal();
+        let denominator = den.toDecimal();
+
         const nDp = numerator.decimalPlaces();
         const dDp = denominator.decimalPlaces();
 

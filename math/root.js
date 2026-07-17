@@ -22,6 +22,5 @@ export function safeRoot(n, value) {
         // odd root: root of magnitude, then restore sign
         return safeRoot(value.negated(), n).negated();
     }
-
-    return value.pow(Decimal(1).div(n));
+    return value.pow(Decimal(1).div(n.toDecimal()));
 }

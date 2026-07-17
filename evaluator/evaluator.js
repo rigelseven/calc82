@@ -10,7 +10,7 @@ import { plus, times } from "../math/arithmetic.js";
 
 export default class Evaluator {
     evaluate(node) {
-        try {
+        //try {
             switch (node.type) {
                 case "NumberLiteral":
                     return this.evaluateDecimal(node);
@@ -31,9 +31,9 @@ export default class Evaluator {
                 default:
                     throw new Error(`Syntax error: Unknown node ${node.type}`);
             }
-        } catch (error) {
+        /*} catch (error) {
             throw new Error (error.message, {cause: {type: "Math ERROR", position: node.pos}});
-        }
+        }*/
     }
 
     evaluateConstant(node) {
