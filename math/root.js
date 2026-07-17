@@ -23,7 +23,5 @@ export function safeRoot(n, value) {
         return safeRoot(value.negated(), n).negated();
     }
 
-    console.log(value.pow(Decimal(1).div(n)))
-
     return value.pow(Decimal(1).div(n));
 }

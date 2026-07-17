@@ -7,6 +7,5 @@ export default function factorial(n) {
     for(let i=2;i<=n;++i) {
         result = result.times(Decimal(i));
     }
-    console.log(result)
     return result;
 }

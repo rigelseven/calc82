@@ -41,11 +41,9 @@ function calculate(value) {
         astDisplay.textContent="AST visualisation\n";
        
         const textAST = generateTextAST(ast);
-        console.log(ast);
         astDisplay.textContent += textAST;
         
         const textTokens = generateTextTokens(tokens);
-        console.table(tokens);
         tokensDisplay.textContent += textTokens;
         
         if (fractionResult) setOutput("fraction");
@@ -103,7 +101,6 @@ document.addEventListener('keydown', (event) => {
     let inputText = "";
     let previousToken = "";
     for (let token of inputHandler.getTokens(true)) {
-        console.log(previousToken);
         if ((token.type === "POWER") && token.exp === "start"
             && (!(["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES", "FRACTION", "MIXEDFRAC", "SQRT", "ROOT"].includes(previousToken))
             && !(["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(previousToken) && previousToken.exp === "end")))
@@ -112,9 +109,7 @@ document.addEventListener('keydown', (event) => {
 
         previousToken = token.type === "CURSOR" ? previousToken : token.type;
     }
-    console.log(inputText);
     inputText = addPlaceholders(inputText);
-    console.log(inputText);
     setInput(inputText);
     if (action == "calculate") {
         calculate(testInput.value);

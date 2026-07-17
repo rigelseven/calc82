@@ -25,7 +25,6 @@ export default class Tokeniser {
             // Identifier
             if (/[a-z]/i.test(c)) {
                 const iden = this.scanIdentifier();
-                console.log(iden)
                 if (iden != null) {
                     (this.addToken(iden));
                     continue;

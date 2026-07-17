@@ -9,7 +9,6 @@ export class InputHandler {
     handleKey(key) {
         const token = TOKENS[key];
         const currentToken = this.getCursorToken();
-        console.log(this.inputTokens);
         if (token) return this.addToken(token);
         if (/^\d$/.test(key) || key === ".") return this.addToken({type:"DIGIT", rep: key, value:key});
         switch (key) {
@@ -139,7 +138,6 @@ export class InputHandler {
         let currentHeight = 0;
         while (this.cursorPosition < this.inputTokens.length) {
             const currentToken = this.getCursorToken("right");
-            console.log(this.getCursorToken("right"), currentHeight);
             if (currentToken.type === type) {
                 if (currentToken.exp === "start") currentHeight++;
                 if (currentHeight === 0) {
