@@ -168,6 +168,12 @@ export default class Tokeniser {
         return this.position >= this.input.length;
     }
 
+    rewind(cnt) {
+        for (let i=0; i<cnt; i++) {
+            this.position--;
+        }
+    }
+
     needsImpMult(left, right) {
         const leftEnd = [
             "NUMBER",
@@ -184,9 +190,5 @@ export default class Tokeniser {
         ];
 
         return leftEnd.includes(left.type) && rightStart.includes(right.type);
-    }
-
-    rewind(count) {
-        return this.input[this.position-=count]; 
     }
 }

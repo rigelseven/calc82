@@ -28,11 +28,12 @@ let currentResult = null;
 let displayValue = null;
 
 calculateButton.addEventListener("click", function(event) {
-    calculate(testInput.value);
+    calculate();
 });
 
-function calculate(value) {
+function calculate() {
     try {
+        const value = inputHandler.getLineEquivalent();
         const {res, decimalResult, fractionResult, tokens, ast} = calculator.calculate(value);
         currentResult = res;
 
@@ -60,7 +61,7 @@ function calculate(value) {
 // Angle mode selector
 angleModeSelector.addEventListener("change", function(event) {
     getAngleMode();
-    calculate(testInput.value);
+    calculate();
 });
 
 function getAngleMode() {
@@ -112,7 +113,7 @@ document.addEventListener('keydown', (event) => {
     inputText = addPlaceholders(inputText);
     setInput(inputText);
     if (action == "calculate") {
-        calculate(testInput.value);
+        calculate();
     }
 })
 

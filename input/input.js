@@ -1,4 +1,4 @@
-    import { TOKENS } from "./inputTokens.js";
+    import { LINE_EQUIVALENTS, TOKENS } from "./inputTokens.js";
 
 export class InputHandler {
     constructor(tokens=[]) {
@@ -10,7 +10,7 @@ export class InputHandler {
         const token = TOKENS[key];
         const currentToken = this.getCursorToken();
         if (token) return this.addToken(token);
-        if (/^\d$/.test(key) || key === ".") return this.addToken({type:"DIGIT", rep: key, value:key});
+        if (/^\d$/.test(key) || key === ".") return this.addToken({type:"DIGIT", rep: key, value: key});
         switch (key) {
             case "f":
                 return this.createSpecial("FRACTION", "\\frac{", "}{", "}");
@@ -236,5 +236,15 @@ export class InputHandler {
             this.moveCursor(step);
         }
     return this.cursorPosition;
+    }
+
+    getLineEquivalent() {
+        let line = "";
+        for (let token of this.getTokens()) {
+            if (token.type == "DIGIT") line += token.value;
+            else if (token.exp) line += LINE_EQUIVALENTS[token.type][token.exp];
+            else line += LINE_EQUIVALENTS[token.type];
+        }
+        return line;
     }
 }

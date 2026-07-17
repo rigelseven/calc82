@@ -4,9 +4,8 @@ import Evaluator from "./evaluator/evaluator.js";
 import Fraction from "./math/fraction.js";
 
 export default class Calculator {
-    calculate(value) {
-        const expression = value;
-            
+    calculate(expression) {
+        console.log(expression);         
         const tokeniser = new Tokeniser(expression);
         const tokens = tokeniser.tokenise();
 
