@@ -19,7 +19,6 @@ function buildTree(node, prefix="", isLast) {
     const branch = isLast ? "└─" : "├─";
 
     let output = prefix + branch + label(node) + "\n";
-    console.log(output);
 
     const children = getChildren(node);
 

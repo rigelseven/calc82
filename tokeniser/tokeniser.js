@@ -1,4 +1,4 @@
-import { SYMBOLS, FUNCTIONS, CONSTANTS, VARIABLES } from "./tokens.js";
+import { SYMBOLS, MULTICHAR } from "./tokens.js";
 
 export default class Tokeniser {
     constructor(input) {
@@ -9,38 +9,61 @@ export default class Tokeniser {
 
     tokenise() {
         while (!this.isAtEnd()) {
+            console.log(this.position);
             const c = this.getCharacter();
-            // Skip whitespace (testing input)
-            if (/\s/.test(c)) {
-                this.advance();
-                continue;
-            }
 
             // Number
-            if (/\d/.test(c) || (c === "." && /\d/.test(this.getNextCharacter()))) {
+            const nextChar = this.getNextCharacter();
+            if (c.type === "DIGIT" || (c.type === "DIGIT" && c.value === "E" && nextChar && (nextChar.type === "PLUS" || nextChar.type === "MINUS"))) {
                 this.addToken(this.scanNumber());
                 continue;
             }
 
-            // Identifier
-            if (/[a-z]/i.test(c)) {
-                const iden = this.scanIdentifier();
-                console.log(iden)
-                if (iden != null) {
-                    (this.addToken(iden));
-                    continue;
-                }
-            }
-
             // Single character operators
-            const token = SYMBOLS[c];
-            if (token) {
-                this.addToken(token);
+            if (c.type in SYMBOLS) {
+                this.addToken({
+                    type: c.type,
+                    pos: this.position
+                });
                 this.advance();
                 continue;
             }
 
-            throw new Error(`Syntax error: Unexpected char ${c}`)
+            // Multi char operators
+            if (c.type in MULTICHAR) {
+                for (let token of MULTICHAR[c.type][c.exp]) {
+                    if (token.f) {
+                        this.addToken({
+                            type: "FUNCTION",
+                            value: token["f"],
+                            pos: this.position
+                        });
+                    } else {
+                        this.addToken({
+                            type: token,
+                            pos: this.position
+                        });
+                    }
+                }
+                this.advance();
+                continue;
+            }
+
+            if (c.type === "FUNCTION" || c.type === "CONSTANT") {
+                this.addToken({
+                    type: c.type,
+                    value: c.exp,
+                    pos: this.position
+                });
+                this.addToken({
+                    type: "LPAREN",
+                    pos: this.position
+                });
+                this.advance();
+                continue;
+            }
+
+            throw new Error(`Syntax error: Unexpected input token ${c.type}`, {cause: {type: "Syntax ERROR", position: this.getToken().pos}})
         }
         this.addToken({
             type: "EOF"
@@ -53,7 +76,9 @@ export default class Tokeniser {
         const previous = this.tokens.at(-1);
         if (previous && this.needsImpMult(previous, token)) {
             this.tokens.push({
-                type: "MULTIPLY"
+                type: "MULTIPLY",
+                implicit: true,
+                pos: this.position
             });
         }
 
@@ -64,14 +89,16 @@ export default class Tokeniser {
         let value = "";
         let seenDecimal = false;
         let seenExponent = false;
+        let seenDigit = false;
         let exponentAllowed = false;
         let exponentSignAllowed = false;
         let canEnd = true;
         
         while (!this.isAtEnd()) {
-            const c = this.getCharacter();
+            const c = this.getCharacter().value ? this.getCharacter().value : this.getCharacter().type;
             
             if (/\d/.test(c)) {
+                seenDigit = true;
                 exponentSignAllowed = false
                 value += c;
                 canEnd = true;
@@ -84,28 +111,31 @@ export default class Tokeniser {
                 this.advance();
 
             } else if (c === "E" && !seenExponent) {
+                if (!seenDigit && !seenDecimal) value = "1";
+                if (!seenDigit && seenDecimal) value = "0";
                 seenExponent = true;
                 exponentSignAllowed = true;
                 canEnd = false;
                 value += c;
                 this.advance();
 
-            } else if ((c === "+" || c === "-") && exponentSignAllowed) {
+            } else if ((c === "PLUS" || c === "MINUS") && exponentSignAllowed) {
                 exponentSignAllowed = false;
                 canEnd = false;
-                value += c;
+                value += c === "PLUS" ? "+" : "-";
                 this.advance();
             } else {
                 break;
             }
         }
         if (!canEnd) {
-            throw new Error(`Syntax error: incomplete number`);
+            throw new Error(`Syntax error: incomplete number`, {cause: {type: "Syntax ERROR", position: this.getToken().pos}});
         }
         
         return {
             type: "NUMBER",
-            value: value
+            value: value,
+            pos: this.position
         };
     }
 
@@ -148,7 +178,6 @@ export default class Tokeniser {
         }
 
         this.rewind(count);
-        //throw new Error(`Syntax error: Unexpected identifier ${text}`);
     }
 
     getCharacter() {
@@ -169,6 +198,12 @@ export default class Tokeniser {
         return this.position >= this.input.length;
     }
 
+    rewind(cnt) {
+        for (let i=0; i<cnt; i++) {
+            this.position--;
+        }
+    }
+
     needsImpMult(left, right) {
         const leftEnd = [
             "NUMBER",
@@ -185,9 +220,5 @@ export default class Tokeniser {
         ];
 
         return leftEnd.includes(left.type) && rightStart.includes(right.type);
-    }
-
-    rewind(count) {
-        return this.input[this.position-=count]; 
     }
 }

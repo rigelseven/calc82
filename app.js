@@ -1,13 +1,17 @@
 import { generateTextAST, generateTextTokens } from "./debug.js";
 import trigSolver from "./math/trigonometry.js";
 import Calculator from "./calculator.js";
+import { InputHandler } from "./input/input.js";
 
 // TODO: Depends on Norm1/Norm2
 // Norm1: toExpNeg = -3
-Decimal.set({ precision: 15, maxE: 99, toExpNeg: -10, toExpPos: 10});
+Decimal.set({ precision: 15, maxE: 99, toExpNeg: -3, toExpPos: 10});
 
-const display = document.querySelector("#display");
+const textDisplay = document.querySelector("#text-display");
 const testInput = document.querySelector("#test-input");
+
+const inputDisplay = document.querySelector("#input-display");
+const outputDisplay = document.querySelector("#output-display");
 
 const angleModeSelector = document.querySelector("#angle-mode-selector");
 const calculateButton = document.querySelector("#calculate-button");
@@ -17,41 +21,48 @@ const outputModeButton = document.querySelector("#standard-decimal-button");
 const tokensDisplay = document.querySelector("#tokens");
 const astDisplay = document.querySelector("#ast");
 
-calculateButton.addEventListener("click", function(event) {
-    calculate(testInput.value);
-});
-
+const inputHandler = new InputHandler;
 const calculator = new Calculator;
 let currentResultType = null;
 let currentResult = null;
+let displayValue = null;
 
-function calculate(value) {
+calculateButton.addEventListener("click", function(event) {
+    calculate();
+});
+
+function calculate() {
     try {
+        const value = inputHandler.getTokens();
         const {res, decimalResult, fractionResult, tokens, ast} = calculator.calculate(value);
         currentResult = res;
 
-        display.textContent="=";
+        textDisplay.textContent="=";
         tokensDisplay.textContent="Token visualisation\n";
         astDisplay.textContent="AST visualisation\n";
-
+       
         const textAST = generateTextAST(ast);
-        console.log(ast);
         astDisplay.textContent += textAST;
         
         const textTokens = generateTextTokens(tokens);
-        console.table(tokens);
         tokensDisplay.textContent += textTokens;
-
-        if (fractionResult) {
-            currentResultType = "fraction";
-            display.textContent=`= ${fractionResult.numerator} over ${fractionResult.denominator}`
-        } else {
-            currentResultType = "decimal";
-            display.textContent=`= ${decimalResult.toSD(10)}`;
-        }
-
+        
+        if (fractionResult) setOutput("fraction");
+        else setOutput("decimal");
+        
     } catch (error) {
-        display.textContent=`= ${error.message}`;
+        let errorMessage = error.message;
+        if (error.cause) {
+            if (error.cause.type !== undefined) errorMessage = error.cause.type;
+            if (error.cause.position !== undefined) {
+                inputHandler.cursorPosition = error.cause.position;
+                renderInput();
+            }
+        }
+        textDisplay.textContent=`= ${errorMessage}`;
+
+
+        outputDisplay.innerHTML="";
         currentResultType = null;
         console.error(error);
     }
@@ -60,7 +71,7 @@ function calculate(value) {
 // Angle mode selector
 angleModeSelector.addEventListener("change", function(event) {
     getAngleMode();
-    calculate(testInput.value);
+    calculate();
 });
 
 function getAngleMode() {
@@ -71,21 +82,65 @@ function getAngleMode() {
 outputModeButton.addEventListener("click", switchAngleMode);
 
 function switchAngleMode() {
-    if (currentResultType === "fraction"  && calculator.decimalResult !== undefined) {
+    if (currentResultType === "fraction"  && calculator.decimalResult !== undefined)
+        setOutput("decimal");
+    else if (currentResultType === "decimal" && calculator.fractionResult !== undefined)
+        setOutput("fraction");
+}
+
+function setOutput(outputType) {
+    if (outputType === "decimal") {
         currentResultType = "decimal";
-        display.textContent = `= ${calculator.decimalResult.toSD(10)}`;
-    }
-    else if (currentResultType === "decimal" && calculator.fractionResult !== undefined) {
+        displayValue = `${calculator.decimalResult.toSD(10).toString().replace(/e\+?(-?\d+)/g, "\\times10^{$1}")}`;
+    } else if (outputType === "fraction") {
         currentResultType = "fraction";
-            display.textContent = `= ${calculator.fractionResult.numerator} over ${calculator.fractionResult.denominator}`
+        const numerator = calculator.fractionResult.numerator;
+        const denominator = calculator.fractionResult.denominator;
+        let sign = "";
+        if (numerator.isNeg()) sign = "-";
+        displayValue = `${sign}\\frac\{${numerator.abs()}\}\{${denominator}\}`;
     }
+    // textDisplay.textContent = displayValue;
+    katex.render(displayValue, outputDisplay, {
+        throwOnError: false
+    });
 }
 
 document.addEventListener('keydown', (event) => {
-    if (event.key === 'Enter') {
-        calculate(testInput.value);
+    const action = inputHandler.handleKey(event.key);
+    if (action !== "default") event.preventDefault();
+    renderInput();
+    if (action == "calculate") {
+        calculate();
     }
-})
+});
 
-calculate(testInput.value);
+function renderInput() {
+    let inputText = "";
+    let previousToken = "";
+    for (let token of inputHandler.getTokens(true)) {
+        if ((token.type === "POWER") && token.exp === "start"
+            && (!(["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES", "FRACTION", "MIXEDFRAC", "SQRT", "ROOT"].includes(previousToken))
+            && !(["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(previousToken) && previousToken.exp === "end")))
+            inputText += "{}";
+        inputText += `${token.rep}`;
+
+        previousToken = token.type === "CURSOR" ? previousToken : token.type;
+    }
+    inputText = addPlaceholders(inputText);
+    setInput(inputText);
+}
+
+function setInput(input) {
+    katex.render(input, inputDisplay, {throwOnError: false, strict: "ignore"})
+    testInput.value = "";
+    for (let token of inputHandler.getTokens(false)) testInput.value += token.type;
+}
+
+function addPlaceholders(latex) {
+    return latex
+        .replace("{\\clap{\\rule{0.1em}{0.5em}}}", "{\\clap{\\rule{0.1em}{0.5em}}\\square}")
+        .replaceAll("{}", "{\\square}")
+}
+
 getAngleMode();
