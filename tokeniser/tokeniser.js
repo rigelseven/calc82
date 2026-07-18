@@ -9,7 +9,6 @@ export default class Tokeniser {
 
     tokenise() {
         while (!this.isAtEnd()) {
-            console.log(this.position);
             const c = this.getCharacter();
 
             // Number
@@ -107,7 +106,6 @@ export default class Tokeniser {
         
         while (!this.isAtEnd()) {
             const c = this.getCharacter().value ? this.getCharacter().value : this.getCharacter().type;
-            console.log(c);
             if (/\d/.test(c)) {
                 seenDigit = true;
                 exponentSignAllowed = false
@@ -151,21 +149,10 @@ export default class Tokeniser {
 
     finaliseNumber(num) {
         try {
-            return num.replace(
-                /([E])([+-]?)([+-]?)(\d+)/g,
-                function (match, e, firstSign, secondSign, exponent) {
-                    var signs = firstSign + secondSign;
-                    if (exponent.length > 2) throw new Error("Syntax error: scientific notation out of range");
-
-                    if (signs.indexOf("-") !== -1) {
-                        return e + "-" + exponent;
-                    }
-
-                    // "+", "++", or no sign -> positive exponent
-                    console.log(e + exponent);
-                    return e + exponent;
-                }
-            );
+            return num.replace(/([Ee])([+-]+)(\d+)/g, (_, e, signs, digits) => {
+                const negative = [...signs].filter(c => c === "-").length % 2 === 1;
+                return `${e}${negative ? "-" : ""}${digits}`;
+            });
         } catch (error) {
             throw new Error(error.message, {cause: {type: "Syntax ERROR", position: this.position}});
         }
