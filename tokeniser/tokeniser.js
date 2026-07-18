@@ -150,20 +150,25 @@ export default class Tokeniser {
     }
 
     finaliseNumber(num) {
-        return num.replace(
-            /([E])([+-]?)([+-]?)(\d+)/g,
-            function (match, e, firstSign, secondSign, exponent) {
-                var signs = firstSign + secondSign;
+        try {
+            return num.replace(
+                /([E])([+-]?)([+-]?)(\d+)/g,
+                function (match, e, firstSign, secondSign, exponent) {
+                    var signs = firstSign + secondSign;
+                    if (exponent.length > 2) throw new Error("Syntax error: scientific notation out of range");
 
-                if (signs.indexOf("-") !== -1) {
-                    return e + "-" + exponent;
+                    if (signs.indexOf("-") !== -1) {
+                        return e + "-" + exponent;
+                    }
+
+                    // "+", "++", or no sign -> positive exponent
+                    console.log(e + exponent);
+                    return e + exponent;
                 }
-
-                // "+", "++", or no sign -> positive exponent
-                console.log(e + exponent);
-                return e + exponent;
-            }
-        );
+            );
+        } catch (error) {
+            throw new Error(error.message, {cause: {type: "Syntax ERROR", position: this.position}});
+        }
     }
 
     scanIdentifier() {

@@ -27,7 +27,8 @@ export default class Parser {
             expr = {
                 type: "BinaryExpression",
                 operator: operator.type,
-                pos: operator.pos,
+                pos: right.thisPos !== undefined ? right.thisPos : right.pos,
+                thisPos: operator.pos,
                 left: expr,
                 right
             };
@@ -46,7 +47,8 @@ export default class Parser {
             expr = {
                 type: "BinaryExpression",
                 operator: operator.type,
-                pos: operator.pos,
+                pos: right.thisPos !== undefined ? right.thisPos : right.pos,
+                thisPos: operator.pos,
                 left: expr,
                 right
             }
@@ -89,10 +91,11 @@ export default class Parser {
         while(this.match("POWER", "ROOT")) {
             const operator = this.getPreviousToken();
             const right = this.unary();
-
+            console.log(right)
             expr = {
                 type: "BinaryExpression",
-                pos: operator.pos,
+                pos: right.thisPos !== undefined ? right.thisPos : right.pos,
+                thisPos: operator.pos,
                 operator: operator.type,
                 left: expr,
                 right
@@ -149,6 +152,7 @@ export default class Parser {
         if (this.match("NUMBER")) {
             return {
                 type: "NumberLiteral",
+                pos: this.getPreviousToken().pos,
                 value: this.getPreviousToken().value
             };
         }
@@ -181,14 +185,14 @@ export default class Parser {
             return {
                 type: "FunctionCall",
                 name,
-                pos: operator.pos,
+                pos: operator.pos + 1,
                 args
             }
         }
 
         if (this.match("LPAREN")) {
-            const expr = this.expression();
-            this.consume("RPAREN");
+            let expr = this.expression();
+            expr.thisPos = this.consume("RPAREN").pos;
 
             return expr;
         }

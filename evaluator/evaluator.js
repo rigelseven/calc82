@@ -13,26 +13,27 @@ export default class Evaluator {
         try {
             switch (node.type) {
                 case "NumberLiteral":
-                    return this.evaluateDecimal(node);
+                    return this.checkBounds(this.evaluateDecimal(node));
                 case "FractionExpression":
-                    return this.evaluateFraction(node);
+                    return this.checkBounds(this.evaluateFraction(node));
                 case "Constant":
-                    return this.evaluateConstant(node);
+                    return this.checkBounds(this.evaluateConstant(node));
                 case "Variable":
-                    return this.evaluateVariable(node);
+                    return this.checkBounds(this.evaluateVariable(node));
                 case "UnaryExpression":
-                    return this.evaluateUnary(node);
+                    return this.checkBounds(this.evaluateUnary(node));
                 case "BinaryExpression":
-                    return this.evaluateBinary(node);
+                    return this.checkBounds(this.evaluateBinary(node));
                 case "FunctionCall":
-                    return this.evaluateFunction(node);
+                    return this.checkBounds(this.evaluateFunction(node));
                 case "PostfixExpression":
-                    return this.evaluatePostfix(node);
+                    return this.checkBounds(this.evaluatePostfix(node));
                 default:
                     throw new Error(`Syntax error: Unknown node ${node.type}`);
             }
         } catch (error) {
-            throw new Error (error.message, {cause: {type: "Math ERROR", position: node.pos}});
+            if (!error.cause) throw new Error (error.message, {cause: {type: "Math ERROR", position: node.pos}});
+            throw error;
         }
     }
 
@@ -105,5 +106,12 @@ export default class Evaluator {
         }
 
         return divide(numerator, denominator);
+    }
+
+    checkBounds(value) {
+        if ((value instanceof Decimal) && (value.e > 99 || !value.isFinite() || value.e === undefined))
+            throw new Error("Math error: out of bounds")
+        if (value.e < -99) return new Decimal(0)
+        return value
     }
 }
