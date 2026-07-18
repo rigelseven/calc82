@@ -217,7 +217,7 @@ export class InputHandler {
             )
         ) {
             const currentToken = this.getCursorToken(step);
-            if (token.type === "LPAREN") currentBracket += increment; 
+            if (token.type === "LPAREN" || token.type === "FUNCTION") currentBracket += increment; 
             if (token.type === "RPAREN") currentBracket -= increment; 
 
             if (currentBracket < 0 &&
