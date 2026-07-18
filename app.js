@@ -120,15 +120,15 @@ document.addEventListener('keydown', (event) => {
 
 function renderInput() {
     let inputText = "";
-    let previousToken = "";
+    let previousToken = null;
     for (let token of inputHandler.getTokens(true)) {
         if ((token.type === "POWER") && token.exp === "start"
-            && (!(["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES", "FRACTION", "MIXEDFRAC", "SQRT", "ROOT"].includes(previousToken))
-            && !(["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(previousToken) && previousToken.exp === "end")))
+            && (!(["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES"].includes(previousToken.type))
+            && !(previousToken !== null && ["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(previousToken.type) && previousToken.exp === "end")))
             inputText += "{}";
         inputText += `${token.rep}`;
 
-        previousToken = token.type === "CURSOR" ? previousToken : token.type;
+        previousToken = token.type === "CURSOR" ? previousToken : token;
     }
     inputText = addPlaceholders(inputText);
     setInput(inputText);

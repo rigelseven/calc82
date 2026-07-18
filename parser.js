@@ -91,7 +91,6 @@ export default class Parser {
         while(this.match("POWER", "ROOT")) {
             const operator = this.getPreviousToken();
             const right = this.unary();
-            console.log(right)
             expr = {
                 type: "BinaryExpression",
                 pos: right.thisPos !== undefined ? right.thisPos : right.pos,
