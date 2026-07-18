@@ -34,7 +34,7 @@ class TrigSolver {
             case "sin":
                 output = a.sin(); break;
             case "cos":
-                output = a.cos(); break;
+                output = a.plus(HALF_PI).sin(); break;
             case "tan": {
                 // Reduce to nearest +/-pi/2 pole
                 const k = a.div(PI).round();
@@ -58,7 +58,7 @@ class TrigSolver {
         
         // Evaluate when tan goes to infinity by cosine denominator
         if (fn === "tan") {
-            const cosValue = Decimal.cos(a);
+            const cosValue = a.plus(HALF_PI).sin();
 
             if (cosValue.abs().lt(precision)) {
                 throw new Error("Math error: tan infinity");

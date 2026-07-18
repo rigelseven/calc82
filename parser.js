@@ -185,7 +185,7 @@ export default class Parser {
             return {
                 type: "FunctionCall",
                 name,
-                pos: operator.pos + 1,
+                pos: operator.pos,
                 args
             }
         }
