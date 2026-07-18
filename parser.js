@@ -166,7 +166,6 @@ export default class Parser {
 
         if (this.match("FUNCTION")) {
             const name = this.getPreviousToken().value;
-            const pos = this.getPreviousToken().pos;
 
             this.consume("LPAREN");
 
@@ -179,20 +178,22 @@ export default class Parser {
                 } while (this.match("COMMA"));
             }
 
-            const operator = this.consume("RPAREN");
+            let pos = this.tokens.length - 1;
+            try { pos = this.consume("RPAREN").pos; }
+            catch (error) { ; }
 
             return {
                 type: "FunctionCall",
                 name,
-                pos: operator.pos,
+                pos,
                 args
             }
         }
 
         if (this.match("LPAREN")) {
             let expr = this.expression();
-            expr.thisPos = this.consume("RPAREN").pos;
-
+            try { expr.thisPos = this.consume("RPAREN").pos + 1; }
+            catch (error) { ; }
             return expr;
         }
         throw new Error(`Syntax error: Expected expression`, {cause: {type: "Syntax ERROR", position: this.getToken().pos}});
