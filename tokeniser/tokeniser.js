@@ -107,7 +107,7 @@ export default class Tokeniser {
         
         while (!this.isAtEnd()) {
             const c = this.getCharacter().value ? this.getCharacter().value : this.getCharacter().type;
-            
+            console.log(c);
             if (/\d/.test(c)) {
                 seenDigit = true;
                 exponentSignAllowed = false
@@ -131,7 +131,6 @@ export default class Tokeniser {
                 this.advance();
 
             } else if ((c === "PLUS" || c === "MINUS") && exponentSignAllowed) {
-                exponentSignAllowed = false;
                 canEnd = false;
                 value += c === "PLUS" ? "+" : "-";
                 this.advance();
@@ -140,14 +139,31 @@ export default class Tokeniser {
             }
         }
         if (!canEnd) {
-            throw new Error(`Syntax error: incomplete number`, {cause: {type: "Syntax ERROR", position: this.getToken().pos}});
+            throw new Error(`Syntax error: incomplete number`, {cause: {type: "Syntax ERROR", position: this.position}});
         }
         
         return {
             type: "NUMBER",
-            value: value,
+            value: this.finaliseNumber(value),
             pos: this.position
         };
+    }
+
+    finaliseNumber(num) {
+        return num.replace(
+            /([E])([+-]?)([+-]?)(\d+)/g,
+            function (match, e, firstSign, secondSign, exponent) {
+                var signs = firstSign + secondSign;
+
+                if (signs.indexOf("-") !== -1) {
+                    return e + "-" + exponent;
+                }
+
+                // "+", "++", or no sign -> positive exponent
+                console.log(e + exponent);
+                return e + exponent;
+            }
+        );
     }
 
     scanIdentifier() {

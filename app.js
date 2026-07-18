@@ -113,6 +113,9 @@ document.addEventListener('keydown', (event) => {
     if (action == "calculate") {
         calculate();
     }
+    if (action == "standard-decimal") {
+        switchAngleMode();
+    }
 });
 
 function renderInput() {

@@ -1,3 +1,4 @@
 export const UNARY = {
-    "MINUS": a => a.negated()
+    "MINUS": a => a.negated(),
+    "PLUS": a => a
 }

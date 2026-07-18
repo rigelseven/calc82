@@ -43,6 +43,8 @@ export class InputHandler {
                 return this.delete("left");
             case "Delete":
                 return this.delete("right");
+            case "S": 
+                return "standard-decimal";
             default:
                 return "default";
         }

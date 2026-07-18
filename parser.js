@@ -103,11 +103,12 @@ export default class Parser {
     }
 
     unary() {
-        if (this.match("MINUS")) {
+        if (this.match("MINUS", "PLUS")) {
+            const operator = this.getPreviousToken();
             return {
                 type: "UnaryExpression",
-                pos: this.getPreviousToken().pos,
-                operator: "MINUS",
+                pos: operator.pos,
+                operator: operator.type,
                 argument: this.unary()
             };
 
