@@ -2,6 +2,7 @@ import { generateTextAST, generateTextTokens } from "./debug.js";
 import trigSolver from "./math/trigonometry.js";
 import Calculator from "./calculator.js";
 import { InputHandler } from "./input/input.js";
+import LayoutEngine from "./interface/layout.js";
 
 // TODO: Depends on Norm1/Norm2
 // Norm1: toExpNeg = -3
@@ -23,6 +24,8 @@ const astDisplay = document.querySelector("#ast");
 
 const inputHandler = new InputHandler;
 const calculator = new Calculator;
+const layoutEngine = new LayoutEngine;
+
 let currentResultType = null;
 let currentResult = null;
 let displayValue = null;
@@ -60,7 +63,7 @@ function calculate() {
             }
         }
         textDisplay.textContent=`= ${errorMessage}`;
-
+        katex.render("\\text{errorMessage}", outputDisplay)
 
         outputDisplay.innerHTML="";
         currentResultType = null;
@@ -147,3 +150,5 @@ function addPlaceholders(latex) {
 }
 
 getAngleMode();
+
+layoutEngine.createButtons();

@@ -1,0 +1,105 @@
+.calculator {
+    outline: 1px solid black;
+    display: grid;
+    grid-template-rows: 0fr 1fr 4fr;
+    
+    --h: 800px;
+
+    height: var(--h);
+    width: calc(var(--h) / 2);
+    padding: calc(var(--h) / 40);
+    row-gap: calc(var(--h) / 40);
+
+    container-type: size;
+}
+
+#top-bezel {
+    font-size: 3cqb;
+    font-style: italic;
+    text-align: right;
+}
+
+#display {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    min-height: 0;
+    width: 95%;
+    padding: 2.5%;
+    border: 1px solid black;
+    container-type: size;
+}
+
+#input-display {
+    align-self: flex-start;
+    font-size: 20cqb;
+    min-height: 0;
+    padding: 0px;
+}
+
+#output-display {
+    align-self: flex-end;
+    font-size: 20cqb;
+    padding: 0px;
+}
+
+#buttons-container {
+    min-height: 0;
+    display: grid;
+    grid-template-rows: repeat(var(--rows), 1fr);
+    height: 100%;
+    box-sizing: border-box;
+    container-type: size;
+}
+
+.button-row {
+    display: grid;
+    min-width: 0;
+    min-height: 0;
+}
+
+.button-wrapper {
+    display: grid;
+    grid-template-rows: 3cqb minmax(0, 1fr);
+    min-width: 0;
+    min-height: 0;
+    padding: 0.5cqb;
+}
+
+.button-label {
+    font-size: 2.5cqb;
+    min-width: 0;
+    padding: 0 0 0.5cqb 0;
+    font-weight: 700;
+
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /*justify-content: space-between;*/
+}
+
+.input-button {
+    font-weight: 500;
+    width: 100%;
+    height: 100%;
+    min-width: 0;
+    
+    box-sizing: border-box;
+    justify-content: center;
+    padding: 0px;
+}
+
+.label-main {
+    color: black;
+}
+
+.label-shift {
+    color: goldenrod;
+}
+
+.label-alpha {
+    color: red;
+}
