@@ -50,5 +50,5 @@ export const TOKENS = {
     "RandomInt": { type: "FUNCTION", exp: "randomInt", rep: "\\text{RandomInt\\#}("},
 
     "LCM": { type: "FUNCTION", exp: "lcm", rep: "\\text{LCM}("},
-    "GCD": { type: "FUNCTION", exp: "gcd", rep: "\\text{GCD}{"},
+    "GCD": { type: "FUNCTION", exp: "gcd", rep: "\\text{GCD}("},
 }
