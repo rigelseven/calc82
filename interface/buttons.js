@@ -1,8 +1,8 @@
 // [Main, top white, top Shift, top Alpha]
 export const BUTTONS = [
     [
-        ["", "", "Shift", "", {Main: "Shift", Shift: null, Alpha: null}],
-        ["", "", "", "Alpha", {Main: "Alpha", Shift: null, Alpha: null}],
+        ["", "", "Shift", "", {Main: "Shift", Shift: "Shift", Alpha: "Shift"}],
+        ["", "", "", "Alpha", {Main: "Alpha", Shift: "Alpha", Alpha: "Alpha"}],
         null,
         null,
         ["", "MODE", "SET UP", "", {Main: null, Shift: null, Alpha: null}],
