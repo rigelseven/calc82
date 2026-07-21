@@ -33,14 +33,14 @@
 
 #input-display {
     align-self: flex-start;
-    font-size: 20cqb;
+    font-size: 25cqb;
     min-height: 0;
     padding: 0px;
 }
 
 #output-display {
     align-self: flex-end;
-    font-size: 20cqb;
+    font-size: 25cqb;
     padding: 0px;
 }
 
