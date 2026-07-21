@@ -5,8 +5,8 @@ export const VARIABLES = {
     "vD": function() {return STORAGE["D"]},
     "vE": function() {return STORAGE["E"]},
     "vF": function() {return STORAGE["F"]},
-    "M": function() {return STORAGE["G"]},
-    "Ran": function() {return Decimal.random(3)}
+    "vM": function() {return STORAGE["M"]},
+    "Random": function() {return Decimal.random(3)}
 }
 
 // Temporary variable storage (TODO cookies?)

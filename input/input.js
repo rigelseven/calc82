@@ -4,31 +4,15 @@ export class InputHandler {
     constructor(tokens=[]) {
         this.inputTokens = tokens;
         this.cursorPosition = 0;
+        this.mode = "Main";
     }
 
-    handleKey(key) {
-        const token = TOKENS[key];
-        const currentToken = this.getCursorToken();
-        if (token) return this.addToken(token);
-        if (/^\d$/.test(key) || key === ".") return this.addToken({type:"DIGIT", rep: key, value: key});
-        switch (key) {
-            case "f":
-                return this.createSpecial("FRACTION", "\\frac{", "}{", "}");
-            case "F":
-                return this.createSpecial("MIXEDFRAC", "\\,{", "}\\frac{", "}", "}{");
-            case "^":
-                return this.createSpecial("POWER", "\\vphantom{}^{", null, "}");
-            case "q":
-                return this.createSpecial("SQRT", "\\sqrt{", null, "}\\,");
-            case "r":
-                return this.createSpecial("ROOT", "\\sqrt[{", "}]{", "}\\,");
-            case "|":
-                this.addToken({type:"ABS", exp:"start", rep: "|{"});
-                this.addToken({type:"ABS", exp:"end", rep: "}|"});
-                this.moveCursor("left");
-                return;
-            case "E":
-                return this.addToken({type:"DIGIT", rep: ""})
+    handleInput(input) {
+        const token = TOKENS[input];
+
+        if (token !== undefined) return this.addToken(token);
+
+        switch(input) {
             case "ArrowLeft":
                 return this.moveCursor("left", true);
             case "ArrowRight":
@@ -37,6 +21,75 @@ export class InputHandler {
                 return this.traverseFraction("up");
             case "ArrowDown":
                 return this.traverseFraction("down");
+
+            case "Shift":
+                return "shift";
+            case "Alpha":
+                return "alpha";
+            case "Calculate":
+                return "calculate";
+            case "Delete":
+                return this.delete("left");
+            case "AllClear":
+                this.inputTokens = [];
+                this.cursorPosition = 0;
+                return;
+
+            case "Fraction":
+                return this.createSpecial("FRACTION", "\\frac{", "}{", "}");
+            case "MixedFraction":
+                return this.createSpecial("MIXEDFRAC", "\\,{", "}\\frac{", "}", "}{");
+            case "Power":
+                return this.createSpecial("POWER", "\\vphantom{}^{", null, "}");
+            case "Square":
+                return this.createSpecial("POWER",  "\\vphantom{}^{", null, "}", null, [2]);
+            case "Cube":
+                return this.createSpecial("POWER", "\\vphantom{}^{", null, "}", null, [3]);
+            case "Invert":
+                return this.createSpecial("POWER", "\\vphantom{}^{", null, "}", null, ["UnaryMinus", 1]);
+            case "Sqrt":
+                return this.createSpecial("SQRT", "\\sqrt{", null, "}\\,");
+            case "Root":
+                return this.createSpecial("ROOT", "\\sqrt[{", "}]{", "}\\,");
+            case "CubeRoot":
+                this.addToken({type:"ROOT", exp: "start", rep: "\\sqrt[{"});
+                this.addToken({type:"DIGIT", rep: "3", value: "3"});
+                this.addToken({type:"ROOT", exp: "middle", rep: "}]{"});
+                this.addToken({type:"ROOT", exp: "end", rep: "}\\,"});
+                this.moveCursor("left");
+                return;
+            case "Abs":
+                this.addToken({type:"ABS", exp: "start", rep: "|{"});
+                this.addToken({type:"ABS", exp: "end", rep: "}|"});
+                this.moveCursor("left");
+                return;
+            case "Exp":
+                this.addToken({type:"EXP", exp: "start", rep: "{\\footnotesize{\\mathbf{e}}^{"});
+                this.addToken({type:"EXP", exp: "end", rep: "}}"});
+                this.moveCursor("left");
+                return;
+            case "10^x":
+                this.addToken({type:"EXP10", exp: "start", rep: "{\\footnotesize{\\texttt{10}}^{"});
+                this.addToken({type:"EXP10", exp: "end", rep: "}}"});
+                this.moveCursor("left");
+                return;
+
+            default:
+                return "default";
+        }
+    }
+
+    /*handleKey(key) {
+        const token = TOKENS[key];
+        const currentToken = this.getCursorToken();
+        if (token) return this.addToken(token);
+        if (/^\d$/.test(key) || key === ".") return this.addToken({type:"DIGIT", rep: key, value: key});
+        switch (key) {
+
+
+            case "E":
+                return this.addToken({type:"DIGIT", rep: ""})
+
             case "Enter": 
                 return "calculate";
             case "Backspace":
@@ -48,14 +101,14 @@ export class InputHandler {
             default:
                 return "default";
         }
-    }
+    }*/
 
     delete(direction) {
         if (direction == "left") this.cursorPosition = Math.max(0, this.cursorPosition-1);
         const deleteToken = this.getCursorToken("right");
         if (!deleteToken) return;
         if (deleteToken.type == "POWER") return this.deletePower();
-        if (deleteToken && ["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(deleteToken.type)) {
+        if (deleteToken && ["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS", "EXP", "EXP10"].includes(deleteToken.type)) {
             if (deleteToken.exp == "start") {
                 this.deleteSpecial(deleteToken.type);
             }
@@ -104,7 +157,7 @@ export class InputHandler {
         }
     }
 
-    createSpecial(type, start, middle, end, middle2) {
+    createSpecial(type, start, middle, end, middle2, args) {
         let orig = this.cursorPosition;
         let moveToTop = false; 
         
@@ -117,6 +170,7 @@ export class InputHandler {
         this.cursorPosition = orig + 1;
         const rightDigit = this.toNonDigit("right");
         if (type === "MIXEDFRAC") this.addToken({type:type, exp:"middle2", rep: middle2});
+        if (args) for (const arg of args) this.addToken(TOKENS[arg]);
         this.addToken({type:type, exp:"end", rep:end});
         
         // Position in the bottom of the fraction...
@@ -131,7 +185,12 @@ export class InputHandler {
 
         if (moveToTop && (type === "FRACTION" || type === "MIXEDFRAC")) this.cursorPosition = orig+1;
         if (moveToTop && type === "ROOT") this.cursorPosition = orig+1;
-        if (!moveToTop && type === "POWER") this.cursorPosition = orig;
+        if (type === "POWER") {
+            if (moveToTop) {
+                if (args) this.cursorPosition = orig + 2 + args.length;
+            }
+            else this.cursorPosition = orig;
+        }
     }
     
     deleteSpecial(type) {
@@ -248,5 +307,11 @@ export class InputHandler {
             else line += LINE_EQUIVALENTS[token.type];
         }
         return line;
+    }
+
+    switchMode(mode) {
+        if (mode === "Main") this.mode = "Main";
+        else if (mode === "Shift") this.mode = this.mode === "Shift" ? "Main" : "Shift";
+        else if (mode === "Alpha") this.mode = this.mode === "Alpha" ? "Main" : "Alpha";
     }
 }

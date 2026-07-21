@@ -18,6 +18,8 @@ const angleModeSelector = document.querySelector("#angle-mode-selector");
 const calculateButton = document.querySelector("#calculate-button");
 const outputModeButton = document.querySelector("#standard-decimal-button");
 
+const buttonsArea = document.querySelector("#buttons-area");
+
 // debug
 const tokensDisplay = document.querySelector("#tokens");
 const astDisplay = document.querySelector("#ast");
@@ -109,7 +111,7 @@ function setOutput(outputType) {
     });
 }
 
-document.addEventListener('keydown', (event) => {
+/*document.addEventListener('keydown', (event) => {
     const action = inputHandler.handleKey(event.key);
     if (action !== "default") event.preventDefault();
     renderInput();
@@ -119,14 +121,14 @@ document.addEventListener('keydown', (event) => {
     if (action == "standard-decimal") {
         switchAngleMode();
     }
-});
+});*/
 
 function renderInput() {
     let inputText = "";
     let previousToken = null;
     for (let token of inputHandler.getTokens(true)) {
         if ((token.type === "POWER") && token.exp === "start"
-            && (!(["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES"].includes(previousToken.type))
+            && (!(previousToken !== null && ["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES"].includes(previousToken.type))
             && !(previousToken !== null && ["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(previousToken.type) && previousToken.exp === "end")))
             inputText += "{}";
         inputText += `${token.rep}`;
@@ -149,6 +151,43 @@ function addPlaceholders(latex) {
         .replaceAll("{}", "{\\square}")
 }
 
-getAngleMode();
+function attachListener() {
+    buttonsArea.addEventListener("click", (event) => {
+        event.stopPropagation();
 
+        let button_id;
+        if (event.target.classList.contains("nav-button")) {
+            button_id = event.target.getAttribute("id").split("_");
+        }
+        else {
+            const button_element = event.target.closest(".button-wrapper");
+            if (button_element === null) return;
+            button_id = button_element.getAttribute("id").split("_");
+        }
+        const button = layoutEngine.getButton(button_id[0], button_id[1]);
+        
+        if (button !== null) {
+            const action = button[4][inputHandler.mode];
+            if (action !== null) {
+                const finalAction = inputHandler.handleInput(action);
+                renderInput();
+
+                if (finalAction === "calculate") {
+                    calculate();
+                }
+
+                if (finalAction === "standard-decimal") {
+                    switchAngleMode();
+                }
+
+                if (finalAction === "shift") inputHandler.switchMode("Shift");
+                else if (finalAction === "alpha") inputHandler.switchMode("Alpha");
+                else inputHandler.switchMode("Main");
+            }
+        }
+    });
+}
+
+getAngleMode();
 layoutEngine.createButtons();
+attachListener();

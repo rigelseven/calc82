@@ -44,6 +44,12 @@
     padding: 0px;
 }
 
+#buttons-area {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
 #buttons-container {
     min-height: 0;
     display: grid;
@@ -51,6 +57,12 @@
     height: 100%;
     box-sizing: border-box;
     container-type: size;
+}
+
+#buttons-overlay {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
 }
 
 .button-row {
@@ -90,6 +102,17 @@
     box-sizing: border-box;
     justify-content: center;
     padding: 0px;
+}
+
+.nav-button {
+    font-weight: 500;
+    font-size: 3.5cqb;
+    width: 5cqb;
+    height: 6cqb;
+    box-sizing: border-box;
+    justify-content: center;
+    padding: 0.5cqb;
+    pointer-events: all;
 }
 
 .label-main {

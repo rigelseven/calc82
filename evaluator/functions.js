@@ -23,11 +23,16 @@ export const FUNCTIONS = {
     root: {fn: (n, value) => safeRoot(n, value), args: 2},
 
     ln: {fn: a => a.toDecimal().ln(), args: 1},
-    log: {fn: a => a.toDecimal().log10(), args: 1},
+    log: {fn: a => a.toDecimal().log(10), args: 1},
+
+    exp: {fn: a => a.toDecimal().exp(), args: 1},
+    exp10: {fn: a => Decimal.pow(10, a.toDecimal()), args: 1},
 
     abs: {fn: a => a.abs(), args: 1},
 
-    RanInt: {fn: (a, b) => randomInteger(a.toDecimal(), b.toDecimal()), args: 2},
+    round: {fn: a => a.toDecimal().round(), args: 1},
+
+    randomInt: {fn: (a, b) => randomInteger(a.toDecimal(), b.toDecimal()), args: 2},
 
     lcm: {fn: (a, b) => lcm(a.toDecimal(), b.toDecimal()), args: 2},
     gcd: {fn: (a, b) => gcd(a.toDecimal(), b.toDecimal()), args: 2},

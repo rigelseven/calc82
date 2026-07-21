@@ -48,8 +48,8 @@ export default class Tokeniser {
                 continue;
             }
 
-            // Constants
-            if (c.type === "CONSTANT") {
+            // Constants/variables
+            if (c.type === "CONSTANT" || c.type === "VARIABLE") {
                 this.addToken({
                     type: c.type,
                     value: c.exp,
@@ -106,7 +106,7 @@ export default class Tokeniser {
         
         while (!this.isAtEnd()) {
             const c = this.getCharacter().value ? this.getCharacter().value : this.getCharacter().type;
-            if (/\d/.test(c)) {
+            if (/^\d+$/.test(c)) {
                 seenDigit = true;
                 exponentSignAllowed = false
                 value += c;
@@ -157,48 +157,7 @@ export default class Tokeniser {
             throw new Error(error.message, {cause: {type: "Syntax ERROR", position: this.position}});
         }
     }
-
-    scanIdentifier() {
-        // Read in the next function (sin, cos..)
-        let text = "";
-        let count = 0;
-
-        while (!this.isAtEnd()) {
-            const c = this.getCharacter();
-
-            if (/[a-z]/i.test(c)) {
-                text += c;
-                this.advance();
-                count += 1;
-            } else {
-                break;
-            }
-        }
-
-        if (CONSTANTS.has(text)) {
-            return {
-                type: "CONSTANT",
-                value: text
-            }
-        }
-
-        if (FUNCTIONS.has(text)) {
-            return {
-                type: "FUNCTION",
-                value: text
-            }
-        }
-
-        if (VARIABLES.has(text)) {
-            return {
-                type: "VARIABLE",
-                value: text
-            }
-        }
-
-        this.rewind(count);
-    }
-
+    
     getCharacter() {
         // Get current character
         return this.input[this.position];

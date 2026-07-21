@@ -1,6 +1,7 @@
 export const SYMBOLS = {
     "PLUS": { type: "PLUS" },
     "MINUS": { type: "MINUS" },
+    "UNARYMINUS": { type: "UNARYMINUS" },
     "MULTIPLY": { type: "MULTIPLY" },
     "DIVIDE": { type: "DIVIDE" },
     //"INLINEPOWER": { type: "POWER" },  // TODO: for line io
@@ -46,51 +47,12 @@ export const MULTICHAR = {
         start: [{"f": "abs"}, "LPAREN"],
         end: ["RPAREN"]
     },
+    "EXP": {
+        start: [{"f": "exp"}, "LPAREN"],
+        end: ["RPAREN"]
+    },
+    "EXP10": {
+        start: [{"f": "exp10"}, "LPAREN"],
+        end: ["RPAREN"]
+    },
 }
-
-// TODO: everything below here is no longer used.
-
-export const FUNCTIONS = new Set([
-    "sin",
-    "cos",
-    "tan",
-    "asin",
-    "acos",
-    "atan",
-
-    "sinh",
-    "cosh",
-    "tanh",
-    "asinh",
-    "acosh",
-    "atanh",
-
-    "log",
-    "ln",
-
-    "sqrt",
-    "root",
-
-    "abs",
-
-    "RanInt",
-
-    "lcm",
-    "gcd"
-]);
-
-export const CONSTANTS = new Set([
-    "pi",
-    "e"
-]);
-
-export const VARIABLES = new Set([
-    "vA",
-    "vB",
-    "vC",
-    "vD",
-    "vE",
-    "vF",
-    "M",
-    "Ran"
-])
