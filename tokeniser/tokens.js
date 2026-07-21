@@ -20,15 +20,15 @@ export const SYMBOLS = {
 
 export const MULTICHAR = {
     "FRACTION": {
-        start: ["LPAREN"],
+        start: ["LPAREN", "LPAREN"],
         middle: ["RPAREN", "FRACTION", "LPAREN"],
-        end: ["RPAREN"]
+        end: ["RPAREN", "RPAREN"]
     },
     "MIXEDFRAC": {
-        start: ["LPAREN"],
+        start: ["LPAREN", "LPAREN"],
         middle: ["RPAREN", "FRACTION", "LPAREN"],
         middle2: ["RPAREN", "FRACTION", "LPAREN"],
-        end: ["RPAREN"]
+        end: ["RPAREN", "RPAREN"]
     },
     "POWER": {
         start: ["POWER", "LPAREN"],
