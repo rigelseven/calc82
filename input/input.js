@@ -168,7 +168,8 @@ export class InputHandler {
         this.addToken({type:type, exp:"start", rep:start});
         
         this.cursorPosition = orig + 1;
-        const rightDigit = this.toNonDigit("right");
+        if (!args) this.toNonDigit("right");
+
         if (type === "MIXEDFRAC") this.addToken({type:type, exp:"middle2", rep: middle2});
         if (args) for (const arg of args) this.addToken(TOKENS[arg]);
         this.addToken({type:type, exp:"end", rep:end});
