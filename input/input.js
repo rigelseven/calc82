@@ -1,4 +1,4 @@
-    import { TOKENS } from "./inputTokens.js";
+import { TOKENS } from "./inputTokens.js";
 
 export class InputHandler {
     constructor(tokens=[]) {
@@ -80,28 +80,6 @@ export class InputHandler {
                 return "default";
         }
     }
-
-    /*handleKey(key) {
-        const token = TOKENS[key];
-        const currentToken = this.getCursorToken();
-        if (token) return this.addToken(token);
-        if (/^\d$/.test(key) || key === ".") return this.addToken({type:"DIGIT", rep: key, value: key});
-        switch (key) {
-
-
-            case "E":
-                return this.addToken({type:"DIGIT", rep: ""})
-
-            case "Enter": 
-                return "calculate";
-            case "Backspace":
-                return this.delete("left");
-            case "Delete":
-                return this.delete("right");
-            default:
-                return "default";
-        }
-    }*/
 
     delete(direction) {
         if (direction == "left") this.cursorPosition = Math.max(0, this.cursorPosition-1);
@@ -310,9 +288,12 @@ export class InputHandler {
         return line;
     }
 
-    switchMode(mode) {
+    switchMode(mode, force, shiftButton, alphaButton) {
+        if (force) {this.mode = mode; return}
         if (mode === "Main") this.mode = "Main";
         else if (mode === "Shift") this.mode = this.mode === "Shift" ? "Main" : "Shift";
         else if (mode === "Alpha") this.mode = this.mode === "Alpha" ? "Main" : "Alpha";
+        shiftButton.classList.toggle("pressed-Shift", this.mode === "Shift");
+        alphaButton.classList.toggle("pressed-Alpha", this.mode === "Alpha");
     }
 }

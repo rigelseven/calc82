@@ -1,12 +1,12 @@
-import { BUTTONS, NAV_BUTTONS, NAV_DIMENSIONS, ROW_HEIGHTS } from "./buttons.js";
+import { BUTTONS, KEYBOARD_MAP, NAV_BUTTONS, NAV_DIMENSIONS, ROW_HEIGHTS } from "./buttons.js";
 
 export default class LayoutEngine {
     constructor() {
-        this.buttons = [];  // TODO: is this really needed
+        this.buttons = {};
     }
     
     createButtons() {
-        this.buttons = [];
+        this.buttons = {};
         const container = document.querySelector("#buttons-container");
         container.style.setProperty("--rows", BUTTONS.length);
         
@@ -18,10 +18,9 @@ export default class LayoutEngine {
             rowElement.style.gridTemplateColumns = `repeat(${row.length}, minmax(0, 1fr))`;
             container.style.gridTemplateRows =
             ROW_HEIGHTS.map(w => `minmax(0, ${w}fr)`).join(" ");
-            const buttonRow = [];
 
             let index = 0;
-            for (const entry of row) {
+            for (const entry of Object.values(row)) {
                 const wrapper = document.createElement("div");
                 wrapper.className = "button-wrapper";
                 wrapper.id = `${outer_index}_${index}`;
@@ -40,14 +39,13 @@ export default class LayoutEngine {
 
                     wrapper.style.gridColumn = index+1;
                     rowElement.appendChild(wrapper);
-                    buttonRow.push({wrapper});
+                    this.buttons[Object.keys(row)[index]] = ({entry, button});
                 }
 
                 index++;
             }
             
             container.appendChild(rowElement);
-            this.buttons.push(buttonRow);
             outer_index++;
         }
         this.createNavButtons();
@@ -80,14 +78,20 @@ export default class LayoutEngine {
             button.textContent = NAV_BUTTONS[dir][0];
             
             container.appendChild(button);
-            this.buttons.push(button)
+            this.buttons[dir] = ({entry: NAV_BUTTONS[dir], button: button});
         }
     }
 
     getButton(row, col) {
         if (row == "nav")
             return NAV_BUTTONS[col];
-        return BUTTONS[row][col]
+        return Object.values(BUTTONS[row])[col]
+    }
+
+    getButtonFromKey(key) {
+        const keyMap = KEYBOARD_MAP[key];
+        if (keyMap)
+            return [this.buttons[keyMap[0]].entry, keyMap[1], this.buttons[keyMap[0]].button];
     }
 
     static renderContent(element, text1 = "", text2 = "", text3 = "") {

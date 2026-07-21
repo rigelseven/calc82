@@ -13,7 +13,7 @@ export default class Tokeniser {
 
             // Number
             const nextChar = this.getNextCharacter();
-            if (c.type === "DIGIT" || (c.type === "DIGIT" && c.value === "E" && nextChar && (nextChar.type === "PLUS" || nextChar.type === "MINUS"))) {
+            if (c.type === "DIGIT" || (c.type === "DIGIT" && c.value === "E" && nextChar && (nextChar.type === "PLUS" || nextChar.type === "MINUS" || nextChar.type === "UNARYMINUS"))) {
                 this.addToken(this.scanNumber());
                 continue;
             }
@@ -128,7 +128,7 @@ export default class Tokeniser {
                 value += c;
                 this.advance();
 
-            } else if ((c === "PLUS" || c === "MINUS") && exponentSignAllowed) {
+            } else if ((c === "PLUS" || c === "MINUS" || c === "UNARYMINUS") && exponentSignAllowed) {
                 canEnd = false;
                 value += c === "PLUS" ? "+" : "-";
                 this.advance();

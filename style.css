@@ -67,6 +67,7 @@
 
 .button-row {
     display: grid;
+    grid-auto-columns: minmax(0, 1fr);
     min-width: 0;
     min-height: 0;
 }
@@ -125,4 +126,16 @@
 
 .label-alpha {
     color: red;
+}
+
+.pressed-Main {
+    background-color: cyan;
+}
+
+.pressed-Shift {
+    background-color: orange;
+}
+
+.pressed-Alpha {
+    background-color: red;
 }

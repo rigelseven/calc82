@@ -3,6 +3,7 @@ import trigSolver from "./math/trigonometry.js";
 import Calculator from "./calculator.js";
 import { InputHandler } from "./input/input.js";
 import LayoutEngine from "./interface/layout.js";
+import { shiftedToUnshifted, unshiftedToShifted } from "./interface/keyboard.js";
 
 // TODO: Depends on Norm1/Norm2
 // Norm1: toExpNeg = -3
@@ -28,9 +29,7 @@ const inputHandler = new InputHandler;
 const calculator = new Calculator;
 const layoutEngine = new LayoutEngine;
 
-let currentResultType = null;
-let currentResult = null;
-let displayValue = null;
+
 
 calculateButton.addEventListener("click", function(event) {
     calculate();
@@ -151,7 +150,32 @@ function addPlaceholders(latex) {
         .replaceAll("{}", "{\\square}")
 }
 
-function attachListener() {
+function handleButton(button, forceMode=null) {
+        if (forceMode !== null) inputHandler.switchMode(forceMode, true, shiftButton, alphaButton);
+        if (button !== null) {
+        const action = button[4][inputHandler.mode];
+        if (action !== null) {
+            const finalAction = inputHandler.handleInput(action);
+            renderInput();
+
+            if (finalAction === "calculate") {
+                calculate();
+            }
+
+            if (finalAction === "standard-decimal") {
+                switchAngleMode();
+            }
+
+            if (finalAction === "shift") inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
+            else if (finalAction === "alpha") inputHandler.switchMode("Alpha", false, shiftButton, alphaButton);
+            else inputHandler.switchMode("Main", false, shiftButton, alphaButton);
+        } else {
+            inputHandler.switchMode("Main", false, shiftButton, alphaButton);
+        }
+    }
+}
+
+function attachListeners() {
     buttonsArea.addEventListener("click", (event) => {
         event.stopPropagation();
 
@@ -166,28 +190,70 @@ function attachListener() {
         }
         const button = layoutEngine.getButton(button_id[0], button_id[1]);
         
-        if (button !== null) {
-            const action = button[4][inputHandler.mode];
-            if (action !== null) {
-                const finalAction = inputHandler.handleInput(action);
-                renderInput();
+        handleButton(button);
+    });
 
-                if (finalAction === "calculate") {
-                    calculate();
-                }
+    document.addEventListener('keydown', (event) => {
+        if (event.repeat) return; // TODO repeat arrow keys
+        
+        // Handle shift and alpha lone press
+        if (event.key === shiftKey) {isShiftKeyHeld = true; return;}
+        else isShiftKeyHeld = false;
+        if (event.key === alphaKey) {isAlphaKeyHeld = true;; return;}
+        else isAlphaKeyHeld = false;
 
-                if (finalAction === "standard-decimal") {
-                    switchAngleMode();
-                }
-
-                if (finalAction === "shift") inputHandler.switchMode("Shift");
-                else if (finalAction === "alpha") inputHandler.switchMode("Alpha");
-                else inputHandler.switchMode("Main");
-            }
+        const button = layoutEngine.getButtonFromKey(event.key);
+        if (button !== undefined) {
+            event.preventDefault();
+            button[2].classList.add(`pressed-${button[1] === null ? inputHandler.mode : button[1]}`);
+            handleButton(button[0], button[1]);
         }
+    });
+
+    // TODO handle missing keyup on lost focus.
+    document.addEventListener('keyup', (event) => {
+        
+        // Handle shift and alpha lone press
+        if (event.key === shiftKey && isShiftKeyHeld) {
+            inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
+            isShiftKeyHeld = false;
+            return;
+        }
+        else if (event.key === alphaKey && isAlphaKeyHeld) {
+            inputHandler.switchMode("Alpha", false, shiftButton, alphaButton);
+            isAlphaKeyHeld = false;
+            return;
+        }
+        
+        const button = layoutEngine.getButtonFromKey(event.key);
+        if (button !== undefined) {
+            event.preventDefault();
+            button[2].classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha");
+        }
+        const counterpart = /^[a-z]$/i.test(event.key)
+                ? (event.key === event.key.toLowerCase()
+                    ? event.key.toUpperCase()
+                    : event.key.toLowerCase())
+                : shiftedToUnshifted[event.key] ?? unshiftedToShifted[event.key];
+
+        layoutEngine.getButtonFromKey(counterpart)?.[2]?.classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha");
     });
 }
 
+let currentResultType = null;
+let currentResult = null;
+let displayValue = null;
+
+let isShiftKeyHeld = false;
+let isAlphaKeyHeld = false;
+
+const shiftKey = "Shift";
+const alphaKey = "A";
+
 getAngleMode();
 layoutEngine.createButtons();
-attachListener();
+
+const shiftButton = layoutEngine.getButtonFromKey("Shift")[2];
+const alphaButton = layoutEngine.getButtonFromKey("Alpha")[2];
+
+attachListeners();
