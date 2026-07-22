@@ -199,7 +199,7 @@ function attachListeners() {
         // Handle shift and alpha lone press
         if (event.key === shiftKey) {isShiftKeyHeld = true; return;}
         else isShiftKeyHeld = false;
-        if (event.key === alphaKey) {isAlphaKeyHeld = true;; return;}
+        if (event.key === alphaKey) {isAlphaKeyHeld = true; return;}
         else isAlphaKeyHeld = false;
 
         const button = layoutEngine.getButtonFromKey(event.key);
@@ -248,7 +248,7 @@ let isShiftKeyHeld = false;
 let isAlphaKeyHeld = false;
 
 const shiftKey = "Shift";
-const alphaKey = "A";
+const alphaKey = "a";
 
 getAngleMode();
 layoutEngine.createButtons();

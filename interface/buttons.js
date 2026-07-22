@@ -161,7 +161,7 @@ export const KEYBOARD_MAP = {
     "E": ["ExponentialDigit", null],
         "p": ["ExponentialDigit", "Shift"],
         "e": ["ExponentialDigit", "Alpha"],
-    "a": ["Ans", null],
+    "A": ["Ans", null],
     "Enter": ["Calculate", null],
         "=": ["Calculate", null],  // TODO different in verify mode.
 
