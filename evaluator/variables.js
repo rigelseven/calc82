@@ -5,6 +5,8 @@ export const VARIABLES = {
     "vD": function() {return STORAGE["D"]},
     "vE": function() {return STORAGE["E"]},
     "vF": function() {return STORAGE["F"]},
+    "vX": function() {return STORAGE["X"]},
+    "vY": function() {return STORAGE["Y"]},
     "vM": function() {return STORAGE["M"]},
     "Random": function() {return Decimal.random(3)}
 }
@@ -17,5 +19,7 @@ const STORAGE = {
     "D": new Decimal(4),
     "E": new Decimal(5),
     "F": new Decimal(6),
-    "M": new Decimal(7)
+    "X": new Decimal(7),
+    "Y": new Decimal(8),
+    "M": new Decimal(9)
 }

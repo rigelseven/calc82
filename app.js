@@ -248,7 +248,7 @@ let isShiftKeyHeld = false;
 let isAlphaKeyHeld = false;
 
 const shiftKey = "Shift";
-const alphaKey = "a";
+const alphaKey = "z";
 
 getAngleMode();
 layoutEngine.createButtons();

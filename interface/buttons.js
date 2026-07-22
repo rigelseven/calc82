@@ -165,6 +165,14 @@ export const KEYBOARD_MAP = {
     "Enter": ["Calculate", null],
         "=": ["Calculate", null],  // TODO different in verify mode.
 
+    "A": ["UnaryMinus", "Alpha"],
+    "B": ["Degree", "Alpha"],
+    "C": ["Hyp", "Alpha"],
+    "D": ["Sin", "Alpha",],
+    //"E": ["Cos", "Alpha"],
+    "F": ["Tan", "Alpha"],
+    "X": ["RParen", "Alpha"],
+    "Y": ["StandardToDecimal", "Alpha"],
 }
 
 // TODO: when in alpha, ABCDEFMXY G L R should do their variables/functions
