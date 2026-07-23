@@ -127,7 +127,7 @@ function renderInput() {
     let previousToken = null;
     for (let token of inputHandler.getTokens(true)) {
         if ((token.type === "POWER") && token.exp === "start"
-            && (!(previousToken !== null && ["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES"].includes(previousToken.type))
+            && (!(previousToken !== null && ["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES", "VARIABLE"].includes(previousToken.type))
             && !(previousToken !== null && ["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(previousToken.type) && previousToken.exp === "end")))
             inputText += "{}";
         inputText += `${token.rep}`;
@@ -158,16 +158,21 @@ function handleButton(button, forceMode=null) {
             const finalAction = inputHandler.handleInput(action);
             renderInput();
 
-            if (finalAction === "calculate") {
-                calculate();
+            if (finalAction !== undefined && finalAction.startsWith("Store")) {
+                try {
+                    inputHandler.toLastToken();
+                    inputHandler.addToken({type:"STORE", exp: finalAction.at(-1), rep: `\\rightarrow{${finalAction.at(-1)}}`});
+                    renderInput();
+                    calculate();
+                } catch (error) {;}
             }
 
-            if (finalAction === "standard-decimal") {
-                switchAngleMode();
-            }
-
+            if (finalAction === "calculate") calculate();
+            else if (finalAction === "standard-decimal") switchAngleMode();
+            
             if (finalAction === "shift") inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
             else if (finalAction === "alpha") inputHandler.switchMode("Alpha", false, shiftButton, alphaButton);
+            else if (finalAction === "store") inputHandler.switchMode("Store", false, shiftButton, alphaButton);
             else inputHandler.switchMode("Main", false, shiftButton, alphaButton);
         } else {
             inputHandler.switchMode("Main", false, shiftButton, alphaButton);
@@ -194,17 +199,18 @@ function attachListeners() {
     });
 
     document.addEventListener('keydown', (event) => {
-        if (event.repeat) return; // TODO repeat arrow keys
-        
+
         // Handle shift and alpha lone press
         if (event.key === shiftKey) {isShiftKeyHeld = true; return;}
         else isShiftKeyHeld = false;
         if (event.key === alphaKey) {isAlphaKeyHeld = true; return;}
         else isAlphaKeyHeld = false;
 
-        const button = layoutEngine.getButtonFromKey(event.key);
+        let button = layoutEngine.getButtonFromKey(event.key);
+        if (inputHandler.mode === "Store") button = layoutEngine.getButtonFromKey(event.key, "Variable") ?? button;
         if (button !== undefined) {
             event.preventDefault();
+            if (event.repeat) return; // TODO repeat arrow keys
             button[2].classList.add(`pressed-${button[1] === null ? inputHandler.mode : button[1]}`);
             handleButton(button[0], button[1]);
         }
@@ -225,18 +231,19 @@ function attachListeners() {
             return;
         }
         
-        const button = layoutEngine.getButtonFromKey(event.key);
-        if (button !== undefined) {
-            event.preventDefault();
-            button[2].classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha");
-        }
-        const counterpart = /^[a-z]$/i.test(event.key)
-                ? (event.key === event.key.toLowerCase()
-                    ? event.key.toUpperCase()
-                    : event.key.toLowerCase())
-                : shiftedToUnshifted[event.key] ?? unshiftedToShifted[event.key];
+        for (const button of [layoutEngine.getButtonFromKey(event.key), layoutEngine.getButtonFromKey(event.key, "Variable")]) {
+            if (button !== undefined) {
+                event.preventDefault();
+                button[2].classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store");
+                    const counterpart = /^[a-z]$/i.test(event.key)
+                    ? (event.key === event.key.toLowerCase()
+                        ? event.key.toUpperCase()
+                        : event.key.toLowerCase())
+                    : shiftedToUnshifted[event.key] ?? unshiftedToShifted[event.key];
 
-        layoutEngine.getButtonFromKey(counterpart)?.[2]?.classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha");
+                layoutEngine.getButtonFromKey(counterpart)?.[2]?.classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store");
+            }
+        }
     });
 }
 

@@ -1,8 +1,8 @@
 // [Main, top white, top Shift, top Alpha]
 export const BUTTONS = [
     {
-        Shift: ["", "", "Shift", "", {Main: "Shift", Shift: "Shift", Alpha: "Shift"}],
-        Alpha: ["", "", "", "Alpha", {Main: "Alpha", Shift: "Alpha", Alpha: "Alpha"}],
+        Shift: ["", "", "Shift", "", {Main: "Shift", Shift: "Shift", Alpha: "Shift", Store: "Shift"}],
+        Alpha: ["", "", "", "Alpha", {Main: "Alpha", Shift: "Alpha", Alpha: "Alpha", Store: "Shift"}],
         Spacer1: null,
         Spacer2: null,
         Mode: ["", "MODE", "SET UP", "", {Main: null, Shift: null, Alpha: null}],
@@ -28,21 +28,21 @@ export const BUTTONS = [
     },
 
     {
-        UnaryMinus: ["(-)", "", "", "A", {Main: "UnaryMinus", Shift: null, Alpha: "VarA"}],
-        Degree: ["$\\degree ' \"$", "", "FACT", "B", {Main: "DegMinSec", Shift: "Factors", Alpha: "VarB"}],
-        Hyp: ["hyp", "", "", "C", {Main: "Hyp", Shift: null, Alpha: "VarC"}],
-        Sin: ["sin", "", "$\\textsf{sin}^{-1}$", "D", {Main: "Sin", Shift: "Asin", Alpha: "VarD"}],
-        Cos: ["cos", "", "$\\textsf{cos}^{-1}$", "E", {Main: "Cos", Shift: "Acos", Alpha: "VarE"}],
-        Tan: ["tan", "", "$\\textsf{tan}^{-1}$", "F", {Main: "Tan", Shift: "Atan", Alpha: "VarF"}],
+        UnaryMinus: ["(-)", "", "", "A", {Main: "UnaryMinus", Shift: null, Alpha: "VarA", Store: "StoreA"}],
+        Degree: ["$\\degree ' \"$", "", "FACT", "B", {Main: "DegMinSec", Shift: "Factors", Alpha: "VarB", Store: "StoreB"}],
+        Hyp: ["hyp", "", "", "C", {Main: "Hyp", Shift: null, Alpha: "VarC", Store: "StoreC"}],
+        Sin: ["sin", "", "$\\textsf{sin}^{-1}$", "D", {Main: "Sin", Shift: "Asin", Alpha: "VarD", Store: "StoreD"}],
+        Cos: ["cos", "", "$\\textsf{cos}^{-1}$", "E", {Main: "Cos", Shift: "Acos", Alpha: "VarE", Store: "StoreE"}],
+        Tan: ["tan", "", "$\\textsf{tan}^{-1}$", "F", {Main: "Tan", Shift: "Atan", Alpha: "VarF", Store: "StoreF"}],
     },
 
     {
         Recall: ["RCL", "", "STO", "", {Main: "Recall", Shift: "Store", Alpha: null}],
         Engineering: ["ENG", "", "$\\leftarrow$", "", {Main: "Engineering", Shift: "ReduceDecimal", Alpha: null}],
         LParen: ["(", "", "%", "", {Main: "LParen", Shift: "Percent", Alpha: null}],
-        RParen: [")", "", ",", "X", {Main: "RParen", Shift: "Comma", Alpha: "VarX"}],
-        StandardToDecimal: ["$\\mathsf{\\small{S}{\\Leftrightarrow}{D}}$", "", "$\\mathsf{\\small{{\\scriptstyle a}\\frac{b}{c}}{\\Leftrightarrow}{\\frac{d}{c}}}$", "Y", {Main: "StandardToDecimal", Shift: "MixedToImproper", Alpha: "VarY"}],
-        MemoryPlus: ["M+", "", "M-", "M",{Main: "MemoryAdd", Shift: "MemoryMinus", Alpha: "VarM"}],
+        RParen: [")", "", ",", "X", {Main: "RParen", Shift: "Comma", Alpha: "VarX", Store: "StoreX"}],
+        StandardToDecimal: ["$\\mathsf{\\small{S}{\\Leftrightarrow}{D}}$", "", "$\\mathsf{\\small{{\\scriptstyle a}\\frac{b}{c}}{\\Leftrightarrow}{\\frac{d}{c}}}$", "Y", {Main: "StandardToDecimal", Shift: "MixedToImproper", Alpha: "VarY", Store: "StoreY"}],
+        MemoryPlus: ["M+", "", "M-", "M",{Main: "MemoryAdd", Shift: "MemoryMinus", Alpha: "VarM", Store: "StoreM"}],
     },
 
     {
@@ -129,7 +129,8 @@ export const KEYBOARD_MAP = {
     "c": ["Cos", null],
     "t": ["Tan", null],
 
-    "R": ["Recall", null],
+    "r": ["Recall", null],
+        "R": ["Recall", "Shift"],
     "<": ["Engineering", null],
     "(": ["LParen", null],
         "%": ["LParen", "Shift"],
@@ -158,10 +159,10 @@ export const KEYBOARD_MAP = {
 
     0: [0, null],
     ".": ["Decimal", null],
-    "E": ["ExponentialDigit", null],
+    "x": ["ExponentialDigit", null],
         "p": ["ExponentialDigit", "Shift"],
         "e": ["ExponentialDigit", "Alpha"],
-    "A": ["Ans", null],
+    "a": ["Ans", null],
     "Enter": ["Calculate", null],
         "=": ["Calculate", null],  // TODO different in verify mode.
 
@@ -169,10 +170,30 @@ export const KEYBOARD_MAP = {
     "B": ["Degree", "Alpha"],
     "C": ["Hyp", "Alpha"],
     "D": ["Sin", "Alpha",],
-    //"E": ["Cos", "Alpha"],
+    "E": ["Cos", "Alpha"],
     "F": ["Tan", "Alpha"],
     "X": ["RParen", "Alpha"],
     "Y": ["StandardToDecimal", "Alpha"],
 }
 
-// TODO: when in alpha, ABCDEFMXY G L R should do their variables/functions
+export const VARIABLE_MAP = {
+    "a": ["UnaryMinus", null],
+    "b": ["Degree", null],
+    "c": ["Hyp", null],
+    "d": ["Sin", null],
+    "e": ["Cos", null],
+    "f": ["Tan", null],
+    "x": ["RParen", null],
+    "y": ["StandardToDecimal", null],
+    "m": ["MemoryPlus", null],
+
+    "A": ["UnaryMinus", null],
+    "B": ["Degree", null],
+    "C": ["Hyp", null],
+    "D": ["Sin", null],
+    "E": ["Cos", null],
+    "F": ["Tan", null],
+    "X": ["RParen", null],
+    "Y": ["StandardToDecimal", null],
+    "M": ["MemoryPlus", null]
+}

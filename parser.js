@@ -7,10 +7,17 @@ export default class Parser {
     // Recursive descent parser!!!
     parse() {
         const ast = this.expression();
+        // TODO add colon
+        if (this.getToken().type === "STORE") {
+            const storeVar = this.getToken().value;
+            if (this.tokens[this.current+1].type === "EOF") {
+                return [ast, storeVar];
+            }
+        }
         if(!this.isAtEnd()) {
             throw new Error("Syntax error: Unexpected token", {cause: {type: "Syntax ERROR", position: this.getToken().pos}});
         }
-        return ast;
+        return [ast, null];
     }
 
     expression() {
@@ -242,6 +249,6 @@ export default class Parser {
     }
 
     isAtEnd() {
-        return this.getToken().type === "EOF";
+        return this.getToken().type === "EOF" || this.getToken().type === "STORE";
     }
 }

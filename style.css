@@ -139,3 +139,11 @@
 .pressed-Alpha {
     background-color: red;
 }
+
+.pressed-Store {
+    background-color: lightpink;
+}
+
+.pressed-Recall {
+    background-color: lightgreen;
+}

@@ -1,6 +1,6 @@
 import { BINARY } from "./binary.js";
 import { CONSTANTS } from "./constants.js";
-import { VARIABLES } from "./variables.js"
+import { variableManager } from "./variables.js"
 import { FUNCTIONS } from "./functions.js";
 import { POSTFIX } from "./postfix.js";
 import { UNARY } from "./unary.js"
@@ -84,9 +84,7 @@ export default class Evaluator {
     }
 
     evaluateVariable(node) {
-        const operation = VARIABLES[node.name];
-
-        return operation();
+        return variableManager.getVariable(node.name);
     }
 
     evaluateDecimal(node) {

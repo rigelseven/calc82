@@ -52,13 +52,13 @@ export const TOKENS = {
     "LCM": { type: "FUNCTION", exp: "lcm", rep: "\\text{LCM}("},
     "GCD": { type: "FUNCTION", exp: "gcd", rep: "\\text{GCD}("},
 
-    "VarA": { type: "VARIABLE", exp: "vA", rep: "\\text{A}"},
-    "VarB": { type: "VARIABLE", exp: "vB", rep: "\\text{B}"},
-    "VarC": { type: "VARIABLE", exp: "vC", rep: "\\text{C}"},
-    "VarD": { type: "VARIABLE", exp: "vD", rep: "\\text{D}"},
-    "VarE": { type: "VARIABLE", exp: "vE", rep: "\\text{E}"},
-    "VarF": { type: "VARIABLE", exp: "vF", rep: "\\text{F}"},
-    "VarX": { type: "VARIABLE", exp: "vX", rep: "\\text{X}"},
-    "VarY": { type: "VARIABLE", exp: "vY", rep: "\\text{Y}"},
-    "VarM": { type: "VARIABLE", exp: "vM", rep: "\\text{M}"}
+    "VarA": { type: "VARIABLE", exp: "A", rep: "\\text{A}"},
+    "VarB": { type: "VARIABLE", exp: "B", rep: "\\text{B}"},
+    "VarC": { type: "VARIABLE", exp: "C", rep: "\\text{C}"},
+    "VarD": { type: "VARIABLE", exp: "D", rep: "\\text{D}"},
+    "VarE": { type: "VARIABLE", exp: "E", rep: "\\text{E}"},
+    "VarF": { type: "VARIABLE", exp: "F", rep: "\\text{F}"},
+    "VarX": { type: "VARIABLE", exp: "X", rep: "\\text{X}"},
+    "VarY": { type: "VARIABLE", exp: "Y", rep: "\\text{Y}"},
+    "VarM": { type: "VARIABLE", exp: "M", rep: "\\text{M}"}
 }

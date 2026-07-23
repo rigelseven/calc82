@@ -1,4 +1,4 @@
-import { BUTTONS, KEYBOARD_MAP, NAV_BUTTONS, NAV_DIMENSIONS, ROW_HEIGHTS } from "./buttons.js";
+import { BUTTONS, KEYBOARD_MAP, NAV_BUTTONS, NAV_DIMENSIONS, ROW_HEIGHTS, VARIABLE_MAP } from "./buttons.js";
 
 export default class LayoutEngine {
     constructor() {
@@ -88,8 +88,10 @@ export default class LayoutEngine {
         return Object.values(BUTTONS[row])[col]
     }
 
-    getButtonFromKey(key) {
-        const keyMap = KEYBOARD_MAP[key];
+    getButtonFromKey(key, specialMap = null) {
+        let keyMap;
+        if (specialMap === "Variable") keyMap = VARIABLE_MAP[key];
+        else keyMap = KEYBOARD_MAP[key];
         if (keyMap)
             return [this.buttons[keyMap[0]].entry, keyMap[1], this.buttons[keyMap[0]].button];
     }
