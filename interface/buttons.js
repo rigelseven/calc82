@@ -28,21 +28,21 @@ export const BUTTONS = [
     },
 
     {
-        UnaryMinus: ["(-)", "", "", "A", {Main: "UnaryMinus", Shift: null, Alpha: "VarA", Store: "StoreA"}],
-        Degree: ["$\\degree ' \"$", "", "FACT", "B", {Main: "DegMinSec", Shift: "Factors", Alpha: "VarB", Store: "StoreB"}],
-        Hyp: ["hyp", "", "", "C", {Main: "Hyp", Shift: null, Alpha: "VarC", Store: "StoreC"}],
-        Sin: ["sin", "", "$\\textsf{sin}^{-1}$", "D", {Main: "Sin", Shift: "Asin", Alpha: "VarD", Store: "StoreD"}],
-        Cos: ["cos", "", "$\\textsf{cos}^{-1}$", "E", {Main: "Cos", Shift: "Acos", Alpha: "VarE", Store: "StoreE"}],
-        Tan: ["tan", "", "$\\textsf{tan}^{-1}$", "F", {Main: "Tan", Shift: "Atan", Alpha: "VarF", Store: "StoreF"}],
+        UnaryMinus: ["(-)", "", "", "A", {Main: "UnaryMinus", Shift: null, Alpha: "VarA", Store: "StoreA", Recall: "RecallA"}],
+        Degree: ["$\\degree ' \"$", "", "FACT", "B", {Main: "DegMinSec", Shift: "Factors", Alpha: "VarB", Store: "StoreB", Recall: "RecallB"}],
+        Hyp: ["hyp", "", "", "C", {Main: "Hyp", Shift: null, Alpha: "VarC", Store: "StoreC", Recall: "RecallC"}],
+        Sin: ["sin", "", "$\\textsf{sin}^{-1}$", "D", {Main: "Sin", Shift: "Asin", Alpha: "VarD", Store: "StoreD", Recall: "RecallD"}],
+        Cos: ["cos", "", "$\\textsf{cos}^{-1}$", "E", {Main: "Cos", Shift: "Acos", Alpha: "VarE", Store: "StoreE", Recall: "RecallE"}],
+        Tan: ["tan", "", "$\\textsf{tan}^{-1}$", "F", {Main: "Tan", Shift: "Atan", Alpha: "VarF", Store: "StoreF", Recall: "RecallF"}],
     },
 
     {
-        Recall: ["RCL", "", "STO", "", {Main: "Recall", Shift: "Store", Alpha: null}],
+        Recall: ["RCL", "", "STO", "", {Main: "Recall", Shift: "Store", Alpha: null, Store: "Store", Recall: "Recall"}],
         Engineering: ["ENG", "", "$\\leftarrow$", "", {Main: "Engineering", Shift: "ReduceDecimal", Alpha: null}],
         LParen: ["(", "", "%", "", {Main: "LParen", Shift: "Percent", Alpha: null}],
-        RParen: [")", "", ",", "X", {Main: "RParen", Shift: "Comma", Alpha: "VarX", Store: "StoreX"}],
-        StandardToDecimal: ["$\\mathsf{\\small{S}{\\Leftrightarrow}{D}}$", "", "$\\mathsf{\\small{{\\scriptstyle a}\\frac{b}{c}}{\\Leftrightarrow}{\\frac{d}{c}}}$", "Y", {Main: "StandardToDecimal", Shift: "MixedToImproper", Alpha: "VarY", Store: "StoreY"}],
-        MemoryPlus: ["M+", "", "M-", "M",{Main: "MemoryAdd", Shift: "MemoryMinus", Alpha: "VarM", Store: "StoreM"}],
+        RParen: [")", "", ",", "X", {Main: "RParen", Shift: "Comma", Alpha: "VarX", Store: "StoreX", Recall: "RecallX"}],
+        StandardToDecimal: ["$\\mathsf{\\small{S}{\\Leftrightarrow}{D}}$", "", "$\\mathsf{\\small{{\\scriptstyle a}\\frac{b}{c}}{\\Leftrightarrow}{\\frac{d}{c}}}$", "Y", {Main: "StandardToDecimal", Shift: "MixedToImproper", Alpha: "VarY", Store: "StoreY", Recall: "RecallY"}],
+        MemoryPlus: ["M+", "", "M-", "M",{Main: "MemoryAdd", Shift: "MemoryMinus", Alpha: "VarM", Store: "StoreM", Recall: "RecallM"}],
     },
 
     {

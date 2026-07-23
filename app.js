@@ -158,13 +158,23 @@ function handleButton(button, forceMode=null) {
             const finalAction = inputHandler.handleInput(action);
             renderInput();
 
-            if (finalAction !== undefined && finalAction.startsWith("Store")) {
-                try {
-                    inputHandler.toLastToken();
-                    inputHandler.addToken({type:"STORE", exp: finalAction.at(-1), rep: `\\rightarrow{${finalAction.at(-1)}}`});
+            if (finalAction !== undefined && finalAction !== null) {
+                if (finalAction.startsWith("Store")) {
+                    try {
+                        inputHandler.toLastToken();
+                        inputHandler.addToken({type:"STORE", exp: finalAction.at(-1), rep: `\\rightarrow{\\text{${finalAction.at(-1)}}}`});
+                        renderInput();
+                        calculate();
+                    } catch (error) {;}
+                }
+
+                if (finalAction.startsWith("Recall")) {
+                    console.log(finalAction.at(-1));
+                    const toCalculate = inputHandler.inputTokens.length === 0;
+                    inputHandler.addToken({type:"VARIABLE", exp: finalAction.at(-1), rep: `\\text{${finalAction.at(-1)}}`});
                     renderInput();
-                    calculate();
-                } catch (error) {;}
+                    if (toCalculate) calculate();
+                }
             }
 
             if (finalAction === "calculate") calculate();
@@ -173,6 +183,7 @@ function handleButton(button, forceMode=null) {
             if (finalAction === "shift") inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
             else if (finalAction === "alpha") inputHandler.switchMode("Alpha", false, shiftButton, alphaButton);
             else if (finalAction === "store") inputHandler.switchMode("Store", false, shiftButton, alphaButton);
+            else if (finalAction === "recall") inputHandler.switchMode("Recall", false, shiftButton, alphaButton);
             else inputHandler.switchMode("Main", false, shiftButton, alphaButton);
         } else {
             inputHandler.switchMode("Main", false, shiftButton, alphaButton);
@@ -207,7 +218,8 @@ function attachListeners() {
         else isAlphaKeyHeld = false;
 
         let button = layoutEngine.getButtonFromKey(event.key);
-        if (inputHandler.mode === "Store") button = layoutEngine.getButtonFromKey(event.key, "Variable") ?? button;
+        if (inputHandler.mode === "Store" || inputHandler.mode === "Recall")
+            button = layoutEngine.getButtonFromKey(event.key, "Variable") ?? button;
         if (button !== undefined) {
             event.preventDefault();
             if (event.repeat) return; // TODO repeat arrow keys
@@ -234,14 +246,14 @@ function attachListeners() {
         for (const button of [layoutEngine.getButtonFromKey(event.key), layoutEngine.getButtonFromKey(event.key, "Variable")]) {
             if (button !== undefined) {
                 event.preventDefault();
-                button[2].classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store");
+                button[2].classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store", "pressed-Recall");
                     const counterpart = /^[a-z]$/i.test(event.key)
                     ? (event.key === event.key.toLowerCase()
                         ? event.key.toUpperCase()
                         : event.key.toLowerCase())
                     : shiftedToUnshifted[event.key] ?? unshiftedToShifted[event.key];
 
-                layoutEngine.getButtonFromKey(counterpart)?.[2]?.classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store");
+                layoutEngine.getButtonFromKey(counterpart)?.[2]?.classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store", "pressed-Recall");
             }
         }
     });
