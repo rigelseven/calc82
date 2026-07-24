@@ -9,7 +9,8 @@ class VariableManager {
             "F": new Decimal(0),
             "X": new Decimal(0),
             "Y": new Decimal(0),
-            "M": new Decimal(0)
+            "M": new Decimal(0),
+            "Ans": new Decimal(0)
         };
     }
     

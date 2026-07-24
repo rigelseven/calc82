@@ -24,6 +24,8 @@ export default class Calculator {
 
         if (storeVar !== null) variableManager.setVariable(storeVar, result);
 
+        variableManager.setVariable("Ans", result);
+
         this.decimalResult = decimalResult;
         this.fractionResult = fractionResult;
         return {result, decimalResult, fractionResult, tokens, ast};

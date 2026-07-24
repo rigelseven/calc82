@@ -60,5 +60,7 @@ export const TOKENS = {
     "VarF": { type: "VARIABLE", exp: "F", rep: "\\text{F}"},
     "VarX": { type: "VARIABLE", exp: "X", rep: "\\text{X}"},
     "VarY": { type: "VARIABLE", exp: "Y", rep: "\\text{Y}"},
-    "VarM": { type: "VARIABLE", exp: "M", rep: "\\text{M}"}
+    "VarM": { type: "VARIABLE", exp: "M", rep: "\\text{M}"},
+
+    "Ans": { type: "VARIABLE", exp: "Ans", rep: "\\text{Ans}"}
 }
