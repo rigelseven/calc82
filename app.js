@@ -4,6 +4,7 @@ import Calculator from "./calculator.js";
 import { InputHandler } from "./input/input.js";
 import LayoutEngine from "./interface/layout.js";
 import { shiftedToUnshifted, unshiftedToShifted } from "./interface/keyboard.js";
+import { historyManager } from "./history.js";
 
 // TODO: Depends on Norm1/Norm2
 // Norm1: toExpNeg = -3
@@ -32,10 +33,10 @@ const layoutEngine = new LayoutEngine;
 
 
 calculateButton.addEventListener("click", function(event) {
-    calculate();
+    calculate(true);
 });
 
-function calculate() {
+function calculate(storeHistory = true) {
     try {
         const value = inputHandler.getTokens();
         const {res, decimalResult, fractionResult, tokens, ast} = calculator.calculate(value);
@@ -53,6 +54,8 @@ function calculate() {
         
         if (fractionResult) setOutput("fraction");
         else setOutput("decimal");
+
+        if (storeHistory) historyManager.pushHistory(value, fractionResult, decimalResult);
         
     } catch (error) {
         let errorMessage = error.message;
@@ -75,7 +78,7 @@ function calculate() {
 // Angle mode selector
 angleModeSelector.addEventListener("change", function(event) {
     getAngleMode();
-    calculate();
+    calculate(false);
 });
 
 function getAngleMode() {
@@ -158,28 +161,42 @@ function handleButton(button, forceMode=null) {
             const finalAction = inputHandler.handleInput(action);
             renderInput();
 
+            // Handle store/recall buttons
             if (finalAction !== undefined && finalAction !== null) {
                 if (finalAction.startsWith("Store")) {
                     try {
                         inputHandler.toLastToken();
                         inputHandler.addToken({type:"STORE", exp: finalAction.at(-1), rep: `\\rightarrow{\\text{${finalAction.at(-1)}}}`});
                         renderInput();
-                        calculate();
+                        calculate(true);
                     } catch (error) {;}
                 }
 
                 if (finalAction.startsWith("Recall")) {
-                    console.log(finalAction.at(-1));
                     const toCalculate = inputHandler.inputTokens.length === 0;
                     inputHandler.addToken({type:"VARIABLE", exp: finalAction.at(-1), rep: `\\text{${finalAction.at(-1)}}`});
                     renderInput();
-                    if (toCalculate) calculate();
+                    if (toCalculate) calculate(true);
                 }
             }
 
-            if (finalAction === "calculate") calculate();
+            // Handle history buresttons
+            if (finalAction === "nextHistory" || finalAction === "previousHistory") {
+                let h;
+                if (finalAction === "nextHistory") h = historyManager.nextHistory();
+                else if (finalAction === "previousHistory") h = historyManager.prevHistory();
+                inputHandler.setTokens(h.expression);
+                calculator.fractionResult = h.fractionResult;
+                calculator.decimalResult = h.decimalResult;
+                renderInput();
+                setOutput(calculator.fractionResult !== undefined ? "fraction" : "decimal");
+            }
+
+            // Handle calculation
+            else if (finalAction === "calculate") calculate(true);
             else if (finalAction === "standard-decimal") switchAngleMode();
             
+            // Handle mode buttons
             if (finalAction === "shift") inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
             else if (finalAction === "alpha") inputHandler.switchMode("Alpha", false, shiftButton, alphaButton);
             else if (finalAction === "store") inputHandler.switchMode("Store", false, shiftButton, alphaButton);
@@ -276,3 +293,4 @@ const shiftButton = layoutEngine.getButtonFromKey("Shift")[2];
 const alphaButton = layoutEngine.getButtonFromKey("Alpha")[2];
 
 attachListeners();
+renderInput()

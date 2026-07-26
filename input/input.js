@@ -17,11 +17,12 @@ export class InputHandler {
                 return this.moveCursor("left", true);
             case "ArrowRight":
                 return this.moveCursor("right", true);
-            case "ArrowUp":  // TODO multi answer navigation
-                return this.traverseFraction("up");
+            case "ArrowUp":
+                if (this.traverseFraction("up")) return;
+                return "previousHistory"
             case "ArrowDown":
-                return this.traverseFraction("down");
-
+                if (this.traverseFraction("down")) return;
+                return "nextHistory"
             case "Shift":
                 return "shift";
             case "Alpha":
@@ -108,6 +109,11 @@ export class InputHandler {
     getTokens(cursor = false) {
         if (cursor) return this.inputTokens.toSpliced(this.cursorPosition, 0, {type:"CURSOR", rep:"\\clap{\\rule{0.1em}{0.5em}}"}) // TODO: 0.5/0.7 depends on if in fraction etc.
         return this.inputTokens;
+    }
+
+    setTokens(input) {
+        this.inputTokens = [...input];
+        this.cursorPosition = this.inputTokens.length;
     }
 
     getCursorToken(direction = "left") {
