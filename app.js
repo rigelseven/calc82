@@ -67,9 +67,7 @@ function calculate(storeHistory = true) {
             }
         }
         textDisplay.textContent=`= ${errorMessage}`;
-        katex.render("\\text{errorMessage}", outputDisplay)
-
-        outputDisplay.innerHTML="";
+        katex.render(`\\text{${errorMessage}}`, outputDisplay, {throwOnError: false, strict: "ignore"})
         currentResultType = null;
         console.error(error);
     }
