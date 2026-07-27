@@ -62,7 +62,9 @@ export class InputHandler {
                 "Power",
                 "Factorial",
                 "Percent"
-            ].includes(input)) {
+            ].includes(input) ||
+                (typeof(input) === "string" && input.startsWith("Store")))
+            {
                 this.addToken({type: "VARIABLE", exp: "Ans", rep: "\\text{Ans}"});
             }
         }
