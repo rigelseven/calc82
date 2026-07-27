@@ -55,8 +55,11 @@ function calculate(storeHistory = true) {
         if (fractionResult) setOutput("fraction");
         else setOutput("decimal");
 
+        inputHandler.setReview();
+        renderInput();
+
         if (storeHistory) historyManager.pushHistory(value, fractionResult, decimalResult);
-        
+
     } catch (error) {
         let errorMessage = error.message;
         if (error.cause) {
@@ -126,7 +129,8 @@ function setOutput(outputType) {
 function renderInput() {
     let inputText = "";
     let previousToken = null;
-    for (let token of inputHandler.getTokens(true)) {
+    let showCursor = inputHandler.inputMode === "Edit";
+    for (let token of inputHandler.getTokens(showCursor)) {
         if ((token.type === "POWER") && token.exp === "start"
             && (!(previousToken !== null && ["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES", "VARIABLE"].includes(previousToken.type))
             && !(previousToken !== null && ["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(previousToken.type) && previousToken.exp === "end")))

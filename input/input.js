@@ -1,3 +1,4 @@
+import { historyManager } from "../history.js";
 import { TOKENS } from "./inputTokens.js";
 
 export class InputHandler {
@@ -5,24 +6,82 @@ export class InputHandler {
         this.inputTokens = tokens;
         this.cursorPosition = 0;
         this.mode = "Main";
+        this.inputMode = "Edit";
     }
 
     handleInput(input) {
         const token = TOKENS[input];
 
+        if (this.inputMode == "Review") {
+            switch(input) {
+            case "ArrowLeft":
+                this.setEdit();
+                this.cursorPosition = this.inputTokens.length;
+                return;
+            case "ArrowRight":
+                this.setEdit();
+                this.cursorPosition = 0;
+                return;
+            case "ArrowUp":
+                if (this.inputMode == "Review") return "previousHistory";
+            case "ArrowDown":
+                if (this.inputMode == "Review") return "nextHistory";
+            case "Shift":
+                return "shift";
+            case "Alpha":
+                return "alpha";
+
+            case "Calculate":
+                return "calculate";
+            case "StandardToDecimal":
+                return "standard-decimal";
+            case "Store":
+                return "store";
+            case "Recall":
+                return "recall";
+            case "Delete":
+                return;
+            case "AllClear":
+                this.inputTokens = [];
+                this.cursorPosition = 0;
+                return;
+
+            default:
+                this.setEdit();
+                this.setTokens([]);
+                console.log(this.cursorPosition)
+            }
+
+            if ([
+                "Plus",
+                "Minus",
+                "Multiply",
+                "Divide",
+                "Square",
+                "Cube",
+                "Power",
+                "Factorial",
+                "Percent"
+            ].includes(input)) {
+                this.addToken({type: "VARIABLE", exp: "Ans", rep: "\\text{Ans}"});
+            }
+        }
+
         if (token !== undefined) return this.addToken(token);
 
         switch(input) {
             case "ArrowLeft":
-                return this.moveCursor("left", true);
+                this.moveCursor("left", true);
+                return;
             case "ArrowRight":
-                return this.moveCursor("right", true);
+                this.moveCursor("right", true);
+                return;
             case "ArrowUp":
                 if (this.traverseFraction("up")) return;
-                return "previousHistory"
+                return "previousHistory";
             case "ArrowDown":
                 if (this.traverseFraction("down")) return;
-                return "nextHistory"
+                return "nextHistory";
             case "Shift":
                 return "shift";
             case "Alpha":
@@ -114,6 +173,16 @@ export class InputHandler {
     setTokens(input) {
         this.inputTokens = [...input];
         this.cursorPosition = this.inputTokens.length;
+    }
+
+    setReview() {
+        this.cursorPosition = this.inputTokens.length;
+        this.inputMode = "Review";
+    }
+
+    setEdit() {
+        this.inputMode = "Edit";
+        katex.render("", document.querySelector("#output-display"));  // TODO dont hard code
     }
 
     getCursorToken(direction = "left") {
@@ -253,7 +322,8 @@ export class InputHandler {
                     "POWER",
                     "ROOT",
                     "SQRT",
-                    "ABS"
+                    "ABS",
+                    "VARIABLE"
                 ].includes(token.type) ||
                 (token.type === "FUNCTION" && step === "right") ||
                 currentBracket > 0 ||
