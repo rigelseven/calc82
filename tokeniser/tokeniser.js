@@ -87,7 +87,7 @@ export default class Tokeniser {
         const previous = this.tokens.at(-1);
         if (previous && this.needsImpMult(previous, token)) {
             this.tokens.push({
-                type: "MULTIPLY",
+                type: "IMPLICITMULTIPLY",
                 pos: this.position
             });
         }

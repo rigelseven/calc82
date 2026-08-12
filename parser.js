@@ -122,7 +122,27 @@ export default class Parser {
             };
 
         }
-        return this.postfix();
+        return this.implicit();
+    }
+
+    implicit() {
+        let expr = this.postfix();
+
+        while (this.match("IMPLICITMULTIPLY")) {
+            const operator = this.getPreviousToken();
+            const right = this.fraction();
+
+            expr = {
+                type: "BinaryExpression",
+                operator: "MULTIPLY",
+                pos: right.thisPos !== undefined ? right.thisPos : right.pos,
+                thisPos: operator.pos,
+                left: expr,
+                right
+            }
+
+        }
+        return expr;
     }
 
     postfix() {
