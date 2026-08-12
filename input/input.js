@@ -24,8 +24,10 @@ export class InputHandler {
                 return;
             case "ArrowUp":
                 if (this.inputMode == "Review") return "previousHistory";
+                return;
             case "ArrowDown":
                 if (this.inputMode == "Review") return "nextHistory";
+                return;
             case "Shift":
                 return "shift";
             case "Alpha":
@@ -44,6 +46,7 @@ export class InputHandler {
             case "AllClear":
                 this.inputTokens = [];
                 this.cursorPosition = 0;
+                this.setEdit();
                 return;
 
             default:
@@ -80,10 +83,8 @@ export class InputHandler {
                 return;
             case "ArrowUp":
                 if (this.traverseFraction("up")) return;
-                return "previousHistory";
             case "ArrowDown":
                 if (this.traverseFraction("down")) return;
-                return "nextHistory";
             case "Shift":
                 return "shift";
             case "Alpha":
