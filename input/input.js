@@ -12,6 +12,25 @@ export class InputHandler {
     handleInput(input) {
         const token = TOKENS[input];
 
+        if (this.inputMode == "Error") {
+            switch(input) {
+            case "ArrowLeft":
+                this.setEdit();
+                return;
+            case "ArrowRight":
+                this.setEdit();
+                return;
+            case "AllClear":
+                this.inputTokens = [];
+                this.cursorPosition = 0;
+                this.setEdit();
+                return;
+
+            default:
+                return "ErrorDisplay";
+            }
+        }
+
         if (this.inputMode == "Review") {
             switch(input) {
             case "ArrowLeft":
@@ -83,8 +102,18 @@ export class InputHandler {
                 return;
             case "ArrowUp":
                 if (this.traverseFraction("up")) return;
+                if (this.inputTokens.length === 0) {
+                    this.setReview();
+                    return "latestHistory";
+                }
+                return;
             case "ArrowDown":
                 if (this.traverseFraction("down")) return;
+                if (this.inputTokens.length === 0) {
+                    this.setReview();
+                    return "oldestHistory";
+                }
+                return;
             case "Shift":
                 return "shift";
             case "Alpha":
@@ -181,6 +210,10 @@ export class InputHandler {
     setReview() {
         this.cursorPosition = this.inputTokens.length;
         this.inputMode = "Review";
+    }
+
+    setError() {
+        this.inputMode = "Error";
     }
 
     setEdit() {

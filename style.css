@@ -147,3 +147,13 @@
 .pressed-Recall {
     background-color: lightgreen;
 }
+
+#message-display {
+    position: absolute;
+    align-self: flex-start;
+    font-size: 20cqb;
+}
+
+.message-display-line {
+    height: 25cqb;
+}

@@ -5,6 +5,7 @@ import { InputHandler } from "./input/input.js";
 import LayoutEngine from "./interface/layout.js";
 import { shiftedToUnshifted, unshiftedToShifted } from "./interface/keyboard.js";
 import { historyManager } from "./history.js";
+import { display } from "./display.js";
 
 // TODO: Depends on Norm1/Norm2
 // Norm1: toExpNeg = -3
@@ -70,7 +71,13 @@ function calculate(storeHistory = true) {
             }
         }
         textDisplay.textContent=`= ${errorMessage}`;
-        katex.render(`\\text{${errorMessage}}`, outputDisplay, {throwOnError: false, strict: "ignore"})
+        display.renderError(errorMessage);
+        inputHandler.setError();
+
+        katex.render("", inputDisplay, {
+            throwOnError: false
+        });
+
         currentResultType = null;
         console.error(error);
     }
@@ -114,18 +121,6 @@ function setOutput(outputType) {
     });
 }
 
-/*document.addEventListener('keydown', (event) => {
-    const action = inputHandler.handleKey(event.key);
-    if (action !== "default") event.preventDefault();
-    renderInput();
-    if (action == "calculate") {
-        calculate();
-    }
-    if (action == "standard-decimal") {
-        switchAngleMode();
-    }
-});*/
-
 function renderInput() {
     let inputText = "";
     let previousToken = null;
@@ -161,6 +156,8 @@ function handleButton(button, forceMode=null) {
         const action = button[4][inputHandler.mode];
         if (action !== null) {
             const finalAction = inputHandler.handleInput(action);
+            if (finalAction === "ErrorDisplay") return;
+            else display.clearDisplay();
             renderInput();
 
             // Handle store/recall buttons
@@ -183,10 +180,12 @@ function handleButton(button, forceMode=null) {
             }
 
             // Handle history buresttons
-            if (finalAction === "nextHistory" || finalAction === "previousHistory") {
+            if (finalAction === "nextHistory" || finalAction === "previousHistory" || finalAction === "oldestHistory" || finalAction === "latestHistory") {
                 let h;
                 if (finalAction === "nextHistory") h = historyManager.nextHistory();
                 else if (finalAction === "previousHistory") h = historyManager.prevHistory();
+                else if (finalAction === "oldestHistory") h = historyManager.oldestHistory();
+                else if (finalAction === "latestHistory") h = historyManager.latestHistory();
                 inputHandler.setTokens(h.expression);
                 calculator.fractionResult = h.fractionResult;
                 calculator.decimalResult = h.decimalResult;
@@ -295,4 +294,4 @@ const shiftButton = layoutEngine.getButtonFromKey("Shift")[2];
 const alphaButton = layoutEngine.getButtonFromKey("Alpha")[2];
 
 attachListeners();
-renderInput()
+renderInput();
