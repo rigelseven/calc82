@@ -23,8 +23,10 @@ export default class Calculator {
         if (fractionResult instanceof Decimal) fractionResult = undefined;
 
         if (storeVar !== null) variableManager.setVariable(storeVar, result);
-
-        variableManager.setVariable("Ans", result);
+        if (storeVar === "MPLUS") variableManager.setVariable("M", variableManager.getVariable("M").plus(result));
+        else if (storeVar === "MMINUS") variableManager.setVariable("M", variableManager.getVariable("M").minus(result));
+        else variableManager.setVariable("Ans", result);
+        console.log(variableManager.getVariable("M"));
 
         this.decimalResult = decimalResult;
         this.fractionResult = fractionResult;

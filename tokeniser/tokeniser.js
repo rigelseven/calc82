@@ -49,7 +49,7 @@ export default class Tokeniser {
             }
 
             // Constants/variables
-            if (c.type === "CONSTANT" || c.type === "VARIABLE"  || c.type === "STORE") {
+            if (c.type === "CONSTANT" || c.type === "VARIABLE"  || c.type === "STORE" || c.type === "MPLUS" || c.type === "MMINUS") {
                 this.addToken({
                     type: c.type,
                     value: c.exp,

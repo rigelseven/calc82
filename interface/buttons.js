@@ -42,7 +42,7 @@ export const BUTTONS = [
         LParen: ["(", "", "%", "", {Main: "LParen", Shift: "Percent", Alpha: null}],
         RParen: [")", "", ",", "X", {Main: "RParen", Shift: "Comma", Alpha: "VarX", Store: "StoreX", Recall: "RecallX"}],
         StandardToDecimal: ["$\\mathsf{\\small{S}{\\Leftrightarrow}{D}}$", "", "$\\mathsf{\\small{{\\scriptstyle a}\\frac{b}{c}}{\\Leftrightarrow}{\\frac{d}{c}}}$", "Y", {Main: "StandardToDecimal", Shift: "MixedToImproper", Alpha: "VarY", Store: "StoreY", Recall: "RecallY"}],
-        MemoryPlus: ["M+", "", "M-", "M",{Main: "MemoryAdd", Shift: "MemoryMinus", Alpha: "VarM", Store: "StoreM", Recall: "RecallM"}],
+        MemoryPlus: ["M+", "", "M-", "M",{Main: "StoreMPlus", Shift: "StoreMMinus", Alpha: "VarM", Store: "StoreM", Recall: "RecallM"}],
     },
 
     {

@@ -165,7 +165,10 @@ function handleButton(button, forceMode=null) {
                 if (finalAction.startsWith("Store")) {
                     try {
                         inputHandler.toLastToken();
-                        inputHandler.addToken({type:"STORE", exp: finalAction.at(-1), rep: `\\rightarrow{\\text{${finalAction.at(-1)}}}`});
+                        // Handle memory plus/minus buttons
+                        if (finalAction == "StoreMPlus") inputHandler.addToken({type:"MPLUS", exp: "MPLUS", rep: `\\text{M+}`});
+                        else if (finalAction == "StoreMMinus") inputHandler.addToken({type:"MMINUS", exp: "MMINUS", rep: `\\text{M-}`});
+                        else inputHandler.addToken({type:"STORE", exp: finalAction.at(-1), rep: `\\rightarrow{\\text{${finalAction.at(-1)}}}`});
                         renderInput();
                         calculate(true);
                     } catch (error) {;}
@@ -179,7 +182,7 @@ function handleButton(button, forceMode=null) {
                 }
             }
 
-            // Handle history buresttons
+            // Handle history buttons
             if (finalAction === "nextHistory" || finalAction === "previousHistory" || finalAction === "oldestHistory" || finalAction === "latestHistory") {
                 let h;
                 if (finalAction === "nextHistory") h = historyManager.nextHistory();

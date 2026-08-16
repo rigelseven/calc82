@@ -8,7 +8,7 @@ export default class Parser {
     parse() {
         const ast = this.expression();
         // TODO add colon
-        if (this.getToken().type === "STORE") {
+        if (["STORE", "MPLUS", "MMINUS"].includes(this.getToken().type)) {
             const storeVar = this.getToken().value;
             if (this.tokens[this.current+1].type === "EOF") {
                 return [ast, storeVar];
