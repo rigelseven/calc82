@@ -34,7 +34,8 @@ class Display {
     }
     
     clearDisplay() {
-        this.displayLines = ["","","",""];
+        console.log("clear")
+        this.displayLines = [[""],[""],[""],[""]];
         this.renderDisplay();
     }
 
