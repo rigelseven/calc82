@@ -152,8 +152,12 @@
     position: absolute;
     align-self: flex-start;
     font-size: 20cqb;
+    width: 100cqw;
 }
 
 .message-display-line {
     height: 25cqb;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
 }

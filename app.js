@@ -298,3 +298,5 @@ const alphaButton = layoutEngine.getButtonFromKey("Alpha")[2];
 
 attachListeners();
 renderInput();
+
+display.renderMenu(["MthIO","LineIO","Deg","Rad","Gra","Fix","Sci", "Norm"])

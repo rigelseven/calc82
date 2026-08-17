@@ -11,7 +11,20 @@ class Display {
 
     renderDisplay() {
         for (const line in this.displayLines) {
-            this.documentLines[line].innerText = this.displayLines[line];
+            const displayLine = this.displayLines[line];
+            if (displayLine.length === 1) this.documentLines[line].innerText = displayLine[0];
+            else {
+                const div1 = document.createElement('div');
+                div1.className = 'message-display-half';
+                div1.textContent = displayLine[0];
+
+                const div2 = document.createElement('div');
+                div2.className = 'message-display-half';
+                div2.textContent = displayLine[1];
+
+                // Append divs to the parent
+                this.documentLines[line].append(div1, div2);
+            }
         }
     }
 
@@ -19,7 +32,7 @@ class Display {
         this.displayLines = newLines;
         this.renderDisplay();
     }
-
+    
     clearDisplay() {
         this.displayLines = ["","","",""];
         this.renderDisplay();
@@ -28,12 +41,21 @@ class Display {
     renderError(errorText) {
         this.updateDisplay(
             [
-                errorText,
-                "",
-                "[AC]: Cancel",
-                "[◀][▶]: Goto"
+                [errorText],
+                [""],
+                ["[AC]: Cancel"],
+                ["[◀][▶]: Goto"]
             ]
         )
+    }
+
+    renderMenu(options) {
+        console.log(options.length)
+        let optionsText = [[], [], [], []];
+        for (let idx in options) {
+            optionsText[Math.floor(idx/2)].push(`${Number(idx)+1}: ${options[idx]}`);
+        }
+        this.updateDisplay(optionsText);
     }
 }
 
