@@ -8,6 +8,7 @@ export default class Tokeniser {
     }
 
     tokenise() {
+        console.log(this.input)
         while (!this.isAtEnd()) {
             const c = this.getCharacter();
 
@@ -30,6 +31,9 @@ export default class Tokeniser {
 
             // Multi char operators
             if (c.type in MULTICHAR) {
+                if (c.type === "POWER" && this.getPreviousCharacter().type == "POWER") {
+                    throw new Error(`Syntax error: Disallowed power token`, {cause: {type: "Syntax ERROR", position: this.position}})
+                }
                 for (let token of MULTICHAR[c.type][c.exp]) {
                     if (token.f) {
                         this.addToken({
@@ -74,7 +78,7 @@ export default class Tokeniser {
                 continue;
             }
 
-            throw new Error(`Syntax error: Unexpected input token ${c.type}`, {cause: {type: "Syntax ERROR", position: this.getToken().pos}})
+            throw new Error(`Syntax error: Unexpected input token ${c.type}`, {cause: {type: "Syntax ERROR", position: this.position}})
         }
         this.addToken({
             type: "EOF"
@@ -167,6 +171,10 @@ export default class Tokeniser {
         return this.input[this.position + 1];
     }
 
+    getPreviousCharacter() {
+        return this.input[this.position - 1];
+    }
+
     advance() {
         // Move forwards (andn return)
         return this.input[this.position++];
@@ -194,7 +202,7 @@ export default class Tokeniser {
             "CONSTANT",
             "FUNCTION",
             "LPAREN",
-            "VARIABLE"
+            "VARIABLE",
         ];
 
         return leftEnd.includes(left.type) && rightStart.includes(right.type);

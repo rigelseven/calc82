@@ -83,7 +83,8 @@ export class InputHandler {
                 "Cube",
                 "Power",
                 "Factorial",
-                "Percent"
+                "Percent",
+                "Invert"
             ].includes(input) ||
                 (typeof(input) === "string" && input.startsWith("Store")))
             {

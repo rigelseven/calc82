@@ -5,7 +5,7 @@ export const BUTTONS = [
         Alpha: ["", "", "", "Alpha", {Main: "Alpha", Shift: "Alpha", Alpha: "Alpha", Store: "Shift"}],
         Spacer1: null,
         Spacer2: null,
-        Mode: ["", "MODE", "SET UP", "", {Main: null, Shift: null, Alpha: null}],
+        Mode: ["", "MODE", "SET UP", "", {Main: "ShowModes", Shift: "ShowSetup", Alpha: "ShowModes", Store: "ShowModes", Recall: "ShowModes"}],
         On: ["", "ON", "", "", {Main: null, Shift: null, Alpha: null}],
     },
 
@@ -91,10 +91,10 @@ export const ROW_HEIGHTS = [
 ]
 
 export const NAV_BUTTONS = {
-    up: ["↑", "", "", "", {Main: "ArrowUp", Shift: "ArrowUp", Alpha: "ArrowUp"}],
-    right: ["→", "", "", "", {Main: "ArrowRight", Shift: "ArrowRight", Alpha: "ArrowRight"}],
-    left: ["←", "", "", "", {Main: "ArrowLeft", Shift: "ArrowLeft", Alpha: "ArrowLeft"}],
-    down: ["↓", "", "", "", {Main: "ArrowDown", Shift: "ArrowDown", Alpha: "ArrowDown"}],
+    up: ["↑", "", "", "", {Main: "ArrowUp", Shift: "ArrowUp", Alpha: "ArrowUp", Store: "ArrowUp", Recall: "ArrowUp"}],
+    right: ["→", "", "", "", {Main: "ArrowRight", Shift: "ArrowRight", Alpha: "ArrowRight", Store: "ArrowUp", Recall: "ArrowUp"}],
+    left: ["←", "", "", "", {Main: "ArrowLeft", Shift: "ArrowLeft", Alpha: "ArrowLeft", Store: "ArrowUp", Recall: "ArrowUp"}],
+    down: ["↓", "", "", "", {Main: "ArrowDown", Shift: "ArrowDown", Alpha: "ArrowDown", Store: "ArrowUp", Recall: "ArrowUp"}],
 }
 
 export const NAV_DIMENSIONS = {
@@ -115,6 +115,7 @@ export const KEYBOARD_MAP = {
 
     "|": ["Abs", null],
     "!": ["Factorial", null],
+    "\\": ["Invert", null],
 
     "f": ["Fraction", null],
     "q": ["Sqrt", null],
