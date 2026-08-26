@@ -1,11 +1,11 @@
 // [Main, top white, top Shift, top Alpha]
 export const BUTTONS = [
     {
-        Shift: ["", "", "Shift", "", {Main: "Shift", Shift: "Shift", Alpha: "Shift", Store: "Shift"}],
-        Alpha: ["", "", "", "Alpha", {Main: "Alpha", Shift: "Alpha", Alpha: "Alpha", Store: "Shift"}],
+        Shift: ["", "", "Shift", "", {Main: "Shift", Shift: "Shift", Alpha: "Shift", Store: "Shift", Recall: "Shift",}],
+        Alpha: ["", "", "", "Alpha", {Main: "Alpha", Shift: "Alpha", Alpha: "Alpha", Store: "Alpha", Recall: "Alpha"}],
         Spacer1: null,
         Spacer2: null,
-        Mode: ["", "MODE", "SET UP", "", {Main: "ShowModes", Shift: "ShowSetup", Alpha: "ShowModes", Store: "ShowModes", Recall: "ShowModes"}],
+        Mode: ["", "MODE", "SET UP", "", {Main: "MenuModes", Shift: "MenuSetup", Alpha: "MenuModes", Store: "MenuModes", Recall: "MenuModes"}],
         On: ["", "ON", "", "", {Main: null, Shift: null, Alpha: null}],
     },
 
@@ -46,25 +46,25 @@ export const BUTTONS = [
     },
 
     {
-        7: ["7", "", "", "", {Main: 7, Shift: null, Alpha: null}],
-        8: ["8", "", "", "", {Main: 8, Shift: null, Alpha: null}],
+        7: ["7", "", "", "", {Main: 7, Shift: null, Alpha: null, Menu: "Menu7"}],
+        8: ["8", "", "", "", {Main: 8, Shift: null, Alpha: null, Menu: "Menu8"}],
         9: ["9", "", "CLR", "", {Main: 9, Shift: "Clear", Alpha: null}],
         Del: ["DEL", "", "INS", "", {Main: "Delete", Shift: "Insert", Alpha: null}],
-        AllClear: ["AC", "", "OFF", "", {Main: "AllClear", Shift: null, Alpha: null}],
+        AllClear: ["AC", "", "OFF", "", {Main: "AllClear", Shift: null, Alpha: "AllClear", Store: "AllClear", Recall: "AllClear", Menu: "MenuAC"}],
     },
 
     {
-        4: ["4", "", "", "", {Main: 4, Shift: null, Alpha: null}],
-        5: ["5", "", "", "", {Main: 5, Shift: null, Alpha: null}],
-        6: ["6", "", "VERIFY", "", {Main: 6, Shift: null, Alpha: null}],
+        4: ["4", "", "", "", {Main: 4, Shift: null, Alpha: null, Menu: "Menu4"}],
+        5: ["5", "", "", "", {Main: 5, Shift: null, Alpha: null, Menu: "Menu5"}],
+        6: ["6", "", "VERIFY", "", {Main: 6, Shift: null, Alpha: null, Menu: "Menu6"}],
         Multiply: ["×", "", "nPr", "GCD", {Main: "Multiply", Shift: "Permutation", Alpha: "GCD"}],
         Divide: ["÷", "", "nCr", "LCM", {Main: "Divide", Shift: "Combination", Alpha: "LCM"}],
     },
 
     {
-        1: ["1", "", "", "", {Main: 1, Shift: null, Alpha: null}],
-        2: ["2", "", "", "", {Main: 2, Shift: null, Alpha: null}],
-        3: ["3", "", "", "", {Main: 3, Shift: null, Alpha: null}],
+        1: ["1", "", "", "", {Main: 1, Shift: null, Alpha: null, Menu: "Menu1"}],
+        2: ["2", "", "", "", {Main: 2, Shift: null, Alpha: null, Menu: "Menu2"}],
+        3: ["3", "", "", "", {Main: 3, Shift: null, Alpha: null, Menu: "Menu3"}],
         Plus: ["+", "", "Pol", "", {Main: "Plus", Shift: null, Alpha: null}],
         Minus: ["-", "", "Rec", "", {Main: "Minus", Shift: null, Alpha: null}],
     },
@@ -91,10 +91,10 @@ export const ROW_HEIGHTS = [
 ]
 
 export const NAV_BUTTONS = {
-    up: ["↑", "", "", "", {Main: "ArrowUp", Shift: "ArrowUp", Alpha: "ArrowUp", Store: "ArrowUp", Recall: "ArrowUp"}],
-    right: ["→", "", "", "", {Main: "ArrowRight", Shift: "ArrowRight", Alpha: "ArrowRight", Store: "ArrowUp", Recall: "ArrowUp"}],
-    left: ["←", "", "", "", {Main: "ArrowLeft", Shift: "ArrowLeft", Alpha: "ArrowLeft", Store: "ArrowUp", Recall: "ArrowUp"}],
-    down: ["↓", "", "", "", {Main: "ArrowDown", Shift: "ArrowDown", Alpha: "ArrowDown", Store: "ArrowUp", Recall: "ArrowUp"}],
+    up: ["↑", "", "", "", {Main: "ArrowUp", Shift: "ArrowUp", Alpha: "ArrowUp", Store: "ArrowUp", Recall: "ArrowUp", Menu: "MenuUp"}],
+    right: ["→", "", "", "", {Main: "ArrowRight", Shift: "ArrowRight", Alpha: "ArrowRight", Store: "ArrowRight", Recall: "ArrowRight"}],
+    left: ["←", "", "", "", {Main: "ArrowLeft", Shift: "ArrowLeft", Alpha: "ArrowLeft", Store: "ArrowLeft", Recall: "ArrowLeft"}],
+    down: ["↓", "", "", "", {Main: "ArrowDown", Shift: "ArrowDown", Alpha: "ArrowDown", Store: "ArrowDown", Recall: "ArrowDown", Menu: "MenuDown"}],
 }
 
 export const NAV_DIMENSIONS = {

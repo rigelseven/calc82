@@ -159,9 +159,10 @@ function handleButton(button, forceMode=null) {
             if (finalAction === "ErrorDisplay") return;
             else display.clearDisplay();
             renderInput();
+            console.log(finalAction)
 
-            // Handle store/recall buttons
             if (finalAction !== undefined && finalAction !== null) {
+                // Handle store/recall buttons
                 if (finalAction.startsWith("Store")) {
                     try {
                         inputHandler.toLastToken();
@@ -179,6 +180,18 @@ function handleButton(button, forceMode=null) {
                     inputHandler.addToken({type:"VARIABLE", exp: finalAction.at(-1), rep: `\\text{${finalAction.at(-1)}}`});
                     renderInput();
                     if (toCalculate) calculate(true);
+                }
+
+                console.log(inputHandler.mode)
+                // Handle menu
+                if (finalAction.startsWith("Menu")) {
+                    console.log("m", finalAction.slice(4));
+                    // todo make this its own class
+                    inputHandler.switchMode("Menu", true, shiftButton, alphaButton);
+                    display.renderMenu(["MthIO","LineIO","Deg","Rad","Gra","Fix","Sci", "Norm"]);
+                    display.renderMenu(["ab/c","d/c","STAT", "Disp", "⏴CONT⏵"]);
+                    display.renderMenu(["COMP", "STAT", "VERIF"]);
+
                 }
             }
 
@@ -205,7 +218,10 @@ function handleButton(button, forceMode=null) {
             else if (finalAction === "alpha") inputHandler.switchMode("Alpha", false, shiftButton, alphaButton);
             else if (finalAction === "store") inputHandler.switchMode("Store", false, shiftButton, alphaButton);
             else if (finalAction === "recall") inputHandler.switchMode("Recall", false, shiftButton, alphaButton);
-            else inputHandler.switchMode("Main", false, shiftButton, alphaButton);
+            else {
+                if (inputHandler.mode != "Menu") 
+                    inputHandler.switchMode("Main", false, shiftButton, alphaButton);
+            }
         } else {
             inputHandler.switchMode("Main", false, shiftButton, alphaButton);
         }
@@ -298,5 +314,3 @@ const alphaButton = layoutEngine.getButtonFromKey("Alpha")[2];
 
 attachListeners();
 renderInput();
-
-display.renderMenu(["MthIO","LineIO","Deg","Rad","Gra","Fix","Sci", "Norm"])

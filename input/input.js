@@ -416,6 +416,7 @@ export class InputHandler {
         if (mode === "Main") this.mode = "Main";
         else if (mode === "Store") this.mode = "Store";
         else if (mode === "Recall") this.mode = "Recall";
+        else if (mode === "Menu") this.mode = "Menu";
         else if (mode === "Shift") this.mode = this.mode === "Shift" ? "Main" : "Shift";
         else if (mode === "Alpha") this.mode = this.mode === "Alpha" ? "Main" : "Alpha";
         shiftButton.classList.toggle("pressed-Shift", this.mode === "Shift");

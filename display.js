@@ -51,7 +51,7 @@ class Display {
     }
 
     renderMenu(options) {
-        console.log(options.length)
+        this.clearDisplay();
         let optionsText = [[], [], [], []];
         for (let idx in options) {
             optionsText[Math.floor(idx/2)].push(`${Number(idx)+1}: ${options[idx]}`);
