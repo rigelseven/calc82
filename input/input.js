@@ -57,6 +57,8 @@ export class InputHandler {
                 return "calculate";
             case "StandardToDecimal":
                 return "standard-decimal";
+            case "MixedToImproper":
+                return "mixed-improper";
             case "Store":
                 return "store";
             case "Recall":
@@ -128,6 +130,8 @@ export class InputHandler {
                 return "calculate";
             case "StandardToDecimal":
                 return "standard-decimal";
+            case "MixedToImproper":
+                return "mixed-improper";
             case "Store":
                 return "store";
             case "Recall":

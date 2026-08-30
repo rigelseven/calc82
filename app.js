@@ -96,11 +96,18 @@ function calculate(storeHistory = true) {
 
 outputModeButton.addEventListener("click", switchAngleMode);
 
-function switchAngleMode() {
-    if (currentResultType === "fraction"  && calculator.decimalResult !== undefined)
-        setOutput("decimal");
-    else if (currentResultType === "decimal" && calculator.fractionResult !== undefined)
-        setOutput("fraction");
+function switchAngleMode(type="improper") {
+    if (type === "improper") {
+        if (currentResultType !== "decimal" && calculator.decimalResult !== undefined)
+            setOutput("decimal");
+        else if (currentResultType === "decimal" && calculator.fractionResult !== undefined)
+            setOutput("fraction");
+    } else if (type == "mixed") {
+        if (currentResultType !== "mixed" && calculator.decimalResult !== undefined)
+            setOutput("mixed");
+        else if (currentResultType === "mixed" && calculator.fractionResult !== undefined)
+            setOutput("fraction");
+    }
 }
 
 function setOutput(outputType) {
@@ -114,7 +121,28 @@ function setOutput(outputType) {
         let sign = "";
         if (numerator.isNeg()) sign = "-";
         displayValue = `${sign}\\frac\{${numerator.abs()}\}\{${denominator}\}`;
+    } else if (outputType === "mixed") {
+
+        currentResultType = "mixed";
+
+        const numerator = calculator.fractionResult.numerator;
+        const denominator = calculator.fractionResult.denominator;
+
+        const isNegative = numerator.isNeg();
+        const absNumerator = numerator.abs();
+
+        const whole = absNumerator.div(denominator).floor();
+        const remainder = absNumerator.mod(denominator);
+
+        if (remainder.isZero()) {
+            displayValue = `${isNegative ? "-" : ""}${whole}`;
+        } else if (whole.isZero()) {
+            displayValue = `${isNegative ? "-" : ""}\\frac{${remainder}}{${denominator}}`;
+        } else {
+            displayValue = `${isNegative ? "-" : ""}${whole}\\frac{${remainder}}{${denominator}}`;
+        }
     }
+    
     // textDisplay.textContent = displayValue;
     katex.render(displayValue, outputDisplay, {
         throwOnError: false
@@ -228,7 +256,8 @@ function handleButton(button, forceMode=null) {
 
             // Handle calculation
             else if (finalAction === "calculate") calculate(true);
-            else if (finalAction === "standard-decimal") switchAngleMode();
+            else if (finalAction === "standard-decimal") switchAngleMode("improper");
+            else if (finalAction === "mixed-improper") switchAngleMode("mixed");
             
             // Handle mode buttons
             if (finalAction === "shift") inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
