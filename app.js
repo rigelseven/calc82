@@ -33,7 +33,6 @@ const calculator = new Calculator;
 const layoutEngine = new LayoutEngine;
 
 
-
 calculateButton.addEventListener("click", function(event) {
     calculate(true);
 });
@@ -181,6 +180,14 @@ function handleButton(button, forceMode=null) {
                         inputHandler.switchMode("Menu", true, shiftButton, alphaButton);
                         katex.render("", inputDisplay);
                         outputDisplay.style.display = "none";
+                    }
+
+                    if (finalMenuAction.startsWith("Token")) {
+                        menuManager.leaveMenus();
+                        inputHandler.switchMode("Main", true, shiftButton, alphaButton);
+                        inputHandler.handleInput(finalMenuAction.slice(5));
+                        renderInput();
+                        outputDisplay.style.display = "";
                     }
                 }
 

@@ -73,7 +73,7 @@ export const BUTTONS = [
         0: ["0", "", "Rnd", "", {Main: 0, Shift: "Round", Alpha: null}],
         Decimal: [".", "", "Ran#", "RanInt", {Main: ".", Shift: "Random", Alpha: "RandomInt"}],
         ExponentialDigit: ["$\\times 10^x$", "", "$\\pi$", "$e$", {Main: "E", Shift: "ConstantPi", Alpha: "ConstantE"}],
-        Ans: ["Ans", "", "DRG▶", "", {Main: "Ans", Shift: "Degree", Alpha: null}],
+        Ans: ["Ans", "", "DRG▶", "", {Main: "Ans", Shift: "MenuDegree", Alpha: null}],
         Calculate: ["=", "", "", "", {Main: "Calculate", Shift: "Calculate", Alpha: "Calculate"}],
     }
 ]

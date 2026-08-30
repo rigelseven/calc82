@@ -70,7 +70,7 @@ export class InputHandler {
                 return;
 
             default:
-                if (this.mode !== "Menu" && !input.startsWith("Menu")) {
+                if (!(this.mode == "Menu" || (input && input.toString().startsWith("Menu")))) {
                     this.setEdit();
                     this.setTokens([]);
                     console.log(this.cursorPosition)
@@ -87,7 +87,8 @@ export class InputHandler {
                 "Power",
                 "Factorial",
                 "Percent",
-                "Invert"
+                "Invert",
+                "r","g","d"
             ].includes(input) ||
                 (typeof(input) === "string" && input.startsWith("Store")))
             {

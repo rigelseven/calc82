@@ -28,12 +28,14 @@ class MenuManager {
         }
         else {
             if (menuItem.Action) {
+                if (menuItem.Action.startsWith("Token")) return menuItem.Action;
                 switch (menuItem.Action) {
-                    case "SetRadians": trigSolver.setAngleMode("rad"); return this.leaveMenus();;
-                    case "SetDegrees": trigSolver.setAngleMode("deg"); return this.leaveMenus();;
-                    case "SetGradians": trigSolver.setAngleMode("gra"); return this.leaveMenus();;
+                    case "SetRadians": trigSolver.setAngleMode("rad"); return this.leaveMenus();
+                    case "SetDegrees": trigSolver.setAngleMode("deg"); return this.leaveMenus();
+                    case "SetGradians": trigSolver.setAngleMode("gra"); return this.leaveMenus();
                 }
             }
+            return this.leaveMenus();
         }
     }
 
@@ -41,7 +43,7 @@ class MenuManager {
         if (menuAction === "Exit") return this.leaveMenus();
 
         // Handle direct menu calls
-        if (["Modes", "Setup"].includes(menuAction)) this.currentMenu = menuAction;
+        if (["Modes", "Setup", "Degree"].includes(menuAction)) this.currentMenu = menuAction;
 
         // Handle number menu navigation
         let ret;
@@ -84,6 +86,12 @@ const MENUS = {
         4: {Name: "Disp"},
         5: {Name: "⏴CONT⏵"},
         Up: {ToPage: "Setup"}
+    },
+
+    Degree: {
+        1: {Name: "°", Action: "Tokend"},
+        2: {Name: "r", Action: "Tokenr"},
+        3: {Name: "g", Action: "Tokeng"}
     }
 }
 
