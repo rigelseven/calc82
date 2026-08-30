@@ -43,7 +43,7 @@ class MenuManager {
         if (menuAction === "Exit") return this.leaveMenus();
 
         // Handle direct menu calls
-        if (["Modes", "Setup", "Degree"].includes(menuAction)) this.currentMenu = menuAction;
+        if (["Modes", "Setup", "Degree", "Hyp"].includes(menuAction)) this.currentMenu = menuAction;
 
         // Handle number menu navigation
         let ret;
@@ -92,6 +92,15 @@ const MENUS = {
         1: {Name: "°", Action: "Tokend"},
         2: {Name: "r", Action: "Tokenr"},
         3: {Name: "g", Action: "Tokeng"}
+    },
+
+    Hyp: {
+        1: {Name: "sinh", Action: "TokenSinh"},
+        2: {Name: "cosh", Action: "TokenCosh"},
+        3: {Name: "tanh", Action: "TokenTanh"},
+        4: {Name: "sinh⁻¹", Action: "TokenAsinh"},
+        5: {Name: "cosh⁻¹", Action: "TokenAcosh"},
+        6: {Name: "tanh⁻¹", Action: "TokenAtanh"}
     }
 }
 

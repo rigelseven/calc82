@@ -30,7 +30,7 @@ export const BUTTONS = [
     {
         UnaryMinus: ["(-)", "", "", "A", {Main: "UnaryMinus", Shift: null, Alpha: "VarA", Store: "StoreA", Recall: "RecallA"}],
         Degree: ["$\\degree ' \"$", "", "FACT", "B", {Main: "DegMinSec", Shift: "Factors", Alpha: "VarB", Store: "StoreB", Recall: "RecallB"}],
-        Hyp: ["hyp", "", "", "C", {Main: "Hyp", Shift: null, Alpha: "VarC", Store: "StoreC", Recall: "RecallC"}],
+        Hyp: ["hyp", "", "", "C", {Main: "MenuHyp", Shift: null, Alpha: "VarC", Store: "StoreC", Recall: "RecallC"}],
         Sin: ["sin", "", "$\\textsf{sin}^{-1}$", "D", {Main: "Sin", Shift: "Asin", Alpha: "VarD", Store: "StoreD", Recall: "RecallD"}],
         Cos: ["cos", "", "$\\textsf{cos}^{-1}$", "E", {Main: "Cos", Shift: "Acos", Alpha: "VarE", Store: "StoreE", Recall: "RecallE"}],
         Tan: ["tan", "", "$\\textsf{tan}^{-1}$", "F", {Main: "Tan", Shift: "Atan", Alpha: "VarF", Store: "StoreF", Recall: "RecallF"}],

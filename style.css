@@ -118,14 +118,17 @@
 
 .label-main {
     color: black;
+    padding: 0 0.5cqb 0 0.5cqb;
 }
 
 .label-shift {
     color: goldenrod;
+    padding: 0 0.5cqb 0 0.5cqb;
 }
 
 .label-alpha {
     color: red;
+    padding: 0 0.5cqb 0 0.5cqb;
 }
 
 .pressed-Main {

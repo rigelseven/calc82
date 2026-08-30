@@ -45,6 +45,14 @@ export const TOKENS = {
     "Acos": { type: "FUNCTION", exp: "acos", rep: "\\cos^{-1}("},
     "Atan": { type: "FUNCTION", exp: "atan", rep: "\\tan^{-1}("},
 
+    "Sinh": { type: "FUNCTION", exp: "sinh", rep: "\\sinh("},
+    "Cosh": { type: "FUNCTION", exp: "cosh", rep: "\\cosh("},
+    "Tanh": { type: "FUNCTION", exp: "tanh", rep: "\\tanh("},
+
+    "Asinh": { type: "FUNCTION", exp: "asinh", rep: "\\sinh^{-1}("},
+    "Acosh": { type: "FUNCTION", exp: "acosh", rep: "\\cosh^{-1}("},
+    "Atanh": { type: "FUNCTION", exp: "atanh", rep: "\\tanh^{-1}("},
+
     "Round": { type: "FUNCTION", exp: "round", rep: "\\text{Rnd}("},
     "Random": { type: "VARIABLE", exp: "Random", rep: "\\text{Ran\\#}"},
     "RandomInt": { type: "FUNCTION", exp: "randomInt", rep: "\\text{RanInt\\#}("},
