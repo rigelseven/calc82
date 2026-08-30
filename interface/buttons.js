@@ -50,7 +50,7 @@ export const BUTTONS = [
         8: ["8", "", "", "", {Main: 8, Shift: null, Alpha: null, Menu: "Menu8"}],
         9: ["9", "", "CLR", "", {Main: 9, Shift: "Clear", Alpha: null}],
         Del: ["DEL", "", "INS", "", {Main: "Delete", Shift: "Insert", Alpha: null}],
-        AllClear: ["AC", "", "OFF", "", {Main: "AllClear", Shift: null, Alpha: "AllClear", Store: "AllClear", Recall: "AllClear", Menu: "MenuAC"}],
+        AllClear: ["AC", "", "OFF", "", {Main: "AllClear", Shift: null, Alpha: "AllClear", Store: "AllClear", Recall: "AllClear", Menu: "MenuExit"}],
     },
 
     {
@@ -145,6 +145,7 @@ export const KEYBOARD_MAP = {
     8: [8, null],
     9: [9, null],
     "Backspace": ["Del", null], // TODO Forward delete
+    "Escape": ["AllClear", null],
 
     4: [4, null],
     5: [5, null],

@@ -6,6 +6,7 @@ import LayoutEngine from "./interface/layout.js";
 import { shiftedToUnshifted, unshiftedToShifted } from "./interface/keyboard.js";
 import { historyManager } from "./history.js";
 import { display } from "./display.js";
+import { menuManager } from "./menu.js";
 
 // TODO: Depends on Norm1/Norm2
 // Norm1: toExpNeg = -3
@@ -122,6 +123,7 @@ function setOutput(outputType) {
 }
 
 function renderInput() {
+    if (inputHandler.mode == "Menu") return;
     let inputText = "";
     let previousToken = null;
     let showCursor = inputHandler.inputMode === "Edit";
@@ -156,12 +158,30 @@ function handleButton(button, forceMode=null) {
         const action = button[4][inputHandler.mode];
         if (action !== null) {
             const finalAction = inputHandler.handleInput(action);
+
             if (finalAction === "ErrorDisplay") return;
-            else display.clearDisplay();
+            else if (inputHandler.mode !== "Menu") 
+                display.clearDisplay();
+
             renderInput();
             console.log(finalAction)
 
             if (finalAction !== undefined && finalAction !== null) {
+                // Handle menu
+                if (finalAction.startsWith("Menu")) {
+                    const menuAction = finalAction.slice(4);
+                    const finalMenuAction = menuManager.handleMenuAction(menuAction)
+                    console.log(finalMenuAction)
+                    if (finalMenuAction == "Exit") {
+                        inputHandler.switchMode("Main", true, shiftButton, alphaButton);
+                        renderInput();
+                    }
+                    else {
+                        inputHandler.switchMode("Menu", true, shiftButton, alphaButton);
+                        katex.render("", inputDisplay);
+                    }
+                }
+
                 // Handle store/recall buttons
                 if (finalAction.startsWith("Store")) {
                     try {
@@ -180,18 +200,6 @@ function handleButton(button, forceMode=null) {
                     inputHandler.addToken({type:"VARIABLE", exp: finalAction.at(-1), rep: `\\text{${finalAction.at(-1)}}`});
                     renderInput();
                     if (toCalculate) calculate(true);
-                }
-
-                console.log(inputHandler.mode)
-                // Handle menu
-                if (finalAction.startsWith("Menu")) {
-                    console.log("m", finalAction.slice(4));
-                    // todo make this its own class
-                    inputHandler.switchMode("Menu", true, shiftButton, alphaButton);
-                    display.renderMenu(["MthIO","LineIO","Deg","Rad","Gra","Fix","Sci", "Norm"]);
-                    display.renderMenu(["ab/c","d/c","STAT", "Disp", "⏴CONT⏵"]);
-                    display.renderMenu(["COMP", "STAT", "VERIF"]);
-
                 }
             }
 
@@ -219,8 +227,7 @@ function handleButton(button, forceMode=null) {
             else if (finalAction === "store") inputHandler.switchMode("Store", false, shiftButton, alphaButton);
             else if (finalAction === "recall") inputHandler.switchMode("Recall", false, shiftButton, alphaButton);
             else {
-                if (inputHandler.mode != "Menu") 
-                    inputHandler.switchMode("Main", false, shiftButton, alphaButton);
+                inputHandler.switchMode("Main", false, shiftButton, alphaButton);
             }
         } else {
             inputHandler.switchMode("Main", false, shiftButton, alphaButton);
