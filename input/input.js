@@ -11,6 +11,7 @@ export class InputHandler {
 
     handleInput(input) {
         const token = TOKENS[input];
+        console.log(this.inputTokens)
 
         if (this.inputMode == "Error") {
             switch(input) {
@@ -69,9 +70,11 @@ export class InputHandler {
                 return;
 
             default:
-                this.setEdit();
-                this.setTokens([]);
-                console.log(this.cursorPosition)
+                if (this.mode !== "Menu" && !input.startsWith("Menu")) {
+                    this.setEdit();
+                    this.setTokens([]);
+                    console.log(this.cursorPosition)
+                }
             }
 
             if ([
@@ -218,8 +221,10 @@ export class InputHandler {
     }
 
     setEdit() {
-        this.inputMode = "Edit";
-        katex.render("", document.querySelector("#output-display"));  // TODO dont hard code
+        if (this.mode !== "Menu") {
+            this.inputMode = "Edit";
+            katex.render("", document.querySelector("#output-display"));  // TODO dont hard code
+        }
     }
 
     getCursorToken(direction = "left") {

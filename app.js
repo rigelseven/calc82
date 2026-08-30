@@ -85,15 +85,15 @@ function calculate(storeHistory = true) {
 }
 
 // Angle mode selector
-angleModeSelector.addEventListener("change", function(event) {
-    getAngleMode();
-    calculate(false);
-});
+// angleModeSelector.addEventListener("change", function(event) {
+//     getAngleMode();
+//     calculate(false);
+// });
 
-function getAngleMode() {
-    const newMode = document.querySelector(`.angle-mode input[type="radio"]:checked`).value;
-    trigSolver.setAngleMode(newMode);
-}
+// function getAngleMode() {
+//     const newMode = document.querySelector(`.angle-mode input[type="radio"]:checked`).value;
+//    trigSolver.setAngleMode(newMode);
+//}
 
 outputModeButton.addEventListener("click", switchAngleMode);
 
@@ -175,10 +175,12 @@ function handleButton(button, forceMode=null) {
                     if (finalMenuAction == "Exit") {
                         inputHandler.switchMode("Main", true, shiftButton, alphaButton);
                         renderInput();
+                        outputDisplay.style.display = "";
                     }
                     else {
                         inputHandler.switchMode("Menu", true, shiftButton, alphaButton);
                         katex.render("", inputDisplay);
+                        outputDisplay.style.display = "none";
                     }
                 }
 
@@ -313,7 +315,6 @@ let isAlphaKeyHeld = false;
 const shiftKey = "Shift";
 const alphaKey = "z";
 
-getAngleMode();
 layoutEngine.createButtons();
 
 const shiftButton = layoutEngine.getButtonFromKey("Shift")[2];

@@ -1,4 +1,5 @@
 import { display } from "./display.js";
+import trigSolver from "./math/trigonometry.js";
 
 class MenuManager {
     constructor() {
@@ -25,9 +26,15 @@ class MenuManager {
             this.currentMenu = menuItem.ToPage;
             this.displayMenu();
         }
-
-        // todo actually execute functions
-        //Object.values(currentMenuItems)[item];
+        else {
+            if (menuItem.Action) {
+                switch (menuItem.Action) {
+                    case "SetRadians": trigSolver.setAngleMode("rad"); return this.leaveMenus();;
+                    case "SetDegrees": trigSolver.setAngleMode("deg"); return this.leaveMenus();;
+                    case "SetGradians": trigSolver.setAngleMode("gra"); return this.leaveMenus();;
+                }
+            }
+        }
     }
 
     handleMenuAction(menuAction) {
@@ -37,10 +44,11 @@ class MenuManager {
         if (["Modes", "Setup"].includes(menuAction)) this.currentMenu = menuAction;
 
         // Handle number menu navigation
-        if (menuAction) this.executeMenuItem(menuAction);
+        let ret;
+        if (menuAction) ret = this.executeMenuItem(menuAction);
 
         this.displayMenu()
-        return;
+        return ret;
     }
 
     leaveMenus() {
@@ -60,9 +68,9 @@ const MENUS = {
     Setup: {
         1: {Name: "MthIO"},
         2: {Name: "LineIO"},
-        3: {Name: "Deg"},
-        4: {Name: "Rad"},
-        5: {Name: "Gra"},
+        3: {Name: "Deg", Action: "SetDegrees"},
+        4: {Name: "Rad", Action: "SetRadians"},
+        5: {Name: "Gra", Action: "SetGradians"},
         6: {Name: "Fix"},
         7: {Name: "Sci"},
         8: {Name: "Norm"},
