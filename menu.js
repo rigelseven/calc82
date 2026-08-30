@@ -1,5 +1,6 @@
 import { display } from "./display.js";
 import trigSolver from "./math/trigonometry.js";
+import { statusBar } from "./statusbar.js";
 
 class MenuManager {
     constructor() {
@@ -10,7 +11,13 @@ class MenuManager {
         if (this.currentMenu === null) return;
         const currentMenuItems = MENUS[this.currentMenu];
         let showMenu = [];
-        for (const item of Object.values(currentMenuItems)) if (item.Name) showMenu.push(item.Name);
+        statusBar.toggle('up', false);
+        statusBar.toggle('down', false);
+        for (const item of Object.values(currentMenuItems)) {
+            if (item.Name) showMenu.push(item.Name);
+        }
+        if (currentMenuItems.Up) statusBar.toggle('up', true);
+        if (currentMenuItems.Down) statusBar.toggle('down', true);
         display.renderMenu(showMenu);
     }
 

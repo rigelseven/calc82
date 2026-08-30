@@ -112,6 +112,8 @@ export const KEYBOARD_MAP = {
 
     "Shift": ["Shift", null],
     "Alpha": ["Alpha", null],
+    "u": ["Mode", null],
+        "U": ["Mode", "Shift"],
 
     "|": ["Abs", null],
     "!": ["Factorial", null],
@@ -125,7 +127,7 @@ export const KEYBOARD_MAP = {
     "l": ["Ln", null],
 
     "`": ["Degree", null],
-    "h": ["Hyp", null],
+    "H": ["Hyp", null],
     "s": ["Sin", null],
     "c": ["Cos", null],
     "t": ["Tan", null],

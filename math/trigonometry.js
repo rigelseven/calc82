@@ -1,11 +1,23 @@
+import { statusBar } from "../statusbar.js";
+
 class TrigSolver {
     constructor(angleMode = "rad") {
         this.angleMode = angleMode;
+        statusBar.toggle('rad', true);
+        statusBar.toggle('deg', false);
+        statusBar.toggle('gra', false);
+
         this.PI = Decimal.acos(-1);
         this.HALF_PI = this.PI.div(2);
     }
 
     setAngleMode(angleMode) {
+        statusBar.toggle('rad', false);
+        statusBar.toggle('deg', false);
+        statusBar.toggle('gra', false);
+
+        statusBar.toggle(angleMode, true);
+
         this.angleMode = angleMode;
     }
 

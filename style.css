@@ -1,7 +1,7 @@
 .calculator {
     outline: 1px solid black;
     display: grid;
-    grid-template-rows: 0fr 1fr 4fr;
+    grid-template-rows: 0.2fr 2fr 7fr;
     
     --h: 800px;
 
@@ -14,20 +14,28 @@
 }
 
 #top-bezel {
-    font-size: 3cqb;
+    font-size: 2.5cqb;
+    min-height: 0;
     font-style: italic;
     text-align: right;
+}
+
+#screen {
+    display: flex;
+    flex-direction: column;
+    container-type: size;
+    min-height: 0;
+    width: 95%;
+    padding: 1% 2.5% 2.5% 2.5%;
+    border: 1px solid black;
 }
 
 #display {
     display: flex;
     flex-direction: column;
+    height: 100%;
     justify-content: space-between;
     align-items: flex-end;
-    min-height: 0;
-    width: 95%;
-    padding: 2.5%;
-    border: 1px solid black;
     container-type: size;
 }
 
@@ -156,6 +164,34 @@
     align-self: flex-start;
     font-size: 20cqb;
     width: 100cqw;
+}
+
+#status-bar {
+    align-self: flex-start;
+    font-size: 10cqb;
+    height: 15cqb;
+    min-height: 0;
+    width: 100cqw;
+    display: flex;
+    justify-content: space-between;
+}
+
+.status-boxed {
+    color: white; /*to replace*/
+    background-color: black;
+    width: 10cqb;
+    height: 12cqb;
+    min-height: 0;
+    text-align: center;
+    border-radius: 2cqb;
+}
+
+.status {
+    opacity: 0.2;
+}
+
+.status-visible {
+    opacity: 1 !important;
 }
 
 .message-display-line {

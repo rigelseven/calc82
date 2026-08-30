@@ -1,3 +1,5 @@
+import { statusBar } from "../statusbar.js";
+
 class VariableManager {
     constructor(storage) {
         this.storage = storage ? storage : {
@@ -19,6 +21,7 @@ class VariableManager {
     }
 
     setVariable(variable, value) {
+        if (variable == "M") statusBar.toggle("memory", this.storage["M"] !== Decimal(0));
         return this.storage[variable] = value;
     }
 }

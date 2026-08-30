@@ -1,4 +1,5 @@
 import { historyManager } from "../history.js";
+import { statusBar } from "../statusbar.js";
 import { TOKENS } from "./inputTokens.js";
 
 export class InputHandler {
@@ -432,7 +433,12 @@ export class InputHandler {
             else if (mode === "Shift") this.mode = this.mode === "Shift" ? "Main" : "Shift";
             else if (mode === "Alpha") this.mode = this.mode === "Alpha" ? "Main" : "Alpha";
         }
+
         shiftButton.classList.toggle("pressed-Shift", this.mode === "Shift");
         alphaButton.classList.toggle("pressed-Alpha", this.mode === "Alpha");
+        statusBar.toggle("shift", this.mode === "Shift");
+        statusBar.toggle("alpha", this.mode === "Alpha");
+        statusBar.toggle("store", this.mode === "Store");
+        statusBar.toggle("recall", this.mode === "Recall");
     }
 }

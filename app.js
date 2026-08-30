@@ -7,6 +7,7 @@ import { shiftedToUnshifted, unshiftedToShifted } from "./interface/keyboard.js"
 import { historyManager } from "./history.js";
 import { display } from "./display.js";
 import { menuManager } from "./menu.js";
+import { statusBar } from "./statusbar.js";
 
 // TODO: Depends on Norm1/Norm2
 // Norm1: toExpNeg = -3
@@ -203,6 +204,7 @@ function handleButton(button, forceMode=null) {
                         inputHandler.switchMode("Main", true, shiftButton, alphaButton);
                         renderInput();
                         outputDisplay.style.display = "";
+                        historyManager.checkHistoryArrows();
                     }
                     else {
                         inputHandler.switchMode("Menu", true, shiftButton, alphaButton);
@@ -210,12 +212,13 @@ function handleButton(button, forceMode=null) {
                         outputDisplay.style.display = "none";
                     }
 
-                    if (finalMenuAction.startsWith("Token")) {
+                    if (finalMenuAction && finalMenuAction.startsWith("Token")) {
                         menuManager.leaveMenus();
                         inputHandler.switchMode("Main", true, shiftButton, alphaButton);
                         inputHandler.handleInput(finalMenuAction.slice(5));
                         renderInput();
                         outputDisplay.style.display = "";
+                        historyManager.checkHistoryArrows();
                     }
                 }
 
@@ -305,7 +308,7 @@ function attachListeners() {
         if (button !== undefined) {
             event.preventDefault();
             if (event.repeat) return; // TODO repeat arrow keys
-            button[2].classList.add(`pressed-${button[1] === null ? inputHandler.mode : button[1]}`);
+            button[2].classList.add(`pressed-${button[1] === null ? (inputHandler.mode == "Menu" ? "Main" : inputHandler.mode) : button[1]}`);
             handleButton(button[0], button[1]);
         }
     });
@@ -325,16 +328,21 @@ function attachListeners() {
             return;
         }
         
-        for (const button of [layoutEngine.getButtonFromKey(event.key), layoutEngine.getButtonFromKey(event.key, "Variable")]) {
+        const counterpart = /^[a-z]$/i.test(event.key)
+        ? (event.key === event.key.toLowerCase()
+            ? event.key.toUpperCase()
+            : event.key.toLowerCase())
+        : shiftedToUnshifted[event.key] ?? unshiftedToShifted[event.key];
+        
+        console.log(event.key, counterpart)
+
+        for (const button of [layoutEngine.getButtonFromKey(event.key),
+            layoutEngine.getButtonFromKey(event.key, "Variable"),
+            layoutEngine.getButtonFromKey(counterpart),
+            layoutEngine.getButtonFromKey(counterpart, "Variable")]) {
             if (button !== undefined) {
                 event.preventDefault();
                 button[2].classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store", "pressed-Recall");
-                    const counterpart = /^[a-z]$/i.test(event.key)
-                    ? (event.key === event.key.toLowerCase()
-                        ? event.key.toUpperCase()
-                        : event.key.toLowerCase())
-                    : shiftedToUnshifted[event.key] ?? unshiftedToShifted[event.key];
-
                 layoutEngine.getButtonFromKey(counterpart)?.[2]?.classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store", "pressed-Recall");
             }
         }
@@ -358,3 +366,5 @@ const alphaButton = layoutEngine.getButtonFromKey("Alpha")[2];
 
 attachListeners();
 renderInput();
+
+statusBar.toggle('math', true);

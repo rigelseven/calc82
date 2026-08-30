@@ -1,3 +1,5 @@
+import { statusBar } from "./statusbar.js";
+
 class HistoryManager {
     constructor(history) {
         this.history = history ? history : [];
@@ -14,6 +16,7 @@ class HistoryManager {
         }
 
         this.historyPosition = this.history.length - 1;
+        this.checkHistoryArrows()
     }
 
     getHistory() {
@@ -22,11 +25,13 @@ class HistoryManager {
 
     oldestHistory() {
         this.historyPosition = 0;
+        this.checkHistoryArrows()
         return this.history[this.historyPosition];
     }
 
     latestHistory() {
         this.historyPosition = this.history.length - 1;
+        this.checkHistoryArrows()
         return this.history[this.historyPosition];
     }
 
@@ -36,6 +41,7 @@ class HistoryManager {
 
     prevHistory() {
         this.historyPosition = Math.max(0, this.historyPosition - 1);
+        this.checkHistoryArrows()
         return this.getHistory();
     }
 
@@ -44,7 +50,15 @@ class HistoryManager {
             this.history.length - 1,
             this.historyPosition + 1
         );
+        this.checkHistoryArrows()
         return this.getHistory();
+    }
+
+    checkHistoryArrows() {
+        if (this.historyPosition == 0) statusBar.toggle('up', false);
+        else statusBar.toggle('up', true);
+        if (this.historyPosition === this.history.length - 1) statusBar.toggle('down', false);
+        else statusBar.toggle('down', true);
     }
 }
 
