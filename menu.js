@@ -52,6 +52,9 @@ class MenuManager {
                     case "SetDegrees": trigSolver.setAngleMode("deg"); return this.leaveMenus();
                     case "SetGradians": trigSolver.setAngleMode("gra"); return this.leaveMenus();
 
+                    case "SetDefaultMixed": settingsManager.setSetting("fractionMode", "mixed"); return this.leaveMenus();
+                    case "SetDefaultImproper": settingsManager.setSetting("fractionMode", "fraction"); return this.leaveMenus();
+
                     case "SetDPDot": settingsManager.setSetting("decimalPoint", "dot"); return this.leaveMenus();
                     case "SetDPComma": settingsManager.setSetting("decimalPoint", "comma"); return this.leaveMenus();
 
@@ -105,8 +108,8 @@ const MENUS = {
     },
 
     Setup2: {
-        1: {Name: "ab/c"},
-        2: {Name: "d/c"},
+        1: {Name: "ab/c", Action: "SetDefaultMixed"},
+        2: {Name: "d/c", Action: "SetDefaultImproper"},
         3: {Name: "STAT"},
         4: {Name: "Disp", ToPage: "Disp"},
         5: {Name: "⏴CONT⏵"},

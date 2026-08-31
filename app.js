@@ -55,7 +55,7 @@ function calculate(storeHistory = true) {
         const textTokens = generateTextTokens(tokens[colonIndex]);
         tokensDisplay.textContent += textTokens;
         
-        if (fractionResult) setOutput("fraction"); // todo - use this to start making persistence
+        if (fractionResult) setOutput(settingsManager.getSetting("fractionMode"));
         else setOutput("decimal");
 
         if (storeHistory) {

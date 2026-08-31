@@ -26,7 +26,7 @@ class SettingsManager {
 }
 
 const defaultSettings = {
-    fractionMode: "mixed",
+    fractionMode: "fraction",
     displayMode: ["norm", 1],
     ioMode: "math",
     decimalPoint: "dot"
