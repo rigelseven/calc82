@@ -1,5 +1,6 @@
 import { display } from "./display.js";
 import trigSolver from "./math/trigonometry.js";
+import { settingsManager } from "./settingsManager.js";
 import { statusBar } from "./statusbar.js";
 
 class MenuManager {
@@ -11,14 +12,19 @@ class MenuManager {
         if (this.currentMenu === null) return;
         const currentMenuItems = MENUS[this.currentMenu];
         let showMenu = [];
+        let hasTitle = false;
         statusBar.toggle('up', false);
         statusBar.toggle('down', false);
         for (const item of Object.values(currentMenuItems)) {
             if (item.Name) showMenu.push(item.Name);
+            if (item.Title) {
+                showMenu.splice(0, 0, item.Title, "");
+                hasTitle = true;
+            }
         }
         if (currentMenuItems.Up) statusBar.toggle('up', true);
         if (currentMenuItems.Down) statusBar.toggle('down', true);
-        display.renderMenu(showMenu);
+        display.renderMenu(showMenu, hasTitle);
     }
 
     executeMenuItem(item) {
@@ -39,6 +45,9 @@ class MenuManager {
                     case "SetRadians": trigSolver.setAngleMode("rad"); return this.leaveMenus();
                     case "SetDegrees": trigSolver.setAngleMode("deg"); return this.leaveMenus();
                     case "SetGradians": trigSolver.setAngleMode("gra"); return this.leaveMenus();
+
+                    case "SetDPDot": settingsManager.setSetting("decimalPoint", "dot"); return this.leaveMenus();
+                    case "SetDPComma": settingsManager.setSetting("decimalPoint", "comma"); return this.leaveMenus();
                 }
             }
             return this.leaveMenus();
@@ -89,9 +98,15 @@ const MENUS = {
         1: {Name: "ab/c"},
         2: {Name: "d/c"},
         3: {Name: "STAT"},
-        4: {Name: "Disp"},
+        4: {Name: "Disp", ToPage: "Disp"},
         5: {Name: "⏴CONT⏵"},
         Up: {ToPage: "Setup"}
+    },
+
+    Disp: {
+        Title: {Title: "Decimal Point?"},
+        1: {Name: "Dot", Action: "SetDPDot"},
+        2: {Name: "Comma", Action: "SetDPComma"}
     },
 
     Degree: {

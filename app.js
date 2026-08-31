@@ -8,6 +8,7 @@ import { historyManager } from "./history.js";
 import { display } from "./display.js";
 import { menuManager } from "./menu.js";
 import { statusBar } from "./statusbar.js";
+import { settingsManager } from "./settingsManager.js";
 
 // TODO: Depends on Norm1/Norm2
 // Norm1: toExpNeg = -3
@@ -176,7 +177,10 @@ function setOutput(outputType) {
         }
     }
     
-    // textDisplay.textContent = displayValue;
+    console.log(settingsManager.getSetting("decimalPoint"))
+    if (settingsManager.getSetting("decimalPoint") === "comma")
+        displayValue = displayValue.replaceAll('.', '{,}'); 
+
     katex.render(displayValue, outputDisplay, {
         throwOnError: false
     });

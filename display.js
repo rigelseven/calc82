@@ -49,11 +49,12 @@ class Display {
         )
     }
 
-    renderMenu(options) {
+    renderMenu(options, hasTitle) {
         this.clearDisplay();
         let optionsText = [[], [], [], []];
-        for (let idx in options) {
-            optionsText[Math.floor(idx/2)].push(`${Number(idx)+1}: ${options[idx]}`);
+        if (hasTitle) optionsText[0] = [options[0]];
+        for (let idx = hasTitle*2; idx < options.length; idx++) {
+            optionsText[Math.floor(idx/2)].push(`${Number(idx)+1-hasTitle*2}: ${options[idx]}`);
         }
         this.updateDisplay(optionsText);
     }
