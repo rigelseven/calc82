@@ -165,7 +165,7 @@ function setOutput(outputType) {
         let sign = "";
         if (numerator.isNeg()) sign = "-";
         displayValue = `${sign}\\frac\{${numerator.abs()}\}\{${denominator}\}`;
-    } else if (outputType === "mixed") {
+    } else if (outputType === "mixed" && calculator.fractionResult) {
 
         currentResultType = "mixed";
 
