@@ -225,14 +225,12 @@ function handleButton(button, forceMode=null) {
                 display.clearDisplay();
 
             renderInput();
-            console.log(finalAction)
 
             if (finalAction !== undefined && finalAction !== null) {
                 // Handle menu
                 if (finalAction.startsWith("Menu")) {
                     const menuAction = finalAction.slice(4);
                     const finalMenuAction = menuManager.handleMenuAction(menuAction)
-                    console.log(finalMenuAction)
                     if (finalMenuAction == "Exit") {
                         inputHandler.switchMode("Main", true, shiftButton, alphaButton);
                         renderInput();
@@ -367,8 +365,6 @@ function attachListeners() {
             : event.key.toLowerCase())
         : shiftedToUnshifted[event.key] ?? unshiftedToShifted[event.key];
         
-        console.log(event.key, counterpart)
-
         for (const button of [layoutEngine.getButtonFromKey(event.key),
             layoutEngine.getButtonFromKey(event.key, "Variable"),
             layoutEngine.getButtonFromKey(counterpart),

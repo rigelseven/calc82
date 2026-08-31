@@ -12,7 +12,6 @@ export class InputHandler {
 
     handleInput(input) {
         const token = TOKENS[input];
-        console.log(this.inputTokens)
 
         if (this.inputMode == "Error") {
             switch(input) {
@@ -76,7 +75,6 @@ export class InputHandler {
                 if (!(this.mode == "Menu" || (input && input.toString().startsWith("Menu")))) {
                     this.setEdit();
                     this.setTokens([]);
-                    console.log(this.cursorPosition)
                 }
             }
 

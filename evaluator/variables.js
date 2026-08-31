@@ -30,7 +30,6 @@ class VariableManager {
             JSON.stringify(this.storage, decimalReplacer)
         );
 
-        console.log(localStorage.getItem("variables"), JSON.stringify(this.storage, decimalReplacer))
         return this.storage[variable];
     }
 }

@@ -8,7 +8,6 @@ export default class Tokeniser {
     }
 
     tokenise() {
-        console.log(this.input)
         while (!this.isAtEnd()) {
             const c = this.getCharacter();
 

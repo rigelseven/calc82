@@ -26,7 +26,6 @@ class MenuManager {
         const currentMenuItems = MENUS[this.currentMenu];
         const menuItem = currentMenuItems[item];
         if (!menuItem) return;
-        console.log(menuItem);
 
         // Pagination
         if (menuItem.ToPage) {
