@@ -4,7 +4,7 @@ export default class Tokeniser {
     constructor(input) {
         this.input = input;
         this.position = 0;
-        this.tokens = [];
+        this.tokens = [[]];
     }
 
     tokenise() {
@@ -78,6 +78,16 @@ export default class Tokeniser {
                 continue;
             }
 
+            // Colon
+            if (c.type === "COLON") {
+                this.addToken({
+                    type: "EOF"
+                })
+                this.tokens.push([]);
+                this.advance();
+                continue;
+            }
+
             throw new Error(`Syntax error: Unexpected input token ${c.type}`, {cause: {type: "Syntax ERROR", position: this.position}})
         }
         this.addToken({
@@ -88,15 +98,15 @@ export default class Tokeniser {
 
     addToken(token) {
         // Handle implicit multiplication: if the last token and current token need implicit mult
-        const previous = this.tokens.at(-1);
+        const previous = this.tokens.at(-1).at(-1);
         if (previous && this.needsImpMult(previous, token)) {
-            this.tokens.push({
+            this.tokens.at(-1).push({
                 type: "IMPLICITMULTIPLY",
                 pos: this.position
             });
         }
 
-        this.tokens.push(token);
+        this.tokens.at(-1).push(token);
     }
 
     scanNumber() {

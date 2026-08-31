@@ -5,13 +5,13 @@ import Fraction from "./math/fraction.js";
 import { variableManager } from "./evaluator/variables.js";
 
 export default class Calculator {
-    calculate(expression) {
+    calculate(expression, n=0) {
         console.log(expression);         
         const tokeniser = new Tokeniser(expression);
         const tokens = tokeniser.tokenise();
-        console.table(tokens);
+        console.log(tokens);
 
-        const parser = new Parser(tokens);
+        const parser = new Parser(tokens[n]);
         const [ast, storeVar] = parser.parse();
         console.log(ast, storeVar);
 

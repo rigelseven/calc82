@@ -39,9 +39,13 @@ calculateButton.addEventListener("click", function(event) {
 });
 
 function calculate(storeHistory = true) {
-    try {
+    //try {
         const value = inputHandler.getTokens();
-        const {res, decimalResult, fractionResult, tokens, ast} = calculator.calculate(value);
+
+        if (inputHandler.inputMode !== "Review") colonIndex = 0;
+
+        const {res, decimalResult, fractionResult, tokens, ast} = calculator.calculate(value, colonIndex);
+
         currentResult = res;
 
         textDisplay.textContent="=";
@@ -51,18 +55,28 @@ function calculate(storeHistory = true) {
         const textAST = generateTextAST(ast);
         astDisplay.textContent += textAST;
         
-        const textTokens = generateTextTokens(tokens);
+        const textTokens = generateTextTokens(tokens[colonIndex]);
         tokensDisplay.textContent += textTokens;
         
         if (fractionResult) setOutput("fraction");
         else setOutput("decimal");
 
+        previousColonIndex = colonIndex;
+        if (tokens.length > 1) {
+            statusBar.toggle("disp", colonIndex !== tokens.length-1);
+            colonIndex = (colonIndex + 1) % tokens.length;
+        } else {
+            colonIndex = 0;
+            statusBar.toggle("disp", false);
+        }
+
         inputHandler.setReview();
         renderInput();
+        
+        console.log(extractSubarray(value, colonIndex));
+        if (storeHistory) historyManager.pushHistory(extractSubarray(value, colonIndex), fractionResult, decimalResult);
 
-        if (storeHistory) historyManager.pushHistory(value, fractionResult, decimalResult);
-
-    } catch (error) {
+    /*} catch (error) {
         let errorMessage = error.message;
         if (error.cause) {
             if (error.cause.type !== undefined) errorMessage = error.cause.type;
@@ -81,7 +95,26 @@ function calculate(storeHistory = true) {
 
         currentResultType = null;
         console.error(error);
+    }*/
+}
+
+function extractSubarray(arr, targetN) {
+  const result = [];
+  let currentChunkIndex = 0;
+
+  for (const item of arr) {
+    if (item.type === "COLON") {
+      currentChunkIndex++;
+      if (currentChunkIndex > targetN) break; 
+      continue;
     }
+
+    if (currentChunkIndex === targetN) {
+      result.push(item);
+    }
+  }
+
+  return result;
 }
 
 // Angle mode selector
@@ -152,19 +185,20 @@ function setOutput(outputType) {
 
 function renderInput() {
     if (inputHandler.mode == "Menu") return;
-    let inputText = "";
+    let inputText = [""];
     let previousToken = null;
     let showCursor = inputHandler.inputMode === "Edit";
     for (let token of inputHandler.getTokens(showCursor)) {
+        if (token.type === "COLON" && inputHandler.inputMode == "Review") {inputText.push(""); continue}
         if ((token.type === "POWER") && token.exp === "start"
             && (!(previousToken !== null && ["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES", "VARIABLE"].includes(previousToken.type))
             && !(previousToken !== null && ["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(previousToken.type) && previousToken.exp === "end")))
             inputText += "{}";
-        inputText += `${token.rep}`;
+        inputText[inputText.length-1] += `${token.rep}`;
 
         previousToken = token.type === "CURSOR" ? previousToken : token;
     }
-    inputText = addPlaceholders(inputText);
+    inputText = addPlaceholders(inputText[inputHandler.inputMode === "Review" ? previousColonIndex : 0]);
     setInput(inputText);
 }
 
@@ -348,6 +382,9 @@ function attachListeners() {
         }
     });
 }
+
+let colonIndex = 0;
+let previousColonIndex = 0;
 
 let currentResultType = null;
 let currentResult = null;

@@ -7,7 +7,6 @@ export default class Parser {
     // Recursive descent parser!!!
     parse() {
         const ast = this.expression();
-        // TODO add colon
         if (["STORE", "MPLUS", "MMINUS"].includes(this.getToken().type)) {
             const storeVar = this.getToken().value;
             if (this.tokens[this.current+1].type === "EOF") {

@@ -57,6 +57,8 @@ export const TOKENS = {
     "Random": { type: "VARIABLE", exp: "Random", rep: "\\text{Ran\\#}"},
     "RandomInt": { type: "FUNCTION", exp: "randomInt", rep: "\\text{RanInt\\#}("},
 
+    "Colon": { type: "COLON", rep: "\\text{:}"},
+
     "LCM": { type: "FUNCTION", exp: "lcm", rep: "\\text{LCM}("},
     "GCD": { type: "FUNCTION", exp: "gcd", rep: "\\text{GCD}("},
 

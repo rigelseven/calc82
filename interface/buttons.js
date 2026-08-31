@@ -116,6 +116,7 @@ export const KEYBOARD_MAP = {
         "U": ["Mode", "Shift"],
 
     "|": ["Abs", null],
+    ":": ["Cube", "Alpha"],
     "!": ["Factorial", null],
     "\\": ["Invert", null],
 
