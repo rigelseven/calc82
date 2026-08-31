@@ -75,6 +75,11 @@ export const BUTTONS = [
         ExponentialDigit: ["$\\times 10^x$", "", "$\\pi$", "$e$", {Main: "E", Shift: "ConstantPi", Alpha: "ConstantE"}],
         Ans: ["Ans", "", "DRG▶", "", {Main: "Ans", Shift: "MenuDegree", Alpha: null}],
         Calculate: ["=", "", "", "", {Main: "Calculate", Shift: "Calculate", Alpha: "Calculate"}],
+    },
+
+    // hidden
+    {
+        ForwardDelete: ["", "", "", "", {Main: "ForwardDelete", Shift: null, Alpha: null}]
     }
 ]
 
@@ -87,7 +92,7 @@ export const ROW_HEIGHTS = [
     1.3,
     1.3,
     1.3,
-    1.3
+    1.3,
 ]
 
 export const NAV_BUTTONS = {
@@ -147,7 +152,7 @@ export const KEYBOARD_MAP = {
     7: [7, null],
     8: [8, null],
     9: [9, null],
-    "Backspace": ["Del", null], // TODO Forward delete
+    "Backspace": ["Del", null],
     "Escape": ["AllClear", null],
 
     4: [4, null],
@@ -179,6 +184,8 @@ export const KEYBOARD_MAP = {
     "F": ["Tan", "Alpha"],
     "X": ["RParen", "Alpha"],
     "Y": ["StandardToDecimal", "Alpha"],
+
+    "Delete": ["ForwardDelete", null]
 }
 
 export const VARIABLE_MAP = {

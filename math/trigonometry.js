@@ -1,11 +1,12 @@
 import { statusBar } from "../statusbar.js";
 
 class TrigSolver {
-    constructor(angleMode = "rad") {
+    constructor(angleMode) {
         this.angleMode = angleMode;
-        statusBar.toggle('rad', true);
-        statusBar.toggle('deg', false);
-        statusBar.toggle('gra', false);
+        statusBar.toggle('rad', angleMode == 'rad');
+        statusBar.toggle('deg', angleMode == 'deg');
+        statusBar.toggle('gra', angleMode == 'gra');
+        localStorage.setItem("angleMode", angleMode);
 
         this.PI = Decimal.acos(-1);
         this.HALF_PI = this.PI.div(2);
@@ -19,6 +20,8 @@ class TrigSolver {
         statusBar.toggle(angleMode, true);
 
         this.angleMode = angleMode;
+
+        localStorage.setItem("angleMode", angleMode);
     }
 
     computeTrig(fn, a) {
@@ -189,5 +192,6 @@ class TrigSolver {
     }
 }
 
-const trigSolver = new TrigSolver;
+const savedAngleMode = localStorage.getItem("angleMode");
+const trigSolver = new TrigSolver(savedAngleMode ? savedAngleMode : "rad");
 export default trigSolver;

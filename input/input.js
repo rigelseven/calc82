@@ -65,6 +65,8 @@ export class InputHandler {
                 return "recall";
             case "Delete":
                 return;
+            case "ForwardDelete":
+                return;
             case "AllClear":
                 this.inputTokens = [];
                 this.cursorPosition = 0;
@@ -137,6 +139,8 @@ export class InputHandler {
                 return "recall";
             case "Delete":
                 return this.delete("left");
+            case "ForwardDelete":
+                return this.delete("right");
             case "AllClear":
                 this.inputTokens = [];
                 this.cursorPosition = 0;

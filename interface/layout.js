@@ -11,7 +11,7 @@ export default class LayoutEngine {
         container.style.setProperty("--rows", BUTTONS.length);
         
         let outer_index = 0;
-        for (const row of BUTTONS) {
+        for (const row of BUTTONS) { 
             const rowElement = document.createElement("div");
             rowElement.className = "button-row";
 
@@ -45,7 +45,7 @@ export default class LayoutEngine {
                 index++;
             }
             
-            container.appendChild(rowElement);
+            if (outer_index !== BUTTONS.length-1) container.appendChild(rowElement); // avoid adding hidden
             outer_index++;
         }
         this.createNavButtons();
