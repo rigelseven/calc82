@@ -35,7 +35,6 @@ class VariableManager {
 
     static parseValue(val) {
     if (!val) return new Decimal(0);
-        console.log(val.numerator, val.denominator)
     if (typeof val === 'object' && 'numerator' in val && 'denominator' in val) {
         return new Fraction(Decimal(val.numerator), Decimal(val.denominator));
     }

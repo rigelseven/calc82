@@ -1,7 +1,9 @@
+import { statusBar } from "./statusbar.js";
+
 class SettingsManager {
     constructor(settings) {
         this.settings = settings;
-        console.log(this.settings);
+        this.updateDisplayStatus();
     }
 
     setSetting(setting, value) {
@@ -10,10 +12,16 @@ class SettingsManager {
             "settings",
             JSON.stringify(this.settings)
         );
+        if (setting == "displayMode") this.updateDisplayStatus();
     }
 
     getSetting(setting) {
         return this.settings[setting];
+    }
+
+    updateDisplayStatus() {
+        statusBar.toggle('fix', this.settings.displayMode[0] == "fix");
+        statusBar.toggle('sci', this.settings.displayMode[0] == "sci");
     }
 }
 

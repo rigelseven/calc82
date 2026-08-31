@@ -10,9 +10,6 @@ import { menuManager } from "./menu.js";
 import { statusBar } from "./statusbar.js";
 import { settingsManager } from "./settingsManager.js";
 
-// TODO: Depends on Norm1/Norm2
-// Norm1: toExpNeg = -3
-Decimal.set({ precision: 15, maxE: 99, toExpNeg: -3, toExpPos: 10});
 
 const textDisplay = document.querySelector("#text-display");
 const testInput = document.querySelector("#test-input");
@@ -34,19 +31,18 @@ const inputHandler = new InputHandler;
 const calculator = new Calculator;
 const layoutEngine = new LayoutEngine;
 
-
 calculateButton.addEventListener("click", function(event) {
     calculate(true);
 });
 
 function calculate(storeHistory = true) {
+    setOutputFormat();    
     try {
         const value = inputHandler.getTokens();
 
         if (inputHandler.inputMode !== "Review") colonIndex = 0;
 
-        const {res, decimalResult, fractionResult, tokens, ast} = calculator.calculate(value, colonIndex);
-
+        const {res, decimalResult, fractionResult, tokens, ast} = calculator.calculate(value, storeHistory ? colonIndex : previousColonIndex);
         currentResult = res;
 
         textDisplay.textContent="=";
@@ -62,13 +58,15 @@ function calculate(storeHistory = true) {
         if (fractionResult) setOutput("fraction"); // todo - use this to start making persistence
         else setOutput("decimal");
 
-        previousColonIndex = colonIndex;
-        if (tokens.length > 1) {
-            statusBar.toggle("disp", colonIndex !== tokens.length-1);
-            colonIndex = (colonIndex + 1) % tokens.length;
-        } else {
-            colonIndex = 0;
-            statusBar.toggle("disp", false);
+        if (storeHistory) {
+            previousColonIndex = colonIndex;
+            if (tokens.length > 1) {
+                statusBar.toggle("disp", colonIndex !== tokens.length-1);
+                colonIndex = (colonIndex + 1) % tokens.length;
+            } else {
+                colonIndex = 0;
+                statusBar.toggle("disp", false);
+            }
         }
 
         inputHandler.setReview();
@@ -115,6 +113,14 @@ function extractSubarray(arr, targetN) {
   }
 
   return result;
+}
+
+function setOutputFormat() {
+    const formatMode = settingsManager.getSetting("displayMode");
+    if (formatMode[0] === "norm" && formatMode[1] == 1)
+        Decimal.set({ precision: 15, maxE: 99, toExpNeg: -3, toExpPos: 10});
+    else if (formatMode[0] === "norm" && formatMode[1] == 2)
+        Decimal.set({ precision: 15, maxE: 99, toExpNeg: -9, toExpPos: 10});
 }
 
 // Angle mode selector
@@ -177,7 +183,6 @@ function setOutput(outputType) {
         }
     }
     
-    console.log(settingsManager.getSetting("decimalPoint"))
     if (settingsManager.getSetting("decimalPoint") === "comma")
         displayValue = displayValue.replaceAll('.', '{,}'); 
 
@@ -201,7 +206,6 @@ function renderInput() {
 
         previousToken = token.type === "CURSOR" ? previousToken : token;
     }
-    console.log(inputText, inputHandler.inputMode);
     inputText = addPlaceholders(inputText[inputHandler.inputMode === "Review" ? previousColonIndex : 0]);
     setInput(inputText);
 }
@@ -239,6 +243,7 @@ function handleButton(button, forceMode=null) {
                     const finalMenuAction = menuManager.handleMenuAction(menuAction)
                     if (finalMenuAction == "Exit") {
                         inputHandler.switchMode("Main", true, shiftButton, alphaButton);
+                        if (inputHandler.inputMode == "Review")calculate(false);
                         renderInput();
                         outputDisplay.style.display = "";
                         historyManager.checkHistoryArrows();
@@ -249,7 +254,7 @@ function handleButton(button, forceMode=null) {
                         outputDisplay.style.display = "none";
                     }
 
-                    if (finalMenuAction && finalMenuAction.startsWith("Token")) {
+                    if (finalMenuAction && finalMenuAction.startsWith("Token")) { // todo tidy this up
                         menuManager.leaveMenus();
                         inputHandler.switchMode("Main", true, shiftButton, alphaButton);
                         inputHandler.handleInput(finalMenuAction.slice(5));
@@ -257,6 +262,7 @@ function handleButton(button, forceMode=null) {
                         outputDisplay.style.display = "";
                         historyManager.checkHistoryArrows();
                     }
+
                 }
 
                 // Handle store/recall buttons
@@ -404,6 +410,8 @@ layoutEngine.createButtons();
 
 const shiftButton = layoutEngine.getButtonFromKey("Shift")[2];
 const alphaButton = layoutEngine.getButtonFromKey("Alpha")[2];
+
+setOutputFormat();
 
 attachListeners();
 renderInput();

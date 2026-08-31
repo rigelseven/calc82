@@ -29,10 +29,16 @@ class MenuManager {
 
     executeMenuItem(item) {
         if (this.currentMenu === null) return;
-        const currentMenuItems = MENUS[this.currentMenu];
-        const menuItem = currentMenuItems[item];
-        if (!menuItem) return;
-
+        let menuItem;
+        // Digit
+        if (MENUS[this.currentMenu].Digit) {
+            menuItem = MENUS[this.currentMenu].Digit;
+            if (!(/^\d$/.test(item) && item >= menuItem.Digit[0] && item <= menuItem.Digit[1])) return;
+        } else {
+            const currentMenuItems = MENUS[this.currentMenu];
+            menuItem = currentMenuItems[item];
+            if (!menuItem) return;
+        }
         // Pagination
         if (menuItem.ToPage) {
             this.currentMenu = menuItem.ToPage;
@@ -48,6 +54,10 @@ class MenuManager {
 
                     case "SetDPDot": settingsManager.setSetting("decimalPoint", "dot"); return this.leaveMenus();
                     case "SetDPComma": settingsManager.setSetting("decimalPoint", "comma"); return this.leaveMenus();
+
+                    case "SetFix": settingsManager.setSetting("displayMode", ["fix", item]); return this.leaveMenus();
+                    case "SetSci": settingsManager.setSetting("displayMode", ["sci", item]); return this.leaveMenus();
+                    case "SetNorm": settingsManager.setSetting("displayMode", ["norm", item]); return this.leaveMenus();
                 }
             }
             return this.leaveMenus();
@@ -88,9 +98,9 @@ const MENUS = {
         3: {Name: "Deg", Action: "SetDegrees"},
         4: {Name: "Rad", Action: "SetRadians"},
         5: {Name: "Gra", Action: "SetGradians"},
-        6: {Name: "Fix"},
-        7: {Name: "Sci"},
-        8: {Name: "Norm"},
+        6: {Name: "Fix", ToPage: "Fix"},
+        7: {Name: "Sci", ToPage: "Sci"},
+        8: {Name: "Norm", ToPage: "Norm"},
         Down: {ToPage: "Setup2"}
     },
 
@@ -107,6 +117,21 @@ const MENUS = {
         Title: {Title: "Decimal Point?"},
         1: {Name: "Dot", Action: "SetDPDot"},
         2: {Name: "Comma", Action: "SetDPComma"}
+    },
+
+    Fix: {
+        Title: {Title: "Fix 0~9?"},
+        Digit: {Action: "SetFix", Digit: [0, 9]}
+    },
+
+    Sci: {
+        Title: {Title: "Sci 0~9?"},
+        Digit: {Action: "SetSci", Digit: [0, 9]}
+    },
+
+    Norm: {
+        Title: {Title: "Norm 1~2?"},
+        Digit: {Action: "SetNorm", Digit: [1, 2]}
     },
 
     Degree: {
