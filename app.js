@@ -91,6 +91,10 @@ function calculate(storeHistory = true) {
             throwOnError: false
         });
 
+        katex.render("", outputDisplay, {
+            throwOnError: false
+        });
+
         currentResultType = null;
         console.error(error);
     }
