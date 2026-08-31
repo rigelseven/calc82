@@ -39,7 +39,7 @@ calculateButton.addEventListener("click", function(event) {
 });
 
 function calculate(storeHistory = true) {
-    //try {
+    try {
         const value = inputHandler.getTokens();
 
         if (inputHandler.inputMode !== "Review") colonIndex = 0;
@@ -58,7 +58,7 @@ function calculate(storeHistory = true) {
         const textTokens = generateTextTokens(tokens[colonIndex]);
         tokensDisplay.textContent += textTokens;
         
-        if (fractionResult) setOutput("fraction");
+        if (fractionResult) setOutput("fraction"); // todo - use this to start making persistence
         else setOutput("decimal");
 
         previousColonIndex = colonIndex;
@@ -73,10 +73,9 @@ function calculate(storeHistory = true) {
         inputHandler.setReview();
         renderInput();
         
-        console.log(extractSubarray(value, colonIndex));
         if (storeHistory) historyManager.pushHistory(extractSubarray(value, colonIndex), fractionResult, decimalResult);
 
-    /*} catch (error) {
+    } catch (error) {
         let errorMessage = error.message;
         if (error.cause) {
             if (error.cause.type !== undefined) errorMessage = error.cause.type;
@@ -95,7 +94,7 @@ function calculate(storeHistory = true) {
 
         currentResultType = null;
         console.error(error);
-    }*/
+    }
 }
 
 function extractSubarray(arr, targetN) {
