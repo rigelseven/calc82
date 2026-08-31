@@ -125,6 +125,10 @@ function setOutputFormat() {
         Decimal.set({ precision: 15, maxE: 99, toExpNeg: -3, toExpPos: 10});
     else if (formatMode[0] === "norm" && formatMode[1] == 2)
         Decimal.set({ precision: 15, maxE: 99, toExpNeg: -9, toExpPos: 10});
+    else if (formatMode[0] === "fix") 
+        Decimal.set({ precision: 15, maxE: 99, toExpNeg: -101, toExpPos: 10});
+    else if (formatMode[0] === "sci") 
+        Decimal.set({ precision: 15, maxE: 99, toExpNeg: 0, toExpPos: 0});
 }
 
 // Angle mode selector
@@ -157,14 +161,34 @@ function switchAngleMode(type="improper") {
 function setOutput(outputType) {
     if (outputType === "decimal") {
         currentResultType = "decimal";
-        displayValue = `${calculator.decimalResult.toSD(10).toString().replace(/e\+?(-?\d+)/g, "\\times10^{$1}")}`;
+
+        const formatMode = settingsManager.getSetting("displayMode")
+
+                                                        // Sci mode accuracy
+        displayValue = `${calculator.decimalResult.toSD(formatMode[0] === "sci" ? Number(formatMode[1]) : 10).toString().replace(/e\+?(-?\d+)/g, "\\times10^{$1}")}`;
+
+        // Fix mode
+        if (formatMode[0] === "fix" && !displayValue.includes("\\times10")) {
+            // Truncate to n digits after dp
+            const index = displayValue.indexOf('.');
+  
+            if (index !== -1)
+                displayValue = displayValue.slice(0, Number(index) + Number(formatMode[1]));
+
+            if (!displayValue.includes(".")) displayValue += '.';
+        }
+
+        // Comma DP
+        if (settingsManager.getSetting("decimalPoint") === "comma")
+            displayValue = displayValue.replaceAll('.', '{,}'); 
+
     } else if (outputType === "fraction") {
         currentResultType = "fraction";
         const numerator = calculator.fractionResult.numerator;
         const denominator = calculator.fractionResult.denominator;
         let sign = "";
         if (numerator.isNeg()) sign = "-";
-        displayValue = `${sign}\\frac\{${numerator.abs()}\}\{${denominator}\}`;
+        displayValue = `${sign}\\frac\{${numerator.abs().toFixed()}\}\{${denominator.toFixed()}\}`;
     } else if (outputType === "mixed" && calculator.fractionResult) {
 
         currentResultType = "mixed";
@@ -179,16 +203,13 @@ function setOutput(outputType) {
         const remainder = absNumerator.mod(denominator);
 
         if (remainder.isZero()) {
-            displayValue = `${isNegative ? "-" : ""}${whole}`;
+            displayValue = `${isNegative ? "-" : ""}${whole.toFixed()}`;
         } else if (whole.isZero()) {
-            displayValue = `${isNegative ? "-" : ""}\\frac{${remainder}}{${denominator}}`;
+            displayValue = `${isNegative ? "-" : ""}\\frac{${remainder.toFixed()}}{${denominator.toFixed()}}`;
         } else {
-            displayValue = `${isNegative ? "-" : ""}${whole}\\frac{${remainder}}{${denominator}}`;
+            displayValue = `${isNegative ? "-" : ""}${whole.toFixed()}\\frac{${remainder.toFixed()}}{${denominator.toFixed()}}`;
         }
     }
-    
-    if (settingsManager.getSetting("decimalPoint") === "comma")
-        displayValue = displayValue.replaceAll('.', '{,}'); 
 
     katex.render(displayValue, outputDisplay, {
         throwOnError: false
