@@ -74,7 +74,7 @@ function calculate(storeHistory = true) {
         inputHandler.setReview();
         renderInput();
         
-        if (storeHistory) historyManager.pushHistory(extractSubarray(value, colonIndex), fractionResult, decimalResult);
+        if (storeHistory) historyManager.pushHistory(extractSubarray(value, previousColonIndex), fractionResult, decimalResult);
 
     } catch (error) {
         let errorMessage = error.message;
@@ -201,6 +201,7 @@ function renderInput() {
 
         previousToken = token.type === "CURSOR" ? previousToken : token;
     }
+    console.log(inputText, inputHandler.inputMode);
     inputText = addPlaceholders(inputText[inputHandler.inputMode === "Review" ? previousColonIndex : 0]);
     setInput(inputText);
 }
@@ -228,7 +229,8 @@ function handleButton(button, forceMode=null) {
             else if (inputHandler.mode !== "Menu") 
                 display.clearDisplay();
 
-            renderInput();
+            if (!(finalAction === "nextHistory" || finalAction === "previousHistory" || finalAction === "oldestHistory" || finalAction === "latestHistory"))
+            renderInput(); // render later if history
 
             if (finalAction !== undefined && finalAction !== null) {
                 // Handle menu
@@ -288,8 +290,11 @@ function handleButton(button, forceMode=null) {
                 inputHandler.setTokens(h.expression);
                 calculator.fractionResult = h.fractionResult;
                 calculator.decimalResult = h.decimalResult;
+                previousColonIndex = 0;
                 renderInput();
                 setOutput(calculator.fractionResult !== undefined ? "fraction" : "decimal");
+
+                statusBar.toggle("disp", false);
             }
 
             // Handle calculation
