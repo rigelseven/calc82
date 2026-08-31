@@ -1,18 +1,19 @@
+import Fraction from "../math/fraction.js";
 import { statusBar } from "../statusbar.js";
 
 class VariableManager {
     constructor(storage) {
         this.storage = {
-            "A": new Decimal(storage?.["A"] ?? 0),
-            "B": new Decimal(storage?.["B"] ?? 0),
-            "C": new Decimal(storage?.["C"] ?? 0),
-            "D": new Decimal(storage?.["D"] ?? 0),
-            "E": new Decimal(storage?.["E"] ?? 0),
-            "F": new Decimal(storage?.["F"] ?? 0),
-            "X": new Decimal(storage?.["X"] ?? 0),
-            "Y": new Decimal(storage?.["Y"] ?? 0),
-            "M": new Decimal(storage?.["M"] ?? 0),
-            "Ans": new Decimal(storage?.["Ans"] ?? 0)
+            "A": VariableManager.parseValue(storage["A"]),
+            "B": VariableManager.parseValue(storage["B"]),
+            "C": VariableManager.parseValue(storage["C"]),
+            "D": VariableManager.parseValue(storage["D"]),
+            "E": VariableManager.parseValue(storage["E"]),
+            "F": VariableManager.parseValue(storage["F"]),
+            "X": VariableManager.parseValue(storage["X"]),
+            "Y": VariableManager.parseValue(storage["Y"]),
+            "M": VariableManager.parseValue(storage["M"]),
+            "Ans": VariableManager.parseValue(storage["Ans"]),
         };
     }
     
@@ -26,46 +27,28 @@ class VariableManager {
 
         localStorage.setItem(
             "variables",
-            JSON.stringify(this.storage, decimalReplacer)
+            JSON.stringify(this.storage)
         );
 
         return this.storage[variable];
     }
+
+    static parseValue(val) {
+    if (!val) return new Decimal(0);
+        console.log(val.numerator, val.denominator)
+    if (typeof val === 'object' && 'numerator' in val && 'denominator' in val) {
+        return new Fraction(Decimal(val.numerator), Decimal(val.denominator));
+    }
+    return new Decimal(val);
+}
 }
 
 // Read variables
 let savedVariables = [];
 try {
     savedVariables = JSON.parse(
-            localStorage.getItem("variables"),
-            decimalReviver);
+            localStorage.getItem("variables"));
 } catch {;}
 export const variableManager = new VariableManager(savedVariables);
 statusBar.toggle("memory", variableManager.storage["M"] != "0");
 
-
-function decimalReplacer(key, value) {
-    if (value instanceof Decimal) {
-        return {
-            s: Number(value.s),
-            e: Number(value.e),
-            d: value.d.map(Number)
-        };
-    }
-
-    return value;
-}
-
-function decimalReviver(key, value) {
-    if (
-        value &&
-        typeof value === "object" &&
-        "s" in value &&
-        "e" in value &&
-        Array.isArray(value.d)
-    ) {
-        return new Decimal(value);
-    }
-
-    return value;
-}
