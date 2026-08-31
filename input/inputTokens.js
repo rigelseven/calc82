@@ -24,8 +24,8 @@ export const TOKENS = {
     "Factorial": { type: "FACTORIAL", rep: "!" },
     "Percent": { type: "PERCENT", rep: "\\%" },
     "Comma": { type: "COMMA", rep: "," },
-    "Permutation": { type: "PERMUTATION", rep: "P" },
-    "Combination": { type: "Combination", rep: "C" },
+    "Permutation": { type: "PERMUTATION", rep: "\\mathbf{P}" },
+    "Combination": { type: "COMBINATION", rep: "\\mathbf{C}" },
     
     "r": { type: "RADIANS", rep: "{^\\mathrm{r}}" },
     "g": { type: "GRADIANS", rep: "{^\\mathrm{g}}" },
