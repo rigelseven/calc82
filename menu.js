@@ -1,4 +1,6 @@
 import { display } from "./display.js";
+import { variableManager } from "./evaluator/variables.js";
+import { historyManager } from "./history.js";
 import trigSolver from "./math/trigonometry.js";
 import { settingsManager } from "./settingsManager.js";
 import { statusBar } from "./statusbar.js";
@@ -16,6 +18,11 @@ class MenuManager {
         statusBar.toggle('up', false);
         statusBar.toggle('down', false);
         for (const item of Object.values(currentMenuItems)) {
+            console.log(item)
+            if (item.Confirm) {
+                display.renderConfirmation(item.Confirm);
+                return;
+            } 
             if (item.Name) showMenu.push(item.Name);
             if (item.Title) {
                 showMenu.splice(0, 0, item.Title, "");
@@ -61,6 +68,21 @@ class MenuManager {
                     case "SetFix": settingsManager.setSetting("displayMode", ["fix", item]); return this.leaveMenus();
                     case "SetSci": settingsManager.setSetting("displayMode", ["sci", item]); return this.leaveMenus();
                     case "SetNorm": settingsManager.setSetting("displayMode", ["norm", item]); return this.leaveMenus();
+
+                    case "ClearMemory":
+                        variableManager.clearVariables();
+                        historyManager.clearHistory();
+                        return "ClearIO";
+                    case "ClearSetup":
+                        settingsManager.clearSettings();
+                        trigSolver.setAngleMode("rad");
+                        return this.leaveMenus();
+                    case "ClearAll":                     
+                        variableManager.clearVariables();
+                        historyManager.clearHistory();
+                        settingsManager.clearSettings();
+                        trigSolver.setAngleMode("rad");
+                        return "ClearIO";
                 }
             }
             return this.leaveMenus();
@@ -71,7 +93,7 @@ class MenuManager {
         if (menuAction === "Exit") return this.leaveMenus();
 
         // Handle direct menu calls
-        if (["Modes", "Setup", "Degree", "Hyp"].includes(menuAction)) this.currentMenu = menuAction;
+        if (["Modes", "Setup", "Degree", "Hyp", "Clr"].includes(menuAction)) this.currentMenu = menuAction;
 
         // Handle number menu navigation
         let ret;
@@ -150,6 +172,28 @@ const MENUS = {
         4: {Name: "sinh⁻¹", Action: "TokenAsinh"},
         5: {Name: "cosh⁻¹", Action: "TokenAcosh"},
         6: {Name: "tanh⁻¹", Action: "TokenAtanh"}
+    },
+
+    Clr: {
+        Title: {Title: "Clear?"},
+        1: {Name: "Setup", ToPage: "ClearSetupConfirm"},
+        2: {Name: "Memory", ToPage: "ClearMemoryConfirm"},
+        3: {Name: "All", ToPage: "ClearAllConfirm"},
+    },
+
+    ClearSetupConfirm: {
+        Confirm: {Confirm: "Clear Setup?"},
+        Yes: {Action: "ClearSetup"}
+    },
+
+    ClearMemoryConfirm: {
+        Confirm: {Confirm: "Clear Memory?"},
+        Yes: {Action: "ClearMemory"}
+    },
+
+    ClearAllConfirm: {
+        Confirm: {Confirm: "Clear All?"},
+        Yes: {Action: "ClearAll"}
     }
 }
 

@@ -48,7 +48,7 @@ export const BUTTONS = [
     {
         7: ["7", "", "", "", {Main: 7, Shift: null, Alpha: null, Menu: "Menu7"}],
         8: ["8", "", "", "", {Main: 8, Shift: null, Alpha: null, Menu: "Menu8"}],
-        9: ["9", "", "CLR", "", {Main: 9, Shift: "Clear", Alpha: null, Menu: "Menu9"}],
+        9: ["9", "", "CLR", "", {Main: 9, Shift: "MenuClr", Alpha: null, Menu: "Menu9"}],
         Del: ["DEL", "", "INS", "", {Main: "Delete", Shift: "Insert", Alpha: null}],
         AllClear: ["AC", "", "OFF", "", {Main: "AllClear", Shift: null, Alpha: "AllClear", Store: "AllClear", Recall: "AllClear", Menu: "MenuExit"}],
     },
@@ -74,7 +74,7 @@ export const BUTTONS = [
         Decimal: [".", "", "Ran#", "RanInt", {Main: ".", Shift: "Random", Alpha: "RandomInt"}],
         ExponentialDigit: ["$\\times 10^x$", "", "$\\pi$", "$e$", {Main: "E", Shift: "ConstantPi", Alpha: "ConstantE"}],
         Ans: ["Ans", "", "DRG▶", "", {Main: "Ans", Shift: "MenuDegree", Alpha: null}],
-        Calculate: ["=", "", "", "", {Main: "Calculate", Shift: "Calculate", Alpha: "Calculate"}],
+        Calculate: ["=", "", "", "", {Main: "Calculate", Shift: "Calculate", Alpha: "Calculate", Menu: "MenuYes"}],
     },
 
     // hidden

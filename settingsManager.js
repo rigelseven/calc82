@@ -19,6 +19,15 @@ class SettingsManager {
         return this.settings[setting];
     }
 
+    clearSettings() {
+        this.settings = defaultSettings;
+        localStorage.setItem(
+            "settings",
+            JSON.stringify(this.settings)
+        );
+        this.updateDisplayStatus();
+    }
+
     updateDisplayStatus() {
         statusBar.toggle('fix', this.settings.displayMode[0] == "fix");
         statusBar.toggle('sci', this.settings.displayMode[0] == "sci");

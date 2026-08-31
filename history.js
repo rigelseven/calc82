@@ -54,6 +54,12 @@ class HistoryManager {
         return this.getHistory();
     }
 
+    clearHistory() {
+        this.historyPosition = 0;
+        this.history = [];
+        this.checkHistoryArrows();
+    }
+
     checkHistoryArrows() {
         if (this.historyPosition == 0 || this.history.length == 0) statusBar.toggle('up', false);
         else statusBar.toggle('up', true);

@@ -49,6 +49,17 @@ class Display {
         )
     }
 
+    renderConfirmation(messageText) {
+        this.updateDisplay(
+            [
+                [messageText],
+                [""],
+                ["[=]: Yes"],
+                ["[AC]: Cancel"]
+            ]
+        )
+    }
+
     renderMenu(options, hasTitle) {
         this.clearDisplay();
         let optionsText = [[], [], [], []];

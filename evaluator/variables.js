@@ -33,6 +33,16 @@ class VariableManager {
         return this.storage[variable];
     }
 
+    clearVariables() {
+        for (const i of Object.keys(this.storage)) this.storage[i] = Decimal(0);
+
+        localStorage.setItem(
+            "variables",
+            JSON.stringify(this.storage)
+        );
+
+        statusBar.toggle("memory", this.storage["M"] != "0");
+    }
 
     static parseValue(val) {
     if (val && typeof val === 'object' && 'numerator' in val && 'denominator' in val) {

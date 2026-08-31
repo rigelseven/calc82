@@ -288,6 +288,20 @@ function handleButton(button, forceMode=null) {
                         historyManager.checkHistoryArrows();
                     }
 
+                    if (finalMenuAction == "ClearIO") {
+                        menuManager.leaveMenus();
+                        inputHandler.switchMode("Main", true, shiftButton, alphaButton);
+                        inputHandler.inputTokens = [];
+                        inputHandler.cursorPosition = 0;
+                        outputDisplay.style.display = "";
+                        historyManager.checkHistoryArrows();
+                        displayValue = "";
+                        currentResult = "";
+                        inputHandler.setEdit();
+                        setOutput();
+                        renderInput();
+                    }
+
                 }
 
                 // Handle store/recall buttons
