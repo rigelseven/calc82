@@ -318,14 +318,16 @@ function handleButton(button, forceMode=null) {
                 else if (finalAction === "previousHistory") h = historyManager.prevHistory();
                 else if (finalAction === "oldestHistory") h = historyManager.oldestHistory();
                 else if (finalAction === "latestHistory") h = historyManager.latestHistory();
-                inputHandler.setTokens(h.expression);
-                calculator.fractionResult = h.fractionResult;
-                calculator.decimalResult = h.decimalResult;
-                previousColonIndex = 0;
-                renderInput();
-                setOutput(calculator.fractionResult !== undefined ? "fraction" : "decimal");
-
-                statusBar.toggle("disp", false);
+                
+                if (h) {
+                    inputHandler.setTokens(h.expression);
+                    calculator.fractionResult = h.fractionResult;
+                    calculator.decimalResult = h.decimalResult;
+                    previousColonIndex = 0;
+                    renderInput();
+                    setOutput(calculator.fractionResult !== undefined ? "fraction" : "decimal");
+                    statusBar.toggle("disp", false);
+                }
             }
 
             // Handle calculation

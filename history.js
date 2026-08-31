@@ -55,9 +55,9 @@ class HistoryManager {
     }
 
     checkHistoryArrows() {
-        if (this.historyPosition == 0) statusBar.toggle('up', false);
+        if (this.historyPosition == 0 || this.history.length == 0) statusBar.toggle('up', false);
         else statusBar.toggle('up', true);
-        if (this.historyPosition === this.history.length - 1) statusBar.toggle('down', false);
+        if (this.historyPosition === this.history.length - 1 || this.history.length == 0) statusBar.toggle('down', false);
         else statusBar.toggle('down', true);
     }
 }
