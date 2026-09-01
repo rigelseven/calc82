@@ -11,6 +11,8 @@
     row-gap: calc(var(--h) / 40);
 
     container-type: size;
+
+    scrollbar-gutter: stable;
 }
 
 #top-bezel {
@@ -37,19 +39,43 @@
     justify-content: space-between;
     align-items: flex-end;
     container-type: size;
+    min-height: 0;
 }
 
 #input-display {
     align-self: flex-start;
-    font-size: 25cqb;
+
+    flex: 1 1 auto;
     min-height: 0;
-    padding: 0px;
+    min-width: 0;
+
+    width: 100%;
+    padding: 4px 0;
+    box-sizing: border-box;
+
+    font-size: 25cqb;
+
+    white-space: nowrap;
+    overflow-x: auto;
+    overflow-y: auto;
 }
 
 #output-display {
-    align-self: flex-end;
+    display: grid;
+    align-content: end;
     font-size: 25cqb;
-    padding: 0px;
+    padding: 4px 0;
+    
+    overflow-x: auto;
+    width: 100cqw;
+    flex: 1 0 auto;
+    overflow-y: hidden;
+    white-space: nowrap;
+    text-align: right;
+}
+
+#output-display .katex:has(.katex-html:empty) {
+    display: none;
 }
 
 #buttons-area {
