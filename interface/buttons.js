@@ -65,8 +65,8 @@ export const BUTTONS = [
         1: ["1", "", "", "", {Main: 1, Shift: null, Alpha: null, Menu: "Menu1"}],
         2: ["2", "", "", "", {Main: 2, Shift: null, Alpha: null, Menu: "Menu2"}],
         3: ["3", "", "", "", {Main: 3, Shift: null, Alpha: null, Menu: "Menu3"}],
-        Plus: ["+", "", "Pol", "", {Main: "Plus", Shift: null, Alpha: null}],
-        Minus: ["-", "", "Rec", "", {Main: "Minus", Shift: null, Alpha: null}],
+        Plus: ["+", "", "Pol", "", {Main: "Plus", Shift: "Pol", Alpha: null}],
+        Minus: ["-", "", "Rec", "", {Main: "Minus", Shift: "Rec", Alpha: null}],
     },
 
     {

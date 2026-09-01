@@ -3,6 +3,7 @@ import trigSolver from "../math/trigonometry.js";
 import { randomInteger } from "../math/random.js";
 import { lcm, gcd } from "../math/arithmetic.js";
 import Fraction from "../math/fraction.js";
+import { Polar, Rectangular } from "../math/polRec.js";
 
 export const FUNCTIONS = {
     sin: {fn: a => trigSolver.computeTrig("sin", a.toDecimal()), args: 1},
@@ -36,4 +37,7 @@ export const FUNCTIONS = {
 
     lcm: {fn: (a, b) => lcm(a.toDecimal(), b.toDecimal()), args: 2},
     gcd: {fn: (a, b) => gcd(a.toDecimal(), b.toDecimal()), args: 2},
+
+    pol: {fn: (a, b) => Polar.fromXY(a.toDecimal(), b.toDecimal()), args: 2},
+    rec: {fn: (a, b) => Rectangular.fromPolar(a.toDecimal(), b.toDecimal()), args: 2},
 }

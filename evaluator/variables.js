@@ -48,7 +48,13 @@ class VariableManager {
     if (val && typeof val === 'object' && 'numerator' in val && 'denominator' in val) {
         return new Fraction(Decimal(val.numerator), Decimal(val.denominator));
     }
-    return new Decimal(val ?? 0);
+    let ret;
+    try {
+        ret = new Decimal(val ?? 0);
+    } catch {
+        ret = new Decimal(0);
+    }
+    return ret;
     }
 }
 

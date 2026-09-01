@@ -62,6 +62,9 @@ export const TOKENS = {
     "LCM": { type: "FUNCTION", exp: "lcm", rep: "\\text{LCM}("},
     "GCD": { type: "FUNCTION", exp: "gcd", rep: "\\text{GCD}("},
 
+    "Pol": { type: "FUNCTION", exp: "pol", rep: "\\text{Pol}("},
+    "Rec": { type: "FUNCTION", exp: "rec", rep: "\\text{Rec}("},
+
     "VarA": { type: "VARIABLE", exp: "A", rep: "\\text{A}"},
     "VarB": { type: "VARIABLE", exp: "B", rep: "\\text{B}"},
     "VarC": { type: "VARIABLE", exp: "C", rep: "\\text{C}"},

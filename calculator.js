@@ -3,6 +3,7 @@ import Parser from "./parser.js"
 import Evaluator from "./evaluator/evaluator.js";
 import Fraction from "./math/fraction.js";
 import { variableManager } from "./evaluator/variables.js";
+import { Polar, Rectangular } from "./math/polRec.js";
 
 export default class Calculator {
     calculate(expression, n=0) {
@@ -22,6 +23,10 @@ export default class Calculator {
         let fractionResult = Fraction.toFraction(result);
         if (fractionResult instanceof Decimal) fractionResult = undefined;
 
+        let specialResult;
+        if (result instanceof Polar) specialResult = ["Polar", result.modulus, result.argument];
+        if (result instanceof Rectangular) specialResult = ["X", result.X, result.Y];
+
         if (storeVar !== null) variableManager.setVariable(storeVar, result);
         if (storeVar === "MPLUS") variableManager.setVariable("M", variableManager.getVariable("M").plus(result));
         else if (storeVar === "MMINUS") variableManager.setVariable("M", variableManager.getVariable("M").minus(result));
@@ -30,6 +35,7 @@ export default class Calculator {
 
         this.decimalResult = decimalResult;
         this.fractionResult = fractionResult;
-        return {result, decimalResult, fractionResult, tokens, ast};
+        this.specialResult = specialResult;
+        return {result, decimalResult, fractionResult, specialResult, tokens, ast};
     }
 }

@@ -7,9 +7,9 @@ class HistoryManager {
         this.maxHistory = 100;  // TODO make it user configurable?
     }
 
-    pushHistory(expression, fractionResult, decimalResult) {
+    pushHistory(expression, fractionResult, decimalResult, specialResult) {
         this.historyPosition = this.history.length;
-        this.history.push({expression: [...expression], fractionResult, decimalResult});
+        this.history.push({expression: [...expression], fractionResult, decimalResult, specialResult});
 
         if (this.history.length > this.maxHistory) {
             this.history.splice(0, this.history.length - this.maxHistory);

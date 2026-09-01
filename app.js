@@ -42,8 +42,9 @@ function calculate(storeHistory = true) {
 
         if (inputHandler.inputMode !== "Review") colonIndex = 0;
 
-        const {res, decimalResult, fractionResult, tokens, ast} = calculator.calculate(value, storeHistory ? colonIndex : previousColonIndex);
+        const {res, decimalResult, fractionResult, specialResult, tokens, ast} = calculator.calculate(value, storeHistory ? colonIndex : previousColonIndex);
         currentResult = res;
+
 
         textDisplay.textContent="=";
         tokensDisplay.textContent="Token visualisation\n";
@@ -55,7 +56,8 @@ function calculate(storeHistory = true) {
         const textTokens = generateTextTokens(tokens[colonIndex]);
         tokensDisplay.textContent += textTokens;
         
-        if (fractionResult) setOutput(settingsManager.getSetting("fractionMode"));
+        if (specialResult) setOutput("special");
+        else if (fractionResult) setOutput(settingsManager.getSetting("fractionMode"));
         else setOutput("decimal");
 
         if (storeHistory) {
@@ -72,7 +74,7 @@ function calculate(storeHistory = true) {
         inputHandler.setReview();
         renderInput();
         
-        if (storeHistory) historyManager.pushHistory(extractSubarray(value, previousColonIndex), fractionResult, decimalResult);
+        if (storeHistory) historyManager.pushHistory(extractSubarray(value, previousColonIndex), fractionResult, decimalResult, specialResult);
 
     } catch (error) {
         let errorMessage = error.message;
@@ -159,6 +161,13 @@ function switchAngleMode(type="improper") {
 }
 
 function setOutput(outputType) {
+    console.log(outputType)
+    if (outputType === "special") {
+        if (calculator.specialResult[0] === "Polar")
+            displayValue = `{\\text{r: } ${calculator.specialResult[1].toSD(10)}, {\\theta}\\text{: }} ${calculator.specialResult[2].toSD(10)}`;
+        else if (calculator.specialResult[0] === "Rectangular")
+            displayValue = `{\\text{X: } ${calculator.specialResult[1].toSD(10)}, {\\text{Y: }: ${calculator.specialResult[2].toSD(10)}`;
+    }
     if (outputType === "decimal") {
         currentResultType = "decimal";
 
@@ -337,9 +346,11 @@ function handleButton(button, forceMode=null) {
                     inputHandler.setTokens(h.expression);
                     calculator.fractionResult = h.fractionResult;
                     calculator.decimalResult = h.decimalResult;
+                    calculator.specialResult = h.specialResult;
                     previousColonIndex = 0;
                     renderInput();
-                    setOutput(calculator.fractionResult !== undefined ? "fraction" : "decimal");
+                    setOutput(calculator.specialResult !== undefined ? "special" : 
+                        calculator.fractionResult !== undefined ? "fraction" : "decimal");
                     statusBar.toggle("disp", false);
                 }
             }

@@ -178,6 +178,6 @@ export default class Fraction {
 
     static toFraction(a, strict=false) {
         if (a instanceof Fraction) return a;
-        return Fraction.fromDecimal(a, strict);
+        return Fraction.fromDecimal(a.toDecimal(), strict);
     }
 }

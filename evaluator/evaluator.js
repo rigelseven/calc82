@@ -6,6 +6,7 @@ import { POSTFIX } from "./postfix.js";
 import { UNARY } from "./unary.js"
 import Fraction from "../math/fraction.js";
 import { divide, plus, times } from "../math/arithmetic.js";
+import { Polar, Rectangular } from "../math/polRec.js";
 
 
 export default class Evaluator {
@@ -42,18 +43,23 @@ export default class Evaluator {
     }
 
     evaluateUnary(node) {
-        const value = this.evaluate(node.argument);
+        let value = this.evaluate(node.argument);
 
         const operation = UNARY[node.operator];
+
+        if (value instanceof Polar || value instanceof Rectangular) value = value.toDecimal();
 
         return operation(value);
     }
 
     evaluateBinary(node) {
-        const left = this.evaluate(node.left);
-        const right = this.evaluate(node.right);
+        let left = this.evaluate(node.left);
+        let right = this.evaluate(node.right);
 
         const operation = BINARY[node.operator];
+
+        if (left instanceof Polar || left instanceof Rectangular) left = left.toDecimal();
+        if (right instanceof Polar || right instanceof Rectangular) right = right.toDecimal();
 
         return operation(left, right);
     }
@@ -72,13 +78,21 @@ export default class Evaluator {
             );
         }
 
+        for (let i = 0; i < values.length; i++) {
+            if (values[i] instanceof Polar || values[i] instanceof Rectangular) {
+                values[i] = values[i].toDecimal();
+            }
+        }
+
         return entry.fn(...values);
     }
 
     evaluatePostfix(node) {
-        const value = this.evaluate(node.argument);
+        let value = this.evaluate(node.argument);
 
         const operation = POSTFIX[node.operator];
+
+        if (value instanceof Polar || value instanceof Rectangular) value = value.toDecimal();
 
         return operation(value);
     }
@@ -96,20 +110,25 @@ export default class Evaluator {
     evaluateFraction(node) {
         // improper fraction
         let numerator = this.evaluate(node.numerator);
-        const denominator = this.evaluate(node.denominator);
+        let denominator = this.evaluate(node.denominator);
 
         if (node.whole !== undefined) {
             const whole = this.evaluate(node.whole);
             numerator = plus(numerator, times(whole, denominator))
         }
 
+        if (numerator instanceof Polar || numerator instanceof Rectangular) numerator = numerator.toDecimal();
+        if (denominator instanceof Polar || denominator instanceof Rectangular) denominator = denominator.toDecimal();
+
         return divide(numerator, denominator);
     }
 
     checkBounds(value) {
-        if ((value instanceof Decimal) && (value.e > 99 || !value.isFinite() || value.e === undefined))
+        const checkValue = value.toDecimal();
+
+        if ((checkValue instanceof Decimal) && (checkValue.e > 99 || !checkValue.isFinite() || checkValue.e === undefined))
             throw new Error("Math error: out of bounds")
-        if (value.e < -99) return new Decimal(0)
+        if (checkValue.e < -99) return new Decimal(0)
         return value
     }
 }
