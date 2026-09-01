@@ -210,7 +210,7 @@ export class InputHandler {
     }
     
     getTokens(cursor = false) {
-        if (cursor) return this.inputTokens.toSpliced(this.cursorPosition, 0, {type:"CURSOR", rep:"\\clap{\\rule{0.1em}{0.5em}}"}) // TODO: 0.5/0.7 depends on if in fraction etc.
+        if (cursor) return this.inputTokens.toSpliced(this.cursorPosition, 0, {type:"CURSOR", rep:'\\htmlClass{math-cursor-placeholder}{\\vphantom{1}}'})
         return this.inputTokens;
     }
 

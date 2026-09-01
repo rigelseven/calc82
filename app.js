@@ -90,7 +90,8 @@ function calculate(storeHistory = true) {
         inputHandler.setError();
 
         katex.render("", inputDisplay, {
-            throwOnError: false
+            throwOnError: false,
+            trust: true
         });
 
         katex.render("", outputDisplay, {
@@ -161,7 +162,6 @@ function switchAngleMode(type="improper") {
 }
 
 function setOutput(outputType) {
-    console.log(outputType)
     if (outputType === "special") {
         if (calculator.specialResult[0] === "Polar")
             displayValue = `{\\text{r: } ${calculator.specialResult[1].toSD(10)}, {\\theta}\\text{: }} ${calculator.specialResult[2].toSD(10)}`;
@@ -245,15 +245,21 @@ function renderInput() {
 }
 
 function setInput(input) {
-    katex.render(input, inputDisplay, {throwOnError: false, strict: "ignore"})
+    katex.render(input, inputDisplay, {throwOnError: false, strict: "ignore", trust: true})
     testInput.value = "";
     for (let token of inputHandler.getTokens(false)) testInput.value += token.type;
 }
 
 function addPlaceholders(latex) {
     return latex
-        .replace("{\\clap{\\rule{0.1em}{0.5em}}}", "{\\clap{\\rule{0.1em}{0.5em}}\\square}")
-        .replaceAll("{}", "{\\square}")
+        .replace(
+            "{\\htmlClass{math-cursor-placeholder}{\\vphantom{1}}}",
+            "{\\htmlClass{math-cursor-placeholder}{\\vphantom{1}}\\htmlClass{math-square-placeholder}{\\phantom{0}}}"
+        )
+        .replaceAll(
+            "{}",
+            "{\\htmlClass{math-square-placeholder}{\\phantom{0}}}"
+        );
 }
 
 function handleButton(button, forceMode=null) {
@@ -371,6 +377,37 @@ function handleButton(button, forceMode=null) {
         } else {
             inputHandler.switchMode("Main", false, shiftButton, alphaButton);
         }
+    }
+
+    scrollToCursor();
+}
+
+window.scrollToCursor = scrollToCursor;
+
+function scrollToCursor() {
+    const cursor = document.querySelector(".math-cursor-placeholder");
+
+    if (!cursor) return;
+
+    const rect = cursor.getBoundingClientRect();
+    const container = inputDisplay;
+
+    if (!container) return;
+
+    const containerRect = container.getBoundingClientRect();
+
+    const padding = containerRect.width * 0.05; // 5cqw
+
+    if (rect.left < containerRect.left + padding) {
+        container.scrollLeft += rect.left - (containerRect.left + padding);
+    } else if (rect.right > containerRect.right - padding) {
+        container.scrollLeft += rect.right - (containerRect.right - padding);
+    }
+
+    if (rect.top < containerRect.top + padding) {
+        container.scrollTop += rect.top - (containerRect.top + padding);
+    } else if (rect.bottom > containerRect.bottom - padding) {
+        container.scrollTop += rect.bottom - (containerRect.bottom - padding);
     }
 }
 

@@ -226,3 +226,50 @@
     grid-template-columns: 1fr 1fr;
     width: 100%;
 }
+.math-cursor-placeholder {
+    display: inline-block;
+    position: relative;
+    width: 0;
+    vertical-align: middle;
+}
+
+.math-cursor-placeholder::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0.8cqw;
+    top: 10%;
+    height: 60%;
+    background: currentColor;
+}
+
+.math-cursor-placeholder::after {
+    animation: cursor-blink 1.5s steps(1) infinite;
+}
+
+@keyframes cursor-blink {
+    0%, 50% {
+        opacity: 1;
+    }
+
+    50.01%, 100% {
+        opacity: 0;
+    }
+}
+
+.math-square-placeholder {
+    position: relative;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.math-square-placeholder::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border: 0.4cqw solid currentColor;
+    top: 10%;
+    height: 60%;
+    box-sizing: border-box;
+}

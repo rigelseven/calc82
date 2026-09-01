@@ -18,7 +18,6 @@ class MenuManager {
         statusBar.toggle('up', false);
         statusBar.toggle('down', false);
         for (const item of Object.values(currentMenuItems)) {
-            console.log(item)
             if (item.Confirm) {
                 display.renderConfirmation(item.Confirm);
                 return;
