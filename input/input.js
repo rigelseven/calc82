@@ -52,6 +52,10 @@ export class InputHandler {
                 return "shift";
             case "Alpha":
                 return "alpha";
+            case "Engineering":
+                return "engineering";
+            case "ReduceDecimal":
+                return "reduceDecimal";
 
             case "Calculate":
                 return "calculate";

@@ -161,7 +161,41 @@ function switchAngleMode(type="improper") {
     }
 }
 
-function setOutput(outputType) {
+function setOutput(outputType, direction) {
+    if (outputType === "eng") {
+        let [coeffStr, expStr] = calculator.decimalResult.toExponential().split('e');
+        let scientificExp = parseInt(expStr, 10);
+        
+        let coeff = parseFloat(coeffStr);
+
+        const oldExp = engExp;
+
+        if (engExp !== undefined && engExp !== null) {
+            engExp += 3 * direction;
+        } else {
+            let mod = scientificExp % 3;
+            if (mod < 0) mod += 3; 
+            engExp = scientificExp - mod;
+            if (direction === 1) engExp += 3;
+        }
+
+        let shift = scientificExp - oldExp;
+        if (scientificExp - engExp < 9 && scientificExp - engExp > -9)
+            shift = scientificExp - engExp;
+        else
+            engExp = oldExp;
+
+        const EngDecimal = Decimal.clone({ 
+            toExpPos: 20, 
+            toExpNeg: -20
+        });
+
+        const engResult = new EngDecimal(coeff).times(Math.pow(10, shift)).toSD(10);
+
+        displayValue = engResult.toString() + `\\times10^{${engExp}}`;
+        console.log(displayValue)
+    } else engExp = null;
+
     if (outputType === "special") {
         if (calculator.specialResult[0] === "Polar")
             displayValue = `{\\text{r=} ${calculator.specialResult[1].toSD(10)}, {\\theta}\\text{=}} ${calculator.specialResult[2].toSD(10)}`;
@@ -172,7 +206,6 @@ function setOutput(outputType) {
         currentResultType = "decimal";
 
         const formatMode = settingsManager.getSetting("displayMode")
-
                                                         // Sci mode accuracy
         displayValue = `${calculator.decimalResult.toSD(formatMode[0] === "sci" ? Number(formatMode[1]) : 10).toString().replace(/e\+?(-?\d+)/g, "\\times10^{$1}")}`;
 
@@ -320,7 +353,7 @@ function handleButton(button, forceMode=null) {
                 }
 
                 // Handle store/recall buttons
-                if (finalAction.startsWith("Store")) {
+                if (finalAction.startsWith("Store") && inputHandler.inputTokens.length !== 0) {
                     try {
                         inputHandler.toLastToken();
                         // Handle memory plus/minus buttons
@@ -363,8 +396,12 @@ function handleButton(button, forceMode=null) {
 
             // Handle calculation
             else if (finalAction === "calculate") calculate(true);
+            // Handle angle mode
             else if (finalAction === "standard-decimal") switchAngleMode("improper");
             else if (finalAction === "mixed-improper") switchAngleMode("mixed");
+            // Handle eng button
+            else if (finalAction === "engineering") setOutput("eng", -1);
+            else if (finalAction === "reduceDecimal") setOutput("eng", 1);
             
             // Handle mode buttons
             if (finalAction === "shift") inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
@@ -491,6 +528,8 @@ let displayValue = null;
 
 let isShiftKeyHeld = false;
 let isAlphaKeyHeld = false;
+
+let engExp = null;
 
 const shiftKey = "Shift";
 const alphaKey = "z";
