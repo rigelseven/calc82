@@ -167,6 +167,13 @@ function switchAngleMode(type="improper") {
 }
 
 function setOutput(outputType, direction) {
+    if (outputType === "degminsec") {
+        currentResultType = "decimal";
+        const deg = calculator.decimalResult.floor();
+        const min = calculator.decimalResult.minus(deg).times(60).floor();
+        const sec = calculator.decimalResult.minus(deg).minus(min.div(60)).times(3600);
+        displayValue = `{${deg.toString()}}^\\circ {${min.toString()}}^\\prime {${sec.toDP(2).toString()}}^{\\prime\\prime}`;
+    }
     if (outputType === "factors") {
         currentResultType = "decimal";
         try {
@@ -449,6 +456,7 @@ function handleButton(button, forceMode=null) {
             else if (finalAction === "reduceDecimal") setOutput("eng", 1);
             // Handle factor button
             else if (finalAction === "factors") setOutput("factors");
+            else if (finalAction === "degminsec") setOutput("degminsec");
             
             // Handle mode buttons
             if (finalAction === "shift") inputHandler.switchMode("Shift", false, shiftButton, alphaButton);

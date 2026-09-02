@@ -57,7 +57,9 @@ export class InputHandler {
             case "ReduceDecimal":
                 return "reduceDecimal";
             case "Factors":
-                return "factors"
+                return "factors";
+            case "DegMinSec":
+                return "degminsec";
 
             case "Calculate":
                 return "calculate";
