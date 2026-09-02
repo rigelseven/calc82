@@ -56,6 +56,8 @@ export class InputHandler {
                 return "engineering";
             case "ReduceDecimal":
                 return "reduceDecimal";
+            case "Factors":
+                return "factors"
 
             case "Calculate":
                 return "calculate";

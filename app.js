@@ -9,6 +9,7 @@ import { display } from "./display.js";
 import { menuManager } from "./menu.js";
 import { statusBar } from "./statusbar.js";
 import { settingsManager } from "./settingsManager.js";
+import { getAllPrimeFactors } from "./math/factorise.js"
 
 
 const textDisplay = document.querySelector("#text-display");
@@ -77,29 +78,7 @@ function calculate(storeHistory = true) {
         if (storeHistory) historyManager.pushHistory(extractSubarray(value, previousColonIndex), fractionResult, decimalResult, specialResult);
 
     } catch (error) {
-        let errorMessage = error.message;
-        if (error.cause) {
-            if (error.cause.type !== undefined) errorMessage = error.cause.type;
-            if (error.cause.position !== undefined) {
-                inputHandler.cursorPosition = error.cause.position;
-                renderInput();
-            }
-        }
-        textDisplay.textContent=`= ${errorMessage}`;
-        display.renderError(errorMessage);
-        inputHandler.setError();
-
-        katex.render("", inputDisplay, {
-            throwOnError: false,
-            trust: true
-        });
-
-        katex.render("", outputDisplay, {
-            throwOnError: false
-        });
-
-        currentResultType = null;
-        console.error(error);
+        showError(error);
     }
 }
 
@@ -120,6 +99,32 @@ function extractSubarray(arr, targetN) {
   }
 
   return result;
+}
+
+function showError(error) {
+    let errorMessage = error.message;
+    if (error.cause) {
+        if (error.cause.type !== undefined) errorMessage = error.cause.type;
+        if (error.cause.position !== undefined) {
+            inputHandler.cursorPosition = error.cause.position;
+            renderInput();
+        }
+    }
+    textDisplay.textContent = `= ${errorMessage}`;
+    display.renderError(errorMessage);
+    inputHandler.setError();
+
+    katex.render("", inputDisplay, {
+        throwOnError: false,
+        trust: true
+    });
+
+    katex.render("", outputDisplay, {
+        throwOnError: false
+    });
+
+    currentResultType = null;
+    console.error(error);
 }
 
 function setOutputFormat() {
@@ -162,6 +167,43 @@ function switchAngleMode(type="improper") {
 }
 
 function setOutput(outputType, direction) {
+    if (outputType === "factors") {
+        currentResultType = "decimal";
+        try {
+            const factors = getAllPrimeFactors(calculator.decimalResult);
+
+            displayValue = "";
+
+            let currentFactor;
+            let currentCount = 0;
+
+            for (const factor of factors) {
+                if (factor !== currentFactor) {
+                    // Add the previous factor before moving to the next one
+                    if (currentFactor !== undefined) {
+                        displayValue += currentCount > 1
+                            ? `${currentFactor}^{${currentCount}}{\\times}`
+                            : `${currentFactor}{\\times}`;
+                    }
+
+                    currentFactor = factor;
+                    currentCount = 1;
+                } else {
+                    currentCount++;
+                }
+            }
+
+            // Add the final factor
+            if (currentFactor !== undefined) {
+                displayValue += currentCount > 1
+                    ? `${currentFactor}^{${currentCount}}`
+                    : `${currentFactor}`;
+            }
+        } catch (error) {
+            showError(error);
+            return;
+        }
+    }
     if (outputType === "eng") {
         currentResultType = "decimal";
         let [coeffStr, expStr] = calculator.decimalResult.toExponential().split('e');
@@ -362,7 +404,7 @@ function handleButton(button, forceMode=null) {
                         else if (finalAction == "StoreMMinus") inputHandler.addToken({type:"MMINUS", exp: "MMINUS", rep: `\\text{M-}`});
                         else inputHandler.addToken({type:"STORE", exp: finalAction.at(-1), rep: `\\rightarrow{\\text{${finalAction.at(-1)}}}`});
                         renderInput();
-                        calculate(true);
+                        if (inputHandler.inputTokens.length != 0) calculate(true);
                     } catch (error) {;}
                 }
 
@@ -396,13 +438,17 @@ function handleButton(button, forceMode=null) {
             }
 
             // Handle calculation
-            else if (finalAction === "calculate") calculate(true);
+            else if (finalAction === "calculate") {
+                if (inputHandler.inputTokens.length != 0) calculate(true);
+            }
             // Handle angle mode
             else if (finalAction === "standard-decimal") switchAngleMode("improper");
             else if (finalAction === "mixed-improper") switchAngleMode("mixed");
             // Handle eng button
             else if (finalAction === "engineering") setOutput("eng", -1);
             else if (finalAction === "reduceDecimal") setOutput("eng", 1);
+            // Handle factor button
+            else if (finalAction === "factors") setOutput("factors");
             
             // Handle mode buttons
             if (finalAction === "shift") inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
