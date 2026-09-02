@@ -163,6 +163,7 @@ function switchAngleMode(type="improper") {
 
 function setOutput(outputType, direction) {
     if (outputType === "eng") {
+        currentResultType = "decimal";
         let [coeffStr, expStr] = calculator.decimalResult.toExponential().split('e');
         let scientificExp = parseInt(expStr, 10);
         
@@ -186,13 +187,13 @@ function setOutput(outputType, direction) {
             engExp = oldExp;
 
         const EngDecimal = Decimal.clone({ 
-            toExpPos: 20, 
-            toExpNeg: -20
+            toExpPos: 101,
+            toExpNeg: -101
         });
 
         const engResult = new EngDecimal(coeff).times(Math.pow(10, shift)).toSD(10);
 
-        displayValue = engResult.toString() + `\\times10^{${engExp}}`;
+        displayValue = engResult.toFixed(9).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1') + `\\times10^{${engExp}}`;
         console.log(displayValue)
     } else engExp = null;
 
