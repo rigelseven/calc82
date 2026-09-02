@@ -25,6 +25,7 @@ class SettingsManager {
             "settings",
             JSON.stringify(this.settings)
         );
+        console.log("Settings cleared!"); // do not remove
         this.updateDisplayStatus();
     }
 
