@@ -164,9 +164,9 @@ function switchAngleMode(type="improper") {
 function setOutput(outputType) {
     if (outputType === "special") {
         if (calculator.specialResult[0] === "Polar")
-            displayValue = `{\\text{r: } ${calculator.specialResult[1].toSD(10)}, {\\theta}\\text{: }} ${calculator.specialResult[2].toSD(10)}`;
+            displayValue = `{\\text{r=} ${calculator.specialResult[1].toSD(10)}, {\\theta}\\text{=}} ${calculator.specialResult[2].toSD(10)}`;
         else if (calculator.specialResult[0] === "Rectangular")
-            displayValue = `{\\text{X: } ${calculator.specialResult[1].toSD(10)}, {\\text{Y: }: ${calculator.specialResult[2].toSD(10)}`;
+            displayValue = `\\text{X=} ${calculator.specialResult[1].toSD(10)}, \\text{Y=} ${calculator.specialResult[2].toSD(10)}`;
     }
     if (outputType === "decimal") {
         currentResultType = "decimal";

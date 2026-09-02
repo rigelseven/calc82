@@ -14,6 +14,8 @@ export class Polar {
         
         let argument;
 
+        const PI = Decimal.acos(0).times(2);
+
         if (X.isZero()) {
             if (Y.isZero()) {
                 argument = new Decimal(0);

@@ -25,7 +25,7 @@ export default class Calculator {
 
         let specialResult;
         if (result instanceof Polar) specialResult = ["Polar", result.modulus, result.argument];
-        if (result instanceof Rectangular) specialResult = ["X", result.X, result.Y];
+        if (result instanceof Rectangular) specialResult = ["Rectangular", result.X, result.Y];
 
         if (storeVar !== null) variableManager.setVariable(storeVar, result);
         if (storeVar === "MPLUS") variableManager.setVariable("M", variableManager.getVariable("M").plus(result));
