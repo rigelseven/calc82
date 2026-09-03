@@ -505,7 +505,7 @@ function attachListeners() {
         let button = layoutEngine.getButtonFromKey(event.key);
         if (inputHandler.mode === "Store" || inputHandler.mode === "Recall")
             button = layoutEngine.getButtonFromKey(event.key, "Variable") ?? button;
-        if (button !== undefined) {
+        if (button !== undefined && !(event.metaKey  || event.ctrlKey || event.altKey)) {
             event.preventDefault();
             if (event.repeat) return; // TODO repeat arrow keys
             button[2].classList.add(`pressed-${button[1] === null ? (inputHandler.mode == "Menu" ? "Main" : inputHandler.mode) : button[1]}`);
