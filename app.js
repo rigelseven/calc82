@@ -511,9 +511,15 @@ function attachListeners() {
         let button = layoutEngine.getButtonFromKey(event.key);
         if (inputHandler.mode === "Store" || inputHandler.mode === "Recall")
             button = layoutEngine.getButtonFromKey(event.key, "Variable") ?? button;
-        if (button !== undefined && !(event.metaKey  || event.ctrlKey || event.altKey)) {
+        if (button !== undefined && !(event.metaKey || event.ctrlKey || event.altKey)) {
             event.preventDefault();
-            if (event.repeat) return; // TODO repeat arrow keys
+             // Prevent repeat except arrow keys to ends
+            if ((event.repeat) && !(
+                (event.key === "ArrowLeft" && inputHandler.cursorPosition != 0) ||
+                (event.key === "ArrowRight" && inputHandler.cursorPosition != inputHandler.inputTokens.length))
+            ) {
+                return;
+            } 
             button[2].classList.add(`pressed-${button[1] === null ? (inputHandler.mode == "Menu" ? "Main" : inputHandler.mode) : button[1]}`);
             handleButton(button[0], button[1]);
         }
