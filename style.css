@@ -1,18 +1,60 @@
+@font-face { font-family: 'Inter'; src: url('./assets/fonts/Inter18pt-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('./assets/fonts/Inter18pt-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('./assets/fonts/Inter18pt-Italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
+@font-face { font-family: 'Inter'; src: url('./assets/fonts/Inter18pt-BoldItalic.woff2') format('woff2'); font-weight: 700; font-style: italic; font-display: swap; }
+
+*, *::before, *::after {
+    font: inherit;
+}
+
+body {
+    margin: 0;
+    display: grid;
+    place-items: center;
+    height: 100svh;
+
+    background-color: #ddd;
+
+    font-family: "Inter", sans-serif;
+}
+
 .calculator {
+    box-sizing: border-box;
+
     outline: 1px solid black;
     display: grid;
     grid-template-rows: 0.2fr 2fr 7fr;
     
-    --h: 800px;
+    --h: min(95vh, 190vw);
+    --h: min(95svh, 190vw);
 
     height: var(--h);
     width: calc(var(--h) / 2);
     padding: calc(var(--h) / 40);
     row-gap: calc(var(--h) / 40);
+    border-radius: calc(var(--h) / 80);
+    box-shadow: 0 0 calc(var(--h) / 80) rgba(0, 0, 0, 0.25);
+
+    position: absolute;
+
+    background-color: #eee;
 
     container-type: size;
-
     scrollbar-gutter: stable;
+}
+
+button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+
+    background-color: #eee;
+    border: calc(var(--h) * 0.001) solid #666;
+    border-radius: calc(var(--h) * 0.005);
+}
+
+button:active {
+    background-color: #ccc;
 }
 
 #top-bezel {

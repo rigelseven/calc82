@@ -35,7 +35,6 @@ function calculate(storeHistory = true) {
         currentResult = res;
 
 
-        textDisplay.textContent="=";
         tokensDisplay.textContent="Token visualisation\n";
         astDisplay.textContent="AST visualisation\n";
        
@@ -98,7 +97,6 @@ function showError(error) {
             renderInput();
         }
     }
-    textDisplay.textContent = `= ${errorMessage}`;
     display.renderError(errorMessage);
     inputHandler.setError();
 
