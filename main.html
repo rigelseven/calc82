@@ -47,26 +47,7 @@
             <div id="buttons-overlay"></div>
         </div>
     </div>
-    
-    <div class="calculator-old">
-        <input id="test-input"><button id="calculate-button">EXE</button>
-        <div id="text-display">=</div>
-        <br>
-        <button id="standard-decimal-button">S<->D</button>
-        <span id="angle-mode-selector" class="angle-mode">
-            <legend>Angle mode</legend>
-            <input name="angle-mode" id="degrees-button" type="radio" value="deg">
-            <label for="degrees-button">Degrees</label>
-
-            <input name="angle-mode" id="radians-button" type="radio" value="rad" checked>
-            <label for="radians-button">Radians</label>
-
-            <input name="angle-mode" id="gradians-button" type="radio" value="gra">
-            <label for="gradians-button">Gradians</label>
-        </span>
-    </div>
-
-    <div class="debug">
+    <div class="debug" style="display:none;"> <!--TODO: make this toggleable-->
         <pre><code>
             <div id="tokens">Token visualisation</div>
         </code></pre>

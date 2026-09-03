@@ -11,16 +11,8 @@ import { statusBar } from "./statusbar.js";
 import { settingsManager } from "./settingsManager.js";
 import { getAllPrimeFactors } from "./math/factorise.js"
 
-
-const textDisplay = document.querySelector("#text-display");
-const testInput = document.querySelector("#test-input");
-
 const inputDisplay = document.querySelector("#input-display");
 const outputDisplay = document.querySelector("#output-display");
-
-const angleModeSelector = document.querySelector("#angle-mode-selector");
-const calculateButton = document.querySelector("#calculate-button");
-const outputModeButton = document.querySelector("#standard-decimal-button");
 
 const buttonsArea = document.querySelector("#buttons-area");
 
@@ -31,10 +23,6 @@ const astDisplay = document.querySelector("#ast");
 const inputHandler = new InputHandler;
 const calculator = new Calculator;
 const layoutEngine = new LayoutEngine;
-
-calculateButton.addEventListener("click", function(event) {
-    calculate(true);
-});
 
 function calculate(storeHistory = true) {
     setOutputFormat();    
@@ -138,19 +126,6 @@ function setOutputFormat() {
     else if (formatMode[0] === "sci") 
         Decimal.set({ precision: 15, maxE: 99, toExpNeg: 0, toExpPos: 0});
 }
-
-// Angle mode selector
-// angleModeSelector.addEventListener("change", function(event) {
-//     getAngleMode();
-//     calculate(false);
-// });
-
-// function getAngleMode() {
-//     const newMode = document.querySelector(`.angle-mode input[type="radio"]:checked`).value;
-//    trigSolver.setAngleMode(newMode);
-//}
-
-outputModeButton.addEventListener("click", switchAngleMode);
 
 function switchAngleMode(type="improper") {
     if (type === "improper") {
@@ -329,8 +304,6 @@ function renderInput() {
 
 function setInput(input) {
     katex.render(input, inputDisplay, {throwOnError: false, strict: "ignore", trust: true})
-    testInput.value = "";
-    for (let token of inputHandler.getTokens(false)) testInput.value += token.type;
 }
 
 function addPlaceholders(latex) {
