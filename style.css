@@ -53,10 +53,6 @@ button {
     border-radius: calc(var(--h) * 0.005);
 }
 
-button:active {
-    background-color: #ccc;
-}
-
 #top-bezel {
     font-size: 2.5cqb;
     min-height: 0;

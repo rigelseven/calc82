@@ -475,7 +475,7 @@ function scrollToCursor() {
 }
 
 function attachListeners() {
-    buttonsArea.addEventListener("click", (event) => {
+    buttonsArea.addEventListener("pointerdown", (event) => {
         event.stopPropagation();
 
         let button_id;
@@ -486,10 +486,18 @@ function attachListeners() {
             const button_element = event.target.closest(".button-wrapper");
             if (button_element === null) return;
             button_id = button_element.getAttribute("id").split("_");
+            button_element.querySelector('.input-button').classList.add(`pressed-${inputHandler.mode == "Menu" ? "Main" : inputHandler.mode}`);
         }
         const button = layoutEngine.getButton(button_id[0], button_id[1]);
-        
+
         handleButton(button);
+    });
+
+    buttonsArea.addEventListener("pointerup", (event) => {
+        event.stopPropagation();
+        const button_element = event.target.closest(".button-wrapper");
+        if (button_element === null) return;
+        button_element.querySelector('.input-button').classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store", "pressed-Recall");
     });
 
     document.addEventListener('keydown', (event) => {
