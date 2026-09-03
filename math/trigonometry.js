@@ -1,4 +1,4 @@
-import { statusBar } from "../statusbar.js";
+import { statusBar } from "../interface/statusbar.js";
 
 class TrigSolver {
     constructor(angleMode) {

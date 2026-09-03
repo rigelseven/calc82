@@ -1,5 +1,5 @@
 import { historyManager } from "../history.js";
-import { statusBar } from "../statusbar.js";
+import { statusBar } from "../interface/statusbar.js";
 import { TOKENS } from "./inputTokens.js";
 
 export class InputHandler {

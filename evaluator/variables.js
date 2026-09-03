@@ -1,5 +1,5 @@
 import Fraction from "../math/fraction.js";
-import { statusBar } from "../statusbar.js";
+import { statusBar } from "../interface/statusbar.js";
 
 class VariableManager {
     constructor(storage) {

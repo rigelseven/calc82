@@ -5,9 +5,9 @@ import { InputHandler } from "./input/input.js";
 import LayoutEngine from "./interface/layout.js";
 import { shiftedToUnshifted, unshiftedToShifted } from "./interface/keyboard.js";
 import { historyManager } from "./history.js";
-import { display } from "./display.js";
-import { menuManager } from "./menu.js";
-import { statusBar } from "./statusbar.js";
+import { display } from "./interface/display.js";
+import { menuManager } from "./interface/menu.js";
+import { statusBar } from "./interface/statusbar.js";
 import { settingsManager } from "./settingsManager.js";
 import { getAllPrimeFactors } from "./math/factorise.js"
 

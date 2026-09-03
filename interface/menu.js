@@ -1,9 +1,9 @@
 import { display } from "./display.js";
-import { variableManager } from "./evaluator/variables.js";
-import { historyManager } from "./history.js";
-import trigSolver from "./math/trigonometry.js";
-import { settingsManager } from "./settingsManager.js";
-import { statusBar } from "./statusbar.js";
+import { variableManager } from "../evaluator/variables.js";
+import { historyManager } from "../history.js";
+import trigSolver from "../math/trigonometry.js";
+import { settingsManager } from "../settingsManager.js";
+import { statusBar } from "../interface/statusbar.js";
 
 class MenuManager {
     constructor() {
