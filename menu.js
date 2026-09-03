@@ -112,13 +112,13 @@ class MenuManager {
 const MENUS = {
     Modes: {
         1: {Name: "COMP"},
-        2: {Name: "STAT"},
-        3: {Name: "VERIF"}
+        2: {Name: "STAT§"},
+        3: {Name: "VERIF§"}
     },
 
     Setup: {
         1: {Name: "MthIO"},
-        2: {Name: "LineIO"},
+        2: {Name: "LineIO§"},
         3: {Name: "Deg", Action: "SetDegrees"},
         4: {Name: "Rad", Action: "SetRadians"},
         5: {Name: "Gra", Action: "SetGradians"},
@@ -131,9 +131,9 @@ const MENUS = {
     Setup2: {
         1: {Name: "ab/c", Action: "SetDefaultMixed"},
         2: {Name: "d/c", Action: "SetDefaultImproper"},
-        3: {Name: "STAT"},
+        3: {Name: "STAT§"},
         4: {Name: "Disp", ToPage: "Disp"},
-        5: {Name: "⏴CONT⏵"},
+        5: {Name: "⏴CONT⏵§"},
         Up: {ToPage: "Setup"}
     },
 

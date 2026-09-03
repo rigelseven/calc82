@@ -12,17 +12,28 @@ class Display {
     renderDisplay() {
         for (const line in this.displayLines) {
             const displayLine = this.displayLines[line];
-            if (displayLine.length === 1) this.documentLines[line].innerText = displayLine[0];
+            this.documentLines[line].style.opacity = 1;
+            if (displayLine.length === 0) return;
+            if (displayLine.length === 1) {
+                this.documentLines[line].innerText = displayLine[0].endsWith("§")
+                    ? displayLine[0].slice(0, -1) : displayLine[0];
+                if (displayLine[0] && displayLine[0].at(-1) === "§")
+                    this.documentLines[line].style.opacity = 0.3;
+            }
             else {
                 const div1 = document.createElement('div');
                 div1.className = 'message-display-half';
-                div1.textContent = displayLine[0];
+                div1.textContent = displayLine[0].endsWith("§")
+                    ? displayLine[0].slice(0, -1) : displayLine[0];
 
                 const div2 = document.createElement('div');
                 div2.className = 'message-display-half';
-                div2.textContent = displayLine[1];
+                div2.textContent = displayLine[1].endsWith("§")
+                    ? displayLine[1].slice(0, -1) : displayLine[1];
 
                 // Append divs to the parent
+                if (displayLine[0]) div1.style.opacity = displayLine[0].at(-1) === "§" ? 0.3 : 1;
+                if (displayLine[1]) div2.style.opacity = displayLine[1].at(-1) === "§" ? 0.3 : 1;
                 this.documentLines[line].append(div1, div2);
             }
         }
