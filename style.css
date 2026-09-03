@@ -37,10 +37,13 @@ body {
 
     position: absolute;
 
-    background-color: #eee;
+    background-color: #eee;    scrollbar-gutter: stable;
+
 
     container-type: size;
     scrollbar-gutter: stable;
+
+    user-select: none;
 }
 
 button {
@@ -68,6 +71,8 @@ button {
     width: 95%;
     padding: 1% 2.5% 2.5% 2.5%;
     border: 1px solid black;
+
+    user-select: all; 
 }
 
 #display {
@@ -238,6 +243,8 @@ button {
     width: 100cqw;
     display: flex;
     justify-content: space-between;
+
+    user-select: none;
 }
 
 .status-boxed {
@@ -269,6 +276,11 @@ button {
     position: relative;
     width: 0;
     vertical-align: middle;
+
+    pointer-events: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none; 
 }
 
 .math-cursor-placeholder::after {
@@ -300,6 +312,11 @@ button {
     position: relative;
     display: inline-block;
     vertical-align: middle;
+
+    pointer-events: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none; 
 }
 
 .math-square-placeholder::after {
