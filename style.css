@@ -1,3 +1,26 @@
+:root {
+    --calc-light: #eee;
+    --button-light: #eee;
+    --button-border-light: #666;
+    --screen-light: #f4f4f4;
+    --screen-border-light: #000;
+    --bg-light: #ddd;
+    --status-bar-boxed-light: #fff;
+    --status-bar-light: #000;
+
+    --text-light: #000;
+    --shift-light: goldenrod;
+    --alpha-light: red;
+    --main-light: cyan;
+    --store-light: lightpink;
+    --recall-light: lightgreen;
+
+    --scale: 97.5;
+
+    --h: min(calc(var(--scale) * 1vh), calc(var(--scale) * 2vw));
+    --h: min(calc(var(--scale) * 1svh), calc(var(--scale) * 2vw));
+}
+
 @font-face { font-family: 'Inter'; src: url('./assets/fonts/Inter18pt-Regular.woff2') format('woff2'); font-weight: 400; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Inter'; src: url('./assets/fonts/Inter18pt-Bold.woff2') format('woff2'); font-weight: 700; font-style: normal; font-display: swap; }
 @font-face { font-family: 'Inter'; src: url('./assets/fonts/Inter18pt-Italic.woff2') format('woff2'); font-weight: 400; font-style: italic; font-display: swap; }
@@ -5,6 +28,7 @@
 
 *, *::before, *::after {
     font: inherit;
+    color: inherit;
 }
 
 body {
@@ -13,9 +37,10 @@ body {
     place-items: center;
     height: 100svh;
 
-    background-color: #ddd;
+    background-color: var(--bg-light);
 
     font-family: "Inter", sans-serif;
+    color: var(--text-light);
 }
 
 .calculator {
@@ -24,9 +49,6 @@ body {
     outline: 1px solid black;
     display: grid;
     grid-template-rows: 0.2fr 2fr 7fr;
-    
-    --h: min(95vh, 190vw);
-    --h: min(95svh, 190vw);
 
     height: var(--h);
     width: calc(var(--h) / 2);
@@ -37,8 +59,7 @@ body {
 
     position: absolute;
 
-    background-color: #eee;    scrollbar-gutter: stable;
-
+    background-color: var(--calc-light);
 
     container-type: size;
     scrollbar-gutter: stable;
@@ -51,8 +72,8 @@ button {
     -moz-appearance: none;
     appearance: none;
 
-    background-color: #eee;
-    border: calc(var(--h) * 0.001) solid #666;
+    background-color: var(--button-light);
+    border: calc(var(--h) * 0.001) solid var(--button-border-light);
     border-radius: calc(var(--h) * 0.005);
 }
 
@@ -70,7 +91,7 @@ button {
     min-height: 0;
     width: 95%;
     padding: 1% 2.5% 2.5% 2.5%;
-    border: 1px solid black;
+    border: 1px solid var(--screen-border-light);
 
     user-select: all; 
 }
@@ -194,38 +215,38 @@ button {
 }
 
 .label-main {
-    color: black;
+    color: var(--text-light);
     padding: 0 0.5cqb 0 0.5cqb;
 }
 
 .label-shift {
-    color: goldenrod;
+    color: var(--shift-light);
     padding: 0 0.5cqb 0 0.5cqb;
 }
 
 .label-alpha {
-    color: red;
+    color: var(--alpha-light);
     padding: 0 0.5cqb 0 0.5cqb;
 }
 
 .pressed-Main {
-    background-color: cyan;
+    background-color: var(--main-light);
 }
 
 .pressed-Shift {
-    background-color: orange;
+    background-color: var(--shift-light);
 }
 
 .pressed-Alpha {
-    background-color: red;
+    background-color: var(--alpha-light);
 }
 
 .pressed-Store {
-    background-color: lightpink;
+    background-color: var(--store-light);
 }
 
 .pressed-Recall {
-    background-color: lightgreen;
+    background-color: var(--recall-light);
 }
 
 #message-display {
@@ -248,8 +269,8 @@ button {
 }
 
 .status-boxed {
-    color: white; /*to replace*/
-    background-color: black;
+    color: var(--status-bar-boxed-light);
+    background-color: var(--status-bar-light);
     width: 10cqb;
     height: 12cqb;
     min-height: 0;
