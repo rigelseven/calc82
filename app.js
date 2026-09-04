@@ -571,7 +571,6 @@ function attachListeners() {
     });
 
     // TODO handle missing keyup on lost focus.
-    // TODO prevent long touch context menu
     document.addEventListener('keyup', (event) => {
         
         // Handle shift and alpha lone press
@@ -602,6 +601,16 @@ function attachListeners() {
                 layoutEngine.getButtonFromKey(counterpart)?.[2]?.classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store", "pressed-Recall");
             }
         }
+    });
+
+    window.addEventListener('blur', () => {
+        for (const button of Object.values(layoutEngine.buttons)) {
+            button.button?.classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store", "pressed-Recall");
+        }
+    });
+
+    window.addEventListener('contextmenu', function (e) {
+        e.preventDefault();
     });
 }
 
