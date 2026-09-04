@@ -37,6 +37,8 @@ body {
     place-items: center;
     height: 100svh;
 
+    touch-action: pan-x pan-y;
+
     background-color: var(--bg-light);
 
     font-family: "Inter", sans-serif;
@@ -93,7 +95,7 @@ button {
     padding: 1% 2.5% 2.5% 2.5%;
     border: 1px solid var(--screen-border-light);
 
-    user-select: all; 
+    user-select: text; 
 }
 
 #display {
@@ -264,7 +266,9 @@ button {
     width: 100cqw;
     display: flex;
     justify-content: space-between;
-
+    
+    -moz-user-select: none;
+    -webkit-user-select: none;
     user-select: none;
 }
 

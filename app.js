@@ -475,30 +475,75 @@ function scrollToCursor() {
 }
 
 function attachListeners() {
+    const activeButtons = new Map();
+
     buttonsArea.addEventListener("pointerdown", (event) => {
         event.stopPropagation();
 
+        let button_element;
         let button_id;
+
         if (event.target.classList.contains("nav-button")) {
             button_id = event.target.getAttribute("id").split("_");
-        }
-        else {
-            const button_element = event.target.closest(".button-wrapper");
+            button_element = event.target;
+        } else {
+            button_element = event.target.closest(".button-wrapper");
             if (button_element === null) return;
-            button_id = button_element.getAttribute("id").split("_");
-            button_element.querySelector('.input-button').classList.add(`pressed-${inputHandler.mode == "Menu" ? "Main" : inputHandler.mode}`);
-        }
-        const button = layoutEngine.getButton(button_id[0], button_id[1]);
 
+            button_id = button_element.getAttribute("id").split("_");
+        }
+
+        // Ignore already tracked pointer
+        if (activeButtons.has(event.pointerId)) return;
+
+        activeButtons.set(event.pointerId, button_element);
+
+        const inputButton = button_element.classList.contains('nav-button')
+            ? button_element : button_element?.querySelector(".input-button");
+        console.log(button_element, inputButton)
+        if (inputButton) {
+            inputButton.classList.add(
+                `pressed-${inputHandler.mode == "Menu"
+                    ? "Main"
+                    : inputHandler.mode}`
+            );
+        }
+
+        // Capture this particular pointer
+        button_element?.setPointerCapture(event.pointerId);
+
+        const button = layoutEngine.getButton(button_id[0], button_id[1]);
         handleButton(button);
     });
 
     buttonsArea.addEventListener("pointerup", (event) => {
         event.stopPropagation();
-        const button_element = event.target.closest(".button-wrapper");
-        if (button_element === null) return;
-        button_element.querySelector('.input-button').classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store", "pressed-Recall");
+        releasePointer(event.pointerId);
     });
+
+    buttonsArea.addEventListener("pointercancel", (event) => {
+        event.stopPropagation();
+        releasePointer(event.pointerId);
+    });
+
+    function releasePointer(pointerId) {
+        const button_element = activeButtons.get(pointerId);
+        if (!button_element) return;
+
+        const inputButton = button_element.classList.contains('nav-button')
+            ? button_element : button_element?.querySelector(".input-button");
+        if (inputButton) {
+            inputButton.classList.remove(
+                "pressed-Main",
+                "pressed-Shift",
+                "pressed-Alpha",
+                "pressed-Store",
+                "pressed-Recall"
+            );
+        }
+
+        activeButtons.delete(pointerId);
+    }
 
     document.addEventListener('keydown', (event) => {
 
@@ -526,6 +571,7 @@ function attachListeners() {
     });
 
     // TODO handle missing keyup on lost focus.
+    // TODO prevent long touch context menu
     document.addEventListener('keyup', (event) => {
         
         // Handle shift and alpha lone press
