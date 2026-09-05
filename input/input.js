@@ -198,6 +198,25 @@ export class InputHandler {
         }
     }
 
+    handlePaste(pastedText) {
+        // TODO: Replace with a version of the LineIO tokeniser?
+        if (this.inputMode !== "Edit") return;
+
+        for (const c of pastedText) {
+            console.log(c);
+            // Numbers
+            if (/^\d$/.test(c)) this.addToken({type:"DIGIT", rep: c, value: c});
+            else if (c === ".") this.addToken(TOKENS["."]);
+            else if (c === "e" || c === "E") this.addToken(TOKENS["E"]);
+            else if (c === "+") this.addToken(TOKENS["Plus"]);
+            else if (c === "-") this.addToken(TOKENS["Minus"]);
+            else if (c === "*" || c === "×") this.addToken(TOKENS["Multiply"]);
+            else if (c === "/" || c === "÷") this.addToken(TOKENS["Divide"]);
+            else if (c === "(") this.addToken(TOKENS["LParen"]);
+            else if (c === ")") this.addToken(TOKENS["RParen"]);
+        }
+    }
+
     delete(direction) {
         if (direction == "left") this.cursorPosition = Math.max(0, this.cursorPosition-1);
         const deleteToken = this.getCursorToken("right");

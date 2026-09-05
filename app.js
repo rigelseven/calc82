@@ -570,7 +570,16 @@ function attachListeners() {
         }
     });
 
-    // TODO handle missing keyup on lost focus.
+    document.addEventListener('paste', (event) => {
+        const clipboardData = event.clipboardData || window.clipboardData;
+        
+        const pastedText = clipboardData.getData('text/plain');
+        inputHandler.handlePaste(pastedText);
+        renderInput();
+        
+        event.preventDefault();
+    });
+
     document.addEventListener('keyup', (event) => {
         
         // Handle shift and alpha lone press

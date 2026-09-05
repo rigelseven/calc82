@@ -94,8 +94,6 @@ button {
     width: 95%;
     padding: 1% 2.5% 2.5% 2.5%;
     border: 1px solid var(--screen-border-light);
-
-    user-select: text; 
 }
 
 #display {
@@ -124,6 +122,8 @@ button {
     white-space: nowrap;
     overflow-x: auto;
     overflow-y: auto;
+
+    user-select: text; 
 }
 
 #output-display {
@@ -138,10 +138,16 @@ button {
     overflow-y: hidden;
     white-space: nowrap;
     text-align: right;
+
+    user-select: text; 
 }
 
 #output-display .katex:has(.katex-html:empty) {
     display: none;
+}
+
+.katex-mathml {
+    user-select: none;
 }
 
 #buttons-area {
