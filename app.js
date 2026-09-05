@@ -623,11 +623,34 @@ function attachListeners() {
     });
 }
 
+// Theme toggle
+const toggleBtn = document.getElementById('theme-toggle');
+
+function setTheme(theme) {
+  if (theme === 'system') {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.removeItem('theme');
+  } else {
+    document.documentElement.setAttribute('data-theme', theme);
+    localStorage.setItem('theme', theme);
+  }
+}
+
+// Event listener for explicit user click
+toggleBtn.addEventListener('click', () => {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+
+    if (currentTheme === 'dark') {
+    setTheme('light');
+    } else {
+    setTheme('dark');
+    }
+});
+
 let colonIndex = 0;
 let previousColonIndex = 0;
 
 let currentResultType = null;
-let currentResult = null;
 let displayValue = null;
 
 let isShiftKeyHeld = false;

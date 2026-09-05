@@ -1,19 +1,22 @@
 :root {
-    --calc-light: #eee;
-    --button-light: #eee;
-    --button-border-light: #666;
-    --screen-light: #f4f4f4;
-    --screen-border-light: #000;
-    --bg-light: #ddd;
-    --status-bar-boxed-light: #fff;
-    --status-bar-light: #000;
+    color-scheme: light dark;
 
-    --text-light: #000;
-    --shift-light: goldenrod;
-    --alpha-light: red;
-    --main-light: cyan;
-    --store-light: lightpink;
-    --recall-light: lightgreen;
+    --calc-colour: light-dark(#eee, #111);
+    --button-colour: light-dark(#eee, #111);
+    --button-border-colour: light-dark(#666, #666);
+    --screen-colour: light-dark(#f4f4f4, #333);
+    --screen-border-colour: light-dark(#000, #fff);
+    --calc-border-colour: light-dark(#000, #ccc);
+    --bg-colour: light-dark(#ddd, #000);
+    --status-bar-boxed-colour: light-dark(#fff, #000);
+    --status-bar-colour: light-dark(#000, #fff);
+
+    --text-colour: light-dark(#000, #fff);
+    --shift-colour: goldenrod;
+    --alpha-colour: red;
+    --main-colour: cyan;
+    --store-colour: lightpink;
+    --recall-colour: lightgreen;
 
     --scale: 97.5;
 
@@ -31,6 +34,14 @@
     color: inherit;
 }
 
+html[data-theme="light"] {
+  color-scheme: light;
+}
+
+html[data-theme="dark"] {
+  color-scheme: dark;
+}
+
 body {
     margin: 0;
     display: flex;
@@ -40,17 +51,17 @@ body {
 
     touch-action: pan-x pan-y;
 
-    background-color: var(--bg-light);
+    background-color: var(--bg-colour);
 
     font-family: "Inter", sans-serif;
-    color: var(--text-light);
+    color: var(--text-colour);
     overflow: hidden;
 }
 
 .calculator {
     box-sizing: border-box;
 
-    outline: 1px solid black;
+    border: 1px solid var(--calc-border-colour);
 
     aspect-ratio: 1 / 2;
 
@@ -62,7 +73,7 @@ body {
     border-radius: calc(var(--h) / 80);
     box-shadow: 0 0 calc(var(--h) / 80) rgba(0, 0, 0, 0.25);
 
-    background-color: var(--calc-light);
+    background-color: var(--calc-colour);
 
     container-type: size;
     scrollbar-gutter: stable;
@@ -78,8 +89,8 @@ button {
     -moz-appearance: none;
     appearance: none;
 
-    background-color: var(--button-light);
-    border: calc(var(--h) * 0.001) solid var(--button-border-light);
+    background-color: var(--button-colour);
+    border: calc(var(--h) * 0.001) solid var(--button-border-colour);
     border-radius: calc(var(--h) * 0.005);
 }
 
@@ -101,7 +112,7 @@ button:hover {
     min-height: 0;
     width: 95%;
     padding: 1% 2.5% 2.5% 2.5%;
-    border: 1px solid var(--screen-border-light);
+    border: 1px solid var(--screen-border-colour);
 }
 
 #display {
@@ -231,38 +242,38 @@ button:hover {
 }
 
 .label-main {
-    color: var(--text-light);
+    color: var(--text-colour);
     padding: 0 0.5cqb 0 0.5cqb;
 }
 
 .label-shift {
-    color: var(--shift-light);
+    color: var(--shift-colour);
     padding: 0 0.5cqb 0 0.5cqb;
 }
 
 .label-alpha {
-    color: var(--alpha-light);
+    color: var(--alpha-colour);
     padding: 0 0.5cqb 0 0.5cqb;
 }
 
 .pressed-Main {
-    background-color: var(--main-light);
+    background-color: var(--main-colour);
 }
 
 .pressed-Shift {
-    background-color: var(--shift-light);
+    background-color: var(--shift-colour);
 }
 
 .pressed-Alpha {
-    background-color: var(--alpha-light);
+    background-color: var(--alpha-colour);
 }
 
 .pressed-Store {
-    background-color: var(--store-light);
+    background-color: var(--store-colour);
 }
 
 .pressed-Recall {
-    background-color: var(--recall-light);
+    background-color: var(--recall-colour);
 }
 
 #message-display {
@@ -287,8 +298,8 @@ button:hover {
 }
 
 .status-boxed {
-    color: var(--status-bar-boxed-light);
-    background-color: var(--status-bar-light);
+    color: var(--status-bar-boxed-colour);
+    background-color: var(--status-bar-colour);
     width: 10cqb;
     height: 12cqb;
     min-height: 0;
@@ -382,7 +393,7 @@ button:hover {
 .menuitem {
     max-height: 5rem;
     text-align: center;
-    color: var(--text-light);
+    color: var(--text-colour);
     background: none;
     border: none;
     aspect-ratio: 1;
