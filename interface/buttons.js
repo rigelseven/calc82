@@ -6,7 +6,7 @@ export const BUTTONS = [
         Spacer1: null,
         Spacer2: null,
         Mode: ["", "MODE", "SET UP", "", {Main: "MenuModes", Shift: "MenuSetup", Alpha: "MenuModes", Store: "MenuModes", Recall: "MenuModes"}],
-        On: ["", "ON", "", "", {Main: null, Shift: null, Alpha: null}],
+        On: ["", "ON", "", "", {Main: null, Shift: null, Alpha: null, Menu: "MenuExit"}],
     },
 
     {
