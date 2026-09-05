@@ -238,7 +238,7 @@ function setOutput(outputType, direction) {
             const index = displayValue.indexOf('.');
   
             if (index !== -1)
-                displayValue = displayValue.slice(0, Number(index) + Number(formatMode[1]));
+                displayValue = displayValue.slice(0, Number(index) + Number(formatMode[1]) + 1);
 
             if (!displayValue.includes(".")) displayValue += '.';
         }
@@ -289,9 +289,9 @@ function renderInput() {
     for (let token of inputHandler.getTokens(showCursor)) {
         if (token.type === "COLON" && inputHandler.inputMode == "Review") {inputText.push(""); continue}
         if ((token.type === "POWER") && token.exp === "start"
-            && (!(previousToken !== null && ["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES", "VARIABLE"].includes(previousToken.type))
+            && (!(previousToken !== null && ["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES", "VARIABLE", "PERCENT"].includes(previousToken.type))
             && !(previousToken !== null && ["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(previousToken.type) && previousToken.exp === "end")))
-            inputText += "{}";
+            inputText[inputText.length-1] += "{}";
         inputText[inputText.length-1] += `${token.rep}`;
 
         previousToken = token.type === "CURSOR" ? previousToken : token;

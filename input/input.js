@@ -381,7 +381,8 @@ export class InputHandler {
                     "ROOT",
                     "SQRT",
                     "ABS",
-                    "VARIABLE"
+                    "VARIABLE",
+                    "PERCENT"
                 ].includes(token.type) ||
                 (token.type === "FUNCTION" && step === "right") ||
                 currentBracket > 0 ||
