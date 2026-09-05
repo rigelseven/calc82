@@ -32,8 +32,6 @@ function calculate(storeHistory = true) {
         if (inputHandler.inputMode !== "Review") colonIndex = 0;
 
         const {res, decimalResult, fractionResult, specialResult, tokens, ast} = calculator.calculate(value, storeHistory ? colonIndex : previousColonIndex);
-        currentResult = res;
-
 
         tokensDisplay.textContent="Token visualisation\n";
         astDisplay.textContent="AST visualisation\n";
@@ -365,7 +363,6 @@ function handleButton(button, forceMode=null) {
                         outputDisplay.style.display = "";
                         historyManager.checkHistoryArrows();
                         displayValue = "";
-                        currentResult = "";
                         inputHandler.setEdit();
                         setOutput();
                         renderInput();
