@@ -218,11 +218,11 @@ export default class LayoutEngine {
     }
 
     readBindsStorage() {
-        let parsedStorage = {};
+        let parsedStorage;
         try {
             parsedStorage = JSON.parse(localStorage.getItem("userKeybinds"));
         } catch {;}
-        this.userKeyboardMap = parsedStorage;
+        this.userKeyboardMap = parsedStorage == null ? {} : parsedStorage;
         this.nameHelpLabels();
     }
 }
