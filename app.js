@@ -706,7 +706,6 @@ function setTheme(theme) {
 
 themeToggleBtn.addEventListener('click', () => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
-
     if (currentTheme === 'dark') {
         setTheme('light');
     } else {
