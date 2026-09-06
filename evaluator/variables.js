@@ -18,6 +18,7 @@ class VariableManager {
     }
     
     getVariable(variable) {
+        if (variable == "Random") return Decimal.random();
         return this.storage[variable];
     }
 
