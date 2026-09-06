@@ -564,7 +564,14 @@ function attachListeners() {
             renderInput();
         }
 
-        if (event.metaKey || event.ctrlKey || event.altKey) return;
+        if (    
+            event.metaKey || 
+            event.ctrlKey || 
+            event.altKey ||
+            event.key === "Meta" || 
+            event.key === "Control" || 
+            event.key === "Alt"
+        ) return;
 
         // Handle help press
         if (event.key === 'h') {
@@ -619,7 +626,14 @@ function attachListeners() {
     });
 
     document.addEventListener('keyup', (event) => {
-        if (event.metaKey || event.ctrlKey || event.altKey) return;
+        if (    
+            event.metaKey || 
+            event.ctrlKey || 
+            event.altKey ||
+            event.key === "Meta" || 
+            event.key === "Control" || 
+            event.key === "Alt"
+        ) return;
 
         // Handle help press
         if (event.key === 'h' || event.key === 'H') {
@@ -718,6 +732,7 @@ remapKeyButton.addEventListener('click', () => {
     remapStatus.innerText = "Click a calculator button to remap...";
     remapKeyButton.style.display = "none";
     remapKeyCancelButton.style.display = "block";
+    document.body.classList.add('remap-hover-enabled');
 });
 
 remapKeyCancelButton.addEventListener('click', () => exitRemap());
@@ -728,6 +743,7 @@ function exitRemap(message="") {
     remapStatus.innerText = message;
     remapKeyCancelButton.style.display = "none";
     remapKeyButton.style.display = "block";
+    document.body.classList.remove('remap-hover-enabled');
 
     // Render remap list and unbind default shift/alpha keys
     remapList.innerHTML = "";
@@ -750,7 +766,7 @@ function exitRemap(message="") {
         `;
 
         row.querySelector(".settings-remove-user-keybind").addEventListener("click", () => {
-            delete(layoutEngine.userKeyboardMap[key]);
+            layoutEngine.removeBind(key);
             exitRemap();
         });
 
@@ -785,9 +801,11 @@ let isShiftRebound = false;
 let isAlphaRebound = false;
 
 layoutEngine.createButtons();
+layoutEngine.readBindsStorage();
+exitRemap();
 
-const shiftButton = layoutEngine.getButtonFromKey("Shift")[2];
-const alphaButton = layoutEngine.getButtonFromKey("Alpha")[2];
+const shiftButton = layoutEngine.getButtonFromKey("Shift", null, true)[2];
+const alphaButton = layoutEngine.getButtonFromKey("Alpha", null, true)[2];
 
 setOutputFormat();
 

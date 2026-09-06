@@ -105,13 +105,13 @@ export default class LayoutEngine {
         return Object.keys(BUTTONS[row])[col]
     }
 
-    getButtonFromKey(key, specialMap = null) {
+    getButtonFromKey(key, specialMap=null, ignoreUser=false) {
         let keyMap;
         if (specialMap === "Variable") keyMap = VARIABLE_MAP[key];
-        else if (key in this.userKeyboardMap) keyMap = this.userKeyboardMap[key];
+        else if (!ignoreUser && key in this.userKeyboardMap) keyMap = this.userKeyboardMap[key];
         else  {
             const keyboardKeyMap = KEYBOARD_MAP[key];
-            if (keyboardKeyMap && !Object.values(this.userKeyboardMap).some(
+            if (ignoreUser || keyboardKeyMap && !Object.values(this.userKeyboardMap).some(
                 value => value[0] === keyboardKeyMap[0] &&
                         value[1] === keyboardKeyMap[1]
             )) {
@@ -162,9 +162,32 @@ export default class LayoutEngine {
 
     rebindKey(button, key) {
         this.userKeyboardMap[key] = button;
+        this.updateBindsStorage();
     }
 
     clearRebinds() {
         this.userKeyboardMap = {};
+        this.updateBindsStorage();
+    }
+
+    removeBind(key) {
+        delete(this.userKeyboardMap[key]);
+        this.updateBindsStorage();
+    }
+
+    updateBindsStorage() {
+        localStorage.setItem(
+            "userKeybinds",
+            JSON.stringify(this.userKeyboardMap)
+        );
+        console.log(this.userKeyboardMap, JSON.parse(localStorage.getItem("userKeybinds")))
+    }
+
+    readBindsStorage() {
+        let parsedStorage = {};
+        try {
+            parsedStorage = JSON.parse(localStorage.getItem("userKeybinds"));
+        } catch {;}
+        this.userKeyboardMap = parsedStorage;
     }
 }
