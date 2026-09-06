@@ -3,6 +3,7 @@ import { BUTTONS, KEYBOARD_MAP, NAV_BUTTONS, NAV_DIMENSIONS, REVERSED_KEYBOARD_M
 export default class LayoutEngine {
     constructor() {
         this.buttons = {};
+        this.userKeyboardMap = {};
     }
     
     createButtons() {
@@ -98,21 +99,37 @@ export default class LayoutEngine {
         return Object.values(BUTTONS[row])[col]
     }
 
+    getButtonKey(row, col) {
+        if (row == "nav")
+            return col;
+        return Object.keys(BUTTONS[row])[col]
+    }
+
     getButtonFromKey(key, specialMap = null) {
         let keyMap;
         if (specialMap === "Variable") keyMap = VARIABLE_MAP[key];
-        else keyMap = KEYBOARD_MAP[key];
-        if (keyMap)
+        else if (key in this.userKeyboardMap) keyMap = this.userKeyboardMap[key];
+        else  {
+            const keyboardKeyMap = KEYBOARD_MAP[key];
+            if (keyboardKeyMap && !Object.values(this.userKeyboardMap).some(
+                value => value[0] === keyboardKeyMap[0] &&
+                        value[1] === keyboardKeyMap[1]
+            )) {
+                keyMap = keyboardKeyMap;
+            }
+        }
+        if (keyMap) {
             return [this.buttons[keyMap[0]].entry, keyMap[1], this.buttons[keyMap[0]].button];
+        }
     }
 
     static renderContent(element, text1 = "", text2 = "", text3 = "", keynames) {
         element.replaceChildren();
 
         const parts = [
-            { text: text1, className: "label-main", helpColour: "rgba(0, 180, 255, 0.8)", activeKeyType: "Main" },
-            { text: text2, className: "label-shift", helpColour: "rgba(255, 180, 0, 0.8)", activeKeyType: "Shift" },
-            { text: text3, className: "label-alpha", helpColour: "rgba(255, 0, 0, 0.8)", activeKeyType: "Alpha" },
+            { text: text1, className: "label-main label-text", helpColour: "rgba(0, 180, 255, 0.8)", activeKeyType: "Main" },
+            { text: text2, className: "label-shift label-text", helpColour: "rgba(255, 180, 0, 0.8)", activeKeyType: "Shift" },
+            { text: text3, className: "label-alpha label-text", helpColour: "rgba(255, 0, 0, 0.8)", activeKeyType: "Alpha" },
         ];
 
         for (const { text, className, helpColour, activeKeyType } of parts) {
@@ -141,5 +158,13 @@ export default class LayoutEngine {
 
             element.appendChild(span);
         }
+    }
+
+    rebindKey(button, key) {
+        this.userKeyboardMap[key] = button;
+    }
+
+    clearRebinds() {
+        this.userKeyboardMap = {};
     }
 }

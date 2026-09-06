@@ -10,6 +10,7 @@
     --bg-colour: light-dark(#ddd, #000);
     --status-bar-boxed-colour: light-dark(#fff, #000);
     --status-bar-colour: light-dark(#000, #fff);
+    --calc-shadow: light-dark(rgba(0, 0, 0, 0.25), rgba(255, 255, 255, 0.25));
 
     --text-colour: light-dark(#000, #fff);
     --shift-colour: goldenrod;
@@ -73,7 +74,7 @@ body {
     padding: calc(var(--h) / 40);
     row-gap: calc(var(--h) / 40);
     border-radius: calc(var(--h) / 80);
-    box-shadow: 0 0 calc(var(--h) / 80) rgba(0, 0, 0, 0.25);
+    box-shadow: 0 0 calc(var(--h) / 80) var(--calc-shadow);
 
     background-color: var(--calc-colour);
 
@@ -234,6 +235,26 @@ button:hover {
     position: relative;
 }
 
+.input-button:hover,
+.nav-button:hover {
+    outline: 1cqb solid var(--main-colour);
+    z-index: 10000;
+}
+
+.label-shift:hover {
+    outline: 1cqb solid var(--shift-colour);
+    z-index: 10000;
+    border-radius: 0.5cqb;
+    cursor: pointer;
+}
+
+.label-alpha:hover {
+    outline: 1cqb solid var(--alpha-colour);
+    z-index: 10000;
+    border-radius: 0.5cqb;
+    cursor: pointer;
+}
+
 .nav-button {
     font-weight: 500;
     font-size: 3.5cqb;
@@ -277,6 +298,7 @@ button:hover {
     text-align: center;
     width: fit-content;
 
+    font-weight: bold;
     color: var(--calc-colour);
     padding: 0.5cqb 1cqb;
     max-width: 100%;
@@ -475,4 +497,74 @@ button:hover {
     .menuitem {
         max-height: 7.5svh;
     }
+}
+
+.popup {
+    border: 1px solid var(--calc-border-colour);
+    max-height: 80svh;
+    height: 100%;
+    aspect-ratio: 1/2;
+    overflow: scroll;
+    box-sizing: border-box;
+
+    background-color: var(--screen-colour);
+    border-radius: calc(var(--h) / 160);
+    box-shadow: 0 0 calc(var(--h) / 80) var(--calc-shadow);
+
+    padding: 0 2cqb;
+    position: relative;
+
+    container-type: size;
+    font-size: 2cqb;
+}
+
+@media (max-aspect-ratio: 1) {
+    .popup {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        width: calc(var(--h) / 2);
+        margin: 0;
+    }
+}
+
+.popup-close {
+    position: absolute;
+    top: 0;
+    right: 0;
+
+    font-size: 5cqb;
+    user-select: none;
+
+    background: none;
+    border: none;
+}
+
+h1 {
+    font-size: 5cqb;
+    font-weight: bold;
+}
+
+h2 {
+    font-size: 3cqb;
+    font-weight: bold;
+    font-style: italic;
+    margin-bottom: 0;
+}
+
+h3 {
+    font-size: 2.5cqb;
+    font-weight: bold;
+    font-style: italic;
+    margin-bottom: 0;
+}
+
+.settings-remap-list-container {
+    text-align: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+    padding: 5cqw 10cqw;
 }

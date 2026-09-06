@@ -489,6 +489,23 @@ function attachListeners() {
             button_id = button_element.getAttribute("id").split("_");
         }
 
+        // Select button to rebind
+        if (remapStep > 0) {
+            const closestLabel = event.target.closest(".label-text");
+            let remapModifier = null;
+            if (closestLabel && closestLabel.classList) {
+                if (closestLabel.classList.contains("label-shift")) remapModifier = "Shift";
+                else if (closestLabel.classList.contains("label-alpha")) remapModifier = "Alpha"
+            }
+            remapButton = [layoutEngine.getButtonKey(button_id[0], button_id[1]), remapModifier];
+
+            if (remapButton[0] === remapButton[1]) remapButton[1] = null;  // Prevent 'Shift-Shift'
+
+            remapStep = 2;  // Press key to remap
+            remapStatus.innerText = `Press the key to assign to button '${remapButton[1]?remapButton[1]:''}${remapButton[1]?'-':''}${remapButton[0]}'...`
+            return;
+        }
+
         // Ignore already tracked pointer
         if (activeButtons.has(event.pointerId)) return;
 
@@ -541,12 +558,13 @@ function attachListeners() {
     }
 
     document.addEventListener('keydown', (event) => {
+        // Ctrl+Backspace
+        if (event.ctrlKey && event.key == "Backspace") {
+            inputHandler.handleInput("AllClear");
+            renderInput();
+        }
 
-        // Handle shift and alpha lone press
-        if (event.key === shiftKey) { isShiftKeyHeld = true; return; }
-        else isShiftKeyHeld = false;
-        if (event.key === alphaKey) { isAlphaKeyHeld = true; return; }
-        else isAlphaKeyHeld = false;
+        if (event.metaKey || event.ctrlKey || event.altKey) return;
 
         // Handle help press
         if (event.key === 'h') {
@@ -554,13 +572,27 @@ function attachListeners() {
             return;
         }
 
+        // Always block / (for remapping)
+        if (event.key === '/') event.preventDefault();
+
+        // Ignore if in rebinding mode
+        if (remapStep > 0) {
+            return;
+        }
+
+        // Handle shift and alpha lone press
+        if (event.key === shiftKey && !isShiftRebound) { isShiftKeyHeld = true; return; }
+        else isShiftKeyHeld = false;
+        if (event.key === alphaKey && !isShiftRebound) { isAlphaKeyHeld = true; return; }
+        else isAlphaKeyHeld = false;
+
         let button = layoutEngine.getButtonFromKey(event.key);
 
         // Handle store and recall
         if (inputHandler.mode === "Store" || inputHandler.mode === "Recall")
             button = layoutEngine.getButtonFromKey(event.key, "Variable") ?? button;
 
-        if (button !== undefined && !(event.metaKey || event.ctrlKey || event.altKey)) {
+        if (button !== undefined) {
             event.preventDefault();
             // Prevent repeat except arrow keys to ends
             if ((event.repeat) && !(
@@ -569,8 +601,9 @@ function attachListeners() {
             ) {
                 return;
             }
-
-            button[2].classList.add(`pressed-${button[1] === null ? (inputHandler.mode == "Menu" ? "Main" : inputHandler.mode) : button[1]}`);
+            if (button[0][4].Main === "Shift") button[2].classList.add("pressed-Shift")
+            else if (button[0][4].Main === "Alpha") button[2].classList.add("pressed-Alpha")
+            else button[2].classList.add(`pressed-${button[1] === null ? (inputHandler.mode == "Menu" ? "Main" : inputHandler.mode) : button[1]}`);
             handleButton(button[0], button[1]);
         }
     });
@@ -586,22 +619,32 @@ function attachListeners() {
     });
 
     document.addEventListener('keyup', (event) => {
-
-        // Handle shift and alpha lone press
-        if (event.key === shiftKey && isShiftKeyHeld) {
-            inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
-            isShiftKeyHeld = false;
-            return;
-        }
-        else if (event.key === alphaKey && isAlphaKeyHeld) {
-            inputHandler.switchMode("Alpha", false, shiftButton, alphaButton);
-            isAlphaKeyHeld = false;
-            return;
-        }
+        if (event.metaKey || event.ctrlKey || event.altKey) return;
 
         // Handle help press
         if (event.key === 'h' || event.key === 'H') {
             document.documentElement.style.setProperty('--show-help', 'none');
+            return;
+        }
+
+        // Handle rebind button
+        if (remapStep === 2) {
+            const remapKey = event.key;
+            layoutEngine.rebindKey(remapButton, event.key);
+            exitRemap(`Reassigned key '${remapKey}' to '${remapButton[1]?remapButton[1]:''}${remapButton[1]?'-':''}${remapButton[0]}'.`);
+            return;
+        }
+
+        // Handle shift and alpha lone press
+        if (event.key === shiftKey && isShiftKeyHeld && !isShiftRebound) {
+            inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
+            isShiftKeyHeld = false;
+            return;
+        }
+        else if (event.key === alphaKey && isAlphaKeyHeld && !isAlphaRebound) {
+            inputHandler.switchMode("Alpha", false, shiftButton, alphaButton);
+            isAlphaKeyHeld = false;
+            return;
         }
 
         const counterpart = /^[a-z]$/i.test(event.key)
@@ -662,6 +705,68 @@ try {
     setTheme(localStorage.getItem('theme'));
 } catch { ; }
 
+// Settings menu
+const remapKeyButton = document.querySelector("#settings-key-remap");
+const remapStatus = document.querySelector("#settings-key-remap-status");
+const remapKeyCancelButton = document.querySelector("#settings-key-remap-cancel");
+const remapKeyClearButton = document.querySelector("#settings-key-remap-clear");
+const remapList = document.querySelector("#settings-remap-list");
+
+remapKeyButton.addEventListener('click', () => {
+    remapStep = 1;  // Select button to remap
+    remapButton = null;
+    remapStatus.innerText = "Click a calculator button to remap...";
+    remapKeyButton.style.display = "none";
+    remapKeyCancelButton.style.display = "block";
+});
+
+remapKeyCancelButton.addEventListener('click', () => exitRemap());
+
+function exitRemap(message="") {
+    remapStep = 0;
+    remapButton = null;
+    remapStatus.innerText = message;
+    remapKeyCancelButton.style.display = "none";
+    remapKeyButton.style.display = "block";
+
+    // Render remap list and unbind default shift/alpha keys
+    remapList.innerHTML = "";
+    const rebindList = layoutEngine.userKeyboardMap;
+
+    isShiftRebound = false;
+    isAlphaRebound = false;
+    Object.entries(rebindList).forEach(([key, value]) => {
+        // Unbind shift and alpha
+        if (value[0] === 'Shift') isShiftRebound = true;
+        if (value[0] === 'Alpha') isAlphaRebound = true;
+
+        // Render list
+        const row = document.createElement("div");
+        row.className = "settings-user-keybind";
+
+        row.innerHTML = `
+            '${key}' → '${value[1]?value[1]+'-':''}${value[0]}'
+            <button type="button" class="settings-remove-user-keybind">✕</button>
+        `;
+
+        row.querySelector(".settings-remove-user-keybind").addEventListener("click", () => {
+            delete(layoutEngine.userKeyboardMap[key]);
+            exitRemap();
+        });
+
+        remapList.appendChild(row);
+    });
+    if (remapList.innerHTML == "") remapList.innerText = "No keybinds yet..."
+}
+
+remapKeyClearButton.addEventListener('click', () => {
+    layoutEngine.clearRebinds();
+    exitRemap();
+});
+
+let remapStep = 0;  // Not remapping
+let remapButton = null;
+
 let colonIndex = 0;
 let previousColonIndex = 0;
 
@@ -675,6 +780,9 @@ let engExp = null;
 
 const shiftKey = "Shift";
 const alphaKey = "z";
+
+let isShiftRebound = false;
+let isAlphaRebound = false;
 
 layoutEngine.createButtons();
 
