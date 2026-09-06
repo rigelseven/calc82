@@ -203,7 +203,6 @@ export class InputHandler {
         if (this.inputMode !== "Edit") return;
 
         for (const c of pastedText) {
-            console.log(c);
             // Numbers
             if (/^\d$/.test(c)) this.addToken({type:"DIGIT", rep: c, value: c});
             else if (c === ".") this.addToken(TOKENS["."]);

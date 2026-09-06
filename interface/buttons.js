@@ -140,7 +140,8 @@ export const KEYBOARD_MAP = {
 
     "r": ["Recall", null],
         "R": ["Recall", "Shift"],
-    "<": ["Engineering", null],
+    ">": ["Engineering", null],
+        "<": ["Engineering", "Shift"],
     "(": ["LParen", null],
         "%": ["LParen", "Shift"],
     ")": ["RParen", null],
@@ -187,6 +188,15 @@ export const KEYBOARD_MAP = {
 
     "Delete": ["ForwardDelete", null]
 }
+
+export const REVERSED_KEYBOARD_MAP = Object.fromEntries(
+    Object.entries(KEYBOARD_MAP).map(([key, value]) => [value, key])
+);
+
+REVERSED_KEYBOARD_MAP['Alpha,Alpha'] = "z";
+REVERSED_KEYBOARD_MAP['Shift,Shift'] = "Shift";
+REVERSED_KEYBOARD_MAP['AllClear,'] = "Esc";
+REVERSED_KEYBOARD_MAP['Del,'] = "⌫";
 
 export const VARIABLE_MAP = {
     "a": ["UnaryMinus", null],

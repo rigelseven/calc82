@@ -25,23 +25,23 @@ const calculator = new Calculator;
 const layoutEngine = new LayoutEngine;
 
 function calculate(storeHistory = true) {
-    setOutputFormat();    
+    setOutputFormat();
     try {
         const value = inputHandler.getTokens();
 
         if (inputHandler.inputMode !== "Review") colonIndex = 0;
 
-        const {res, decimalResult, fractionResult, specialResult, tokens, ast} = calculator.calculate(value, storeHistory ? colonIndex : previousColonIndex);
+        const { res, decimalResult, fractionResult, specialResult, tokens, ast } = calculator.calculate(value, storeHistory ? colonIndex : previousColonIndex);
 
-        tokensDisplay.textContent="Token visualisation\n";
-        astDisplay.textContent="AST visualisation\n";
-       
+        tokensDisplay.textContent = "Token visualisation\n";
+        astDisplay.textContent = "AST visualisation\n";
+
         const textAST = generateTextAST(ast);
         astDisplay.textContent += textAST;
-        
+
         const textTokens = generateTextTokens(tokens[colonIndex]);
         tokensDisplay.textContent += textTokens;
-        
+
         if (specialResult) setOutput("special");
         else if (fractionResult) setOutput(settingsManager.getSetting("fractionMode"));
         else setOutput("decimal");
@@ -49,7 +49,7 @@ function calculate(storeHistory = true) {
         if (storeHistory) {
             previousColonIndex = colonIndex;
             if (tokens.length > 1) {
-                statusBar.toggle("disp", colonIndex !== tokens.length-1);
+                statusBar.toggle("disp", colonIndex !== tokens.length - 1);
                 colonIndex = (colonIndex + 1) % tokens.length;
             } else {
                 colonIndex = 0;
@@ -59,7 +59,7 @@ function calculate(storeHistory = true) {
 
         inputHandler.setReview();
         renderInput();
-        
+
         if (storeHistory) historyManager.pushHistory(extractSubarray(value, previousColonIndex), fractionResult, decimalResult, specialResult);
 
     } catch (error) {
@@ -68,22 +68,22 @@ function calculate(storeHistory = true) {
 }
 
 function extractSubarray(arr, targetN) {
-  const result = [];
-  let currentChunkIndex = 0;
+    const result = [];
+    let currentChunkIndex = 0;
 
-  for (const item of arr) {
-    if (item.type === "COLON") {
-      currentChunkIndex++;
-      if (currentChunkIndex > targetN) break; 
-      continue;
+    for (const item of arr) {
+        if (item.type === "COLON") {
+            currentChunkIndex++;
+            if (currentChunkIndex > targetN) break;
+            continue;
+        }
+
+        if (currentChunkIndex === targetN) {
+            result.push(item);
+        }
     }
 
-    if (currentChunkIndex === targetN) {
-      result.push(item);
-    }
-  }
-
-  return result;
+    return result;
 }
 
 function showError(error) {
@@ -114,16 +114,16 @@ function showError(error) {
 function setOutputFormat() {
     const formatMode = settingsManager.getSetting("displayMode");
     if (formatMode[0] === "norm" && formatMode[1] == 1)
-        Decimal.set({ precision: 15, maxE: 99, toExpNeg: -3, toExpPos: 10});
+        Decimal.set({ precision: 15, maxE: 99, toExpNeg: -3, toExpPos: 10 });
     else if (formatMode[0] === "norm" && formatMode[1] == 2)
-        Decimal.set({ precision: 15, maxE: 99, toExpNeg: -9, toExpPos: 10});
-    else if (formatMode[0] === "fix") 
-        Decimal.set({ precision: 15, maxE: 99, toExpNeg: -101, toExpPos: 10});
-    else if (formatMode[0] === "sci") 
-        Decimal.set({ precision: 15, maxE: 99, toExpNeg: 0, toExpPos: 0});
+        Decimal.set({ precision: 15, maxE: 99, toExpNeg: -9, toExpPos: 10 });
+    else if (formatMode[0] === "fix")
+        Decimal.set({ precision: 15, maxE: 99, toExpNeg: -101, toExpPos: 10 });
+    else if (formatMode[0] === "sci")
+        Decimal.set({ precision: 15, maxE: 99, toExpNeg: 0, toExpPos: 0 });
 }
 
-function switchAngleMode(type="improper") {
+function switchAngleMode(type = "improper") {
     if (type === "improper") {
         if (currentResultType !== "decimal" && calculator.decimalResult !== undefined)
             setOutput("decimal");
@@ -186,7 +186,7 @@ function setOutput(outputType, direction) {
         currentResultType = "decimal";
         let [coeffStr, expStr] = calculator.decimalResult.toExponential().split('e');
         let scientificExp = parseInt(expStr, 10);
-        
+
         let coeff = parseFloat(coeffStr);
 
         const oldExp = engExp;
@@ -195,7 +195,7 @@ function setOutput(outputType, direction) {
             engExp += 3 * direction;
         } else {
             let mod = scientificExp % 3;
-            if (mod < 0) mod += 3; 
+            if (mod < 0) mod += 3;
             engExp = scientificExp - mod;
             if (direction === 1) engExp += 3;
         }
@@ -206,7 +206,7 @@ function setOutput(outputType, direction) {
         else
             engExp = oldExp;
 
-        const EngDecimal = Decimal.clone({ 
+        const EngDecimal = Decimal.clone({
             toExpPos: 101,
             toExpNeg: -101
         });
@@ -214,7 +214,6 @@ function setOutput(outputType, direction) {
         const engResult = new EngDecimal(coeff).times(Math.pow(10, shift)).toSD(10);
 
         displayValue = engResult.toFixed(9).replace(/(\.\d*?[1-9])0+$|\.0+$/, '$1') + `\\times10^{${engExp}}`;
-        console.log(displayValue)
     } else engExp = null;
 
     if (outputType === "special") {
@@ -227,14 +226,14 @@ function setOutput(outputType, direction) {
         currentResultType = "decimal";
 
         const formatMode = settingsManager.getSetting("displayMode")
-                                                        // Sci mode accuracy
+        // Sci mode accuracy
         displayValue = `${calculator.decimalResult.toSD(formatMode[0] === "sci" ? Number(formatMode[1]) : 10).toString().replace(/e\+?(-?\d+)/g, "\\times10^{$1}")}`;
 
         // Fix mode
         if (formatMode[0] === "fix" && !displayValue.includes("\\times10")) {
             // Truncate to n digits after dp
             const index = displayValue.indexOf('.');
-  
+
             if (index !== -1)
                 displayValue = displayValue.slice(0, Number(index) + Number(formatMode[1]) + 1);
 
@@ -243,7 +242,7 @@ function setOutput(outputType, direction) {
 
         // Comma DP
         if (settingsManager.getSetting("decimalPoint") === "comma")
-            displayValue = displayValue.replaceAll('.', '{,}'); 
+            displayValue = displayValue.replaceAll('.', '{,}');
 
     } else if (outputType === "fraction") {
         currentResultType = "fraction";
@@ -285,12 +284,12 @@ function renderInput() {
     let previousToken = null;
     let showCursor = inputHandler.inputMode === "Edit";
     for (let token of inputHandler.getTokens(showCursor)) {
-        if (token.type === "COLON" && inputHandler.inputMode == "Review") {inputText.push(""); continue}
+        if (token.type === "COLON" && inputHandler.inputMode == "Review") { inputText.push(""); continue }
         if ((token.type === "POWER") && token.exp === "start"
             && (!(previousToken !== null && ["DIGIT", "CONSTANT", "RPAREN", "RADIANS", "GRADIANS", "DEGREES", "VARIABLE", "PERCENT"].includes(previousToken.type))
-            && !(previousToken !== null && ["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(previousToken.type) && previousToken.exp === "end")))
-            inputText[inputText.length-1] += "{}";
-        inputText[inputText.length-1] += `${token.rep}`;
+                && !(previousToken !== null && ["FRACTION", "MIXEDFRAC", "SQRT", "ROOT", "ABS"].includes(previousToken.type) && previousToken.exp === "end")))
+            inputText[inputText.length - 1] += "{}";
+        inputText[inputText.length - 1] += `${token.rep}`;
 
         previousToken = token.type === "CURSOR" ? previousToken : token;
     }
@@ -299,7 +298,7 @@ function renderInput() {
 }
 
 function setInput(input) {
-    katex.render(input, inputDisplay, {throwOnError: false, strict: "ignore", trust: true})
+    katex.render(input, inputDisplay, { throwOnError: false, strict: "ignore", trust: true })
 }
 
 function addPlaceholders(latex) {
@@ -314,19 +313,19 @@ function addPlaceholders(latex) {
         );
 }
 
-function handleButton(button, forceMode=null) {
-        if (forceMode !== null) inputHandler.switchMode(forceMode, true, shiftButton, alphaButton);
-        if (button !== null) {
+function handleButton(button, forceMode = null) {
+    if (forceMode !== null) inputHandler.switchMode(forceMode, true, shiftButton, alphaButton);
+    if (button !== null) {
         const action = button[4][inputHandler.mode];
         if (action !== null) {
             const finalAction = inputHandler.handleInput(action);
 
             if (finalAction === "ErrorDisplay") return;
-            else if (inputHandler.mode !== "Menu") 
+            else if (inputHandler.mode !== "Menu")
                 display.clearDisplay();
 
             if (!(finalAction === "nextHistory" || finalAction === "previousHistory" || finalAction === "oldestHistory" || finalAction === "latestHistory"))
-            renderInput(); // render later if history
+                renderInput(); // render later if history
 
             if (finalAction !== undefined && finalAction !== null) {
                 // Handle menu
@@ -335,7 +334,7 @@ function handleButton(button, forceMode=null) {
                     const finalMenuAction = menuManager.handleMenuAction(menuAction)
                     if (finalMenuAction == "Exit") {
                         inputHandler.switchMode("Main", true, shiftButton, alphaButton);
-                        if (inputHandler.inputMode == "Review")calculate(false);
+                        if (inputHandler.inputMode == "Review") calculate(false);
                         renderInput();
                         outputDisplay.style.display = "";
                         historyManager.checkHistoryArrows();
@@ -375,17 +374,17 @@ function handleButton(button, forceMode=null) {
                     try {
                         inputHandler.toLastToken();
                         // Handle memory plus/minus buttons
-                        if (finalAction == "StoreMPlus") inputHandler.addToken({type:"MPLUS", exp: "MPLUS", rep: `\\text{M+}`});
-                        else if (finalAction == "StoreMMinus") inputHandler.addToken({type:"MMINUS", exp: "MMINUS", rep: `\\text{M-}`});
-                        else inputHandler.addToken({type:"STORE", exp: finalAction.at(-1), rep: `\\rightarrow{\\text{${finalAction.at(-1)}}}`});
+                        if (finalAction == "StoreMPlus") inputHandler.addToken({ type: "MPLUS", exp: "MPLUS", rep: `\\text{M+}` });
+                        else if (finalAction == "StoreMMinus") inputHandler.addToken({ type: "MMINUS", exp: "MMINUS", rep: `\\text{M-}` });
+                        else inputHandler.addToken({ type: "STORE", exp: finalAction.at(-1), rep: `\\rightarrow{\\text{${finalAction.at(-1)}}}` });
                         renderInput();
                         if (inputHandler.inputTokens.length != 0) calculate(true);
-                    } catch (error) {;}
+                    } catch (error) { ; }
                 }
 
                 if (finalAction.startsWith("Recall")) {
                     const toCalculate = inputHandler.inputTokens.length === 0;
-                    inputHandler.addToken({type:"VARIABLE", exp: finalAction.at(-1), rep: `\\text{${finalAction.at(-1)}}`});
+                    inputHandler.addToken({ type: "VARIABLE", exp: finalAction.at(-1), rep: `\\text{${finalAction.at(-1)}}` });
                     renderInput();
                     if (toCalculate) calculate(true);
                 }
@@ -398,7 +397,7 @@ function handleButton(button, forceMode=null) {
                 else if (finalAction === "previousHistory") h = historyManager.prevHistory();
                 else if (finalAction === "oldestHistory") h = historyManager.oldestHistory();
                 else if (finalAction === "latestHistory") h = historyManager.latestHistory();
-                
+
                 if (h) {
                     inputHandler.setTokens(h.expression);
                     calculator.fractionResult = h.fractionResult;
@@ -406,7 +405,7 @@ function handleButton(button, forceMode=null) {
                     calculator.specialResult = h.specialResult;
                     previousColonIndex = 0;
                     renderInput();
-                    setOutput(calculator.specialResult !== undefined ? "special" : 
+                    setOutput(calculator.specialResult !== undefined ? "special" :
                         calculator.fractionResult !== undefined ? "fraction" : "decimal");
                     statusBar.toggle("disp", false);
                 }
@@ -425,7 +424,7 @@ function handleButton(button, forceMode=null) {
             // Handle factor button
             else if (finalAction === "factors") setOutput("factors");
             else if (finalAction === "degminsec") setOutput("degminsec");
-            
+
             // Handle mode buttons
             if (finalAction === "shift") inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
             else if (finalAction === "alpha") inputHandler.switchMode("Alpha", false, shiftButton, alphaButton);
@@ -497,7 +496,6 @@ function attachListeners() {
 
         const inputButton = button_element.classList.contains('nav-button')
             ? button_element : button_element?.querySelector(".input-button");
-        console.log(button_element, inputButton)
         if (inputButton) {
             inputButton.classList.add(
                 `pressed-${inputHandler.mode == "Menu"
@@ -545,23 +543,33 @@ function attachListeners() {
     document.addEventListener('keydown', (event) => {
 
         // Handle shift and alpha lone press
-        if (event.key === shiftKey) {isShiftKeyHeld = true; return;}
+        if (event.key === shiftKey) { isShiftKeyHeld = true; return; }
         else isShiftKeyHeld = false;
-        if (event.key === alphaKey) {isAlphaKeyHeld = true; return;}
+        if (event.key === alphaKey) { isAlphaKeyHeld = true; return; }
         else isAlphaKeyHeld = false;
 
+        // Handle help press
+        if (event.key === 'h') {
+            document.documentElement.style.setProperty('--show-help', 'block');
+            return;
+        }
+
         let button = layoutEngine.getButtonFromKey(event.key);
+
+        // Handle store and recall
         if (inputHandler.mode === "Store" || inputHandler.mode === "Recall")
             button = layoutEngine.getButtonFromKey(event.key, "Variable") ?? button;
+
         if (button !== undefined && !(event.metaKey || event.ctrlKey || event.altKey)) {
             event.preventDefault();
-             // Prevent repeat except arrow keys to ends
+            // Prevent repeat except arrow keys to ends
             if ((event.repeat) && !(
                 (event.key === "ArrowLeft" && inputHandler.cursorPosition != 0) ||
                 (event.key === "ArrowRight" && inputHandler.cursorPosition != inputHandler.inputTokens.length))
             ) {
                 return;
-            } 
+            }
+
             button[2].classList.add(`pressed-${button[1] === null ? (inputHandler.mode == "Menu" ? "Main" : inputHandler.mode) : button[1]}`);
             handleButton(button[0], button[1]);
         }
@@ -569,16 +577,16 @@ function attachListeners() {
 
     document.addEventListener('paste', (event) => {
         const clipboardData = event.clipboardData || window.clipboardData;
-        
+
         const pastedText = clipboardData.getData('text/plain');
         inputHandler.handlePaste(pastedText);
         renderInput();
-        
+
         event.preventDefault();
     });
 
     document.addEventListener('keyup', (event) => {
-        
+
         // Handle shift and alpha lone press
         if (event.key === shiftKey && isShiftKeyHeld) {
             inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
@@ -590,17 +598,22 @@ function attachListeners() {
             isAlphaKeyHeld = false;
             return;
         }
-        
+
+        // Handle help press
+        if (event.key === 'h' || event.key === 'H') {
+            document.documentElement.style.setProperty('--show-help', 'none');
+        }
+
         const counterpart = /^[a-z]$/i.test(event.key)
-        ? (event.key === event.key.toLowerCase()
-            ? event.key.toUpperCase()
-            : event.key.toLowerCase())
-        : shiftedToUnshifted[event.key] ?? unshiftedToShifted[event.key];
-        
+            ? (event.key === event.key.toLowerCase()
+                ? event.key.toUpperCase()
+                : event.key.toLowerCase())
+            : shiftedToUnshifted[event.key] ?? unshiftedToShifted[event.key];
+
         for (const button of [layoutEngine.getButtonFromKey(event.key),
-            layoutEngine.getButtonFromKey(event.key, "Variable"),
-            layoutEngine.getButtonFromKey(counterpart),
-            layoutEngine.getButtonFromKey(counterpart, "Variable")]) {
+        layoutEngine.getButtonFromKey(event.key, "Variable"),
+        layoutEngine.getButtonFromKey(counterpart),
+        layoutEngine.getButtonFromKey(counterpart, "Variable")]) {
             if (button !== undefined) {
                 event.preventDefault();
                 button[2].classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store", "pressed-Recall");
@@ -613,6 +626,7 @@ function attachListeners() {
         for (const button of Object.values(layoutEngine.buttons)) {
             button.button?.classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store", "pressed-Recall");
         }
+        document.documentElement.style.setProperty('--show-help', 'none');
     });
 
     window.addEventListener('contextmenu', function (e) {
@@ -624,29 +638,29 @@ function attachListeners() {
 const toggleBtn = document.getElementById('theme-toggle');
 
 function setTheme(theme) {
-  if (theme === 'system') {
-    document.documentElement.removeAttribute('data-theme');
-    localStorage.removeItem('theme');
-  } else {
-    document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('theme', theme);
-  }
+    if (theme === 'system') {
+        document.documentElement.removeAttribute('data-theme');
+        localStorage.removeItem('theme');
+    } else {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+    }
 }
 
 toggleBtn.addEventListener('click', () => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
 
     if (currentTheme === 'dark') {
-    setTheme('light');
+        setTheme('light');
     } else {
-    setTheme('dark');
+        setTheme('dark');
     }
 });
 
 // Read saved theme
 try {
     setTheme(localStorage.getItem('theme'));
-} catch {;}
+} catch { ; }
 
 let colonIndex = 0;
 let previousColonIndex = 0;

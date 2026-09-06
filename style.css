@@ -18,6 +18,8 @@
     --store-colour: lightpink;
     --recall-colour: lightgreen;
 
+    --show-help: none;
+
     --scale: 97.5;
 
     --h: min(calc(var(--scale) * 1vh), calc(var(--scale) * 2vw));
@@ -228,6 +230,8 @@ button:hover {
     box-sizing: border-box;
     justify-content: center;
     padding: 0px;
+
+    position: relative;
 }
 
 .nav-button {
@@ -244,17 +248,45 @@ button:hover {
 .label-main {
     color: var(--text-colour);
     padding: 0 0.5cqb 0 0.5cqb;
+    position: relative;
 }
 
 .label-shift {
     color: var(--shift-colour);
     padding: 0 0.5cqb 0 0.5cqb;
+    position: relative;
 }
 
 .label-alpha {
     color: var(--alpha-colour);
     padding: 0 0.5cqb 0 0.5cqb;
+    position: relative;
 }
+
+.help-overlay-container {
+    position: absolute;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.help-overlay {
+    content: "A";
+    text-align: center;
+    width: fit-content;
+
+    color: var(--calc-colour);
+    padding: 0.5cqb 1cqb;
+    max-width: 100%;
+
+    z-index: 1;
+    pointer-events: none;
+
+    display: var(--show-help);
+}
+
 
 .pressed-Main {
     background-color: var(--main-colour);

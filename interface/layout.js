@@ -1,4 +1,4 @@
-import { BUTTONS, KEYBOARD_MAP, NAV_BUTTONS, NAV_DIMENSIONS, ROW_HEIGHTS, VARIABLE_MAP } from "./buttons.js";
+import { BUTTONS, KEYBOARD_MAP, NAV_BUTTONS, NAV_DIMENSIONS, REVERSED_KEYBOARD_MAP, ROW_HEIGHTS, VARIABLE_MAP } from "./buttons.js";
 
 export default class LayoutEngine {
     constructor() {
@@ -25,21 +25,31 @@ export default class LayoutEngine {
                 wrapper.className = "button-wrapper";
                 wrapper.id = `${outer_index}_${index}`;
                 if (entry !== null) {;
+                    const keyName = Object.keys(row)[index]
+                    // Get keyboard keys for help menu
+                    const keyboardKeyNames = {
+                        Main: REVERSED_KEYBOARD_MAP[`${keyName},`],
+                        Shift: REVERSED_KEYBOARD_MAP[`${keyName},Shift`],
+                        Alpha: REVERSED_KEYBOARD_MAP[`${keyName},Alpha`],
+                    };
                     const label = document.createElement("div");
                     label.className = "button-label";
 
-                    LayoutEngine.renderContent(label, entry[1], entry[2], entry[3]);
+                    LayoutEngine.renderContent(label, entry[1], entry[2], entry[3], keyboardKeyNames);
+                    
+
                     const button = document.createElement("button");
                     button.className = "input-button";
                     button.style.fontSize = `${3.5*ROW_HEIGHTS[outer_index]}cqb`
-                    LayoutEngine.renderContent(button, entry[0]);
+
+                    LayoutEngine.renderContent(button, entry[0], null, null, keyboardKeyNames);
                     
                     wrapper.appendChild(label);
                     wrapper.appendChild(button);
 
                     wrapper.style.gridColumn = index+1;
                     rowElement.appendChild(wrapper);
-                    this.buttons[Object.keys(row)[index]] = ({entry, button});
+                    this.buttons[keyName] = ({entry, button});
                 }
 
                 index++;
@@ -96,16 +106,16 @@ export default class LayoutEngine {
             return [this.buttons[keyMap[0]].entry, keyMap[1], this.buttons[keyMap[0]].button];
     }
 
-    static renderContent(element, text1 = "", text2 = "", text3 = "") {
+    static renderContent(element, text1 = "", text2 = "", text3 = "", keynames) {
         element.replaceChildren();
 
         const parts = [
-            { text: text1, className: "label-main" },
-            { text: text2, className: "label-shift" },
-            { text: text3, className: "label-alpha" },
+            { text: text1, className: "label-main", helpColour: "rgba(0, 180, 255, 0.8)", activeKeyType: "Main" },
+            { text: text2, className: "label-shift", helpColour: "rgba(255, 180, 0, 0.8)", activeKeyType: "Shift" },
+            { text: text3, className: "label-alpha", helpColour: "rgba(255, 0, 0, 0.8)", activeKeyType: "Alpha" },
         ];
 
-        for (const { text, className } of parts) {
+        for (const { text, className, helpColour, activeKeyType } of parts) {
             if (!text) continue;
 
             const span = document.createElement("span");
@@ -115,6 +125,18 @@ export default class LayoutEngine {
                 katex.render(`${text.slice(1, -1)}`, span);
             } else {
                 span.textContent = text;
+            }
+
+            // Add help label
+            if (keynames && keynames[activeKeyType]) {
+                const helpLabelContainer = document.createElement("div");
+                helpLabelContainer.className = "help-overlay-container";
+                const helpLabel = document.createElement("div");
+                helpLabel.className = "help-overlay";
+                helpLabel.textContent = keynames[activeKeyType];
+                helpLabel.style.backgroundColor = helpColour;
+                helpLabelContainer.appendChild(helpLabel);
+                span.appendChild(helpLabelContainer);
             }
 
             element.appendChild(span);
