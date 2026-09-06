@@ -28,22 +28,18 @@ export default class LayoutEngine {
                 if (entry !== null) {;
                     const keyName = Object.keys(row)[index]
                     // Get keyboard keys for help menu
-                    const keyboardKeyNames = {
-                        Main: REVERSED_KEYBOARD_MAP[`${keyName},`],
-                        Shift: REVERSED_KEYBOARD_MAP[`${keyName},Shift`],
-                        Alpha: REVERSED_KEYBOARD_MAP[`${keyName},Alpha`],
-                    };
+
                     const label = document.createElement("div");
                     label.className = "button-label";
 
-                    LayoutEngine.renderContent(label, entry[1], entry[2], entry[3], keyboardKeyNames);
+                    LayoutEngine.renderContent(label, entry[1], entry[2], entry[3]);
                     
 
                     const button = document.createElement("button");
                     button.className = "input-button";
                     button.style.fontSize = `${3.5*ROW_HEIGHTS[outer_index]}cqb`
 
-                    LayoutEngine.renderContent(button, entry[0], null, null, keyboardKeyNames);
+                    LayoutEngine.renderContent(button, entry[0], null, null);
                     
                     wrapper.appendChild(label);
                     wrapper.appendChild(button);
@@ -93,6 +89,46 @@ export default class LayoutEngine {
         }
     }
 
+    nameHelpLabels() {
+        // Label based on the button map and user-defined map.
+
+        const reversedUserMap = Object.fromEntries(
+            Object.entries(this.userKeyboardMap).map(([key, value]) => {
+                if (value[0] == "Shift") return ["Shift,Shift", key];  // Shift and alpha are displayed above
+                if (value[0] == "Alpha") return ["Alpha,Alpha", key];
+                return [value, key];
+            })
+        );
+
+        Object.entries(this.buttons).forEach(([btnName, button]) => {
+            const keyboardKeyNames = {
+                Main: reversedUserMap[`${btnName},`] ??
+                    (this.userKeyboardMap[REVERSED_KEYBOARD_MAP[`${btnName},`]]
+                        ? null
+                        : REVERSED_KEYBOARD_MAP[`${btnName},`]),
+
+                Shift: reversedUserMap[`${btnName},Shift`] ??
+                    (this.userKeyboardMap[REVERSED_KEYBOARD_MAP[`${btnName},Shift`]]
+                        ? null
+                        : REVERSED_KEYBOARD_MAP[`${btnName},Shift`]),
+
+                Alpha: reversedUserMap[`${btnName},Alpha`] ??
+                    (this.userKeyboardMap[REVERSED_KEYBOARD_MAP[`${btnName},Alpha`]]
+                        ? null
+                        : REVERSED_KEYBOARD_MAP[`${btnName},Alpha`]),
+            };
+
+            for (const activeKeyType of Object.keys(keyboardKeyNames)) {
+                const buttonWrapper = button.button.closest('.button-wrapper');
+                const helpLabel = (buttonWrapper ? buttonWrapper : button.button).querySelector(`.help-${activeKeyType}`)
+                if (helpLabel) {
+                    helpLabel.textContent = keyboardKeyNames[activeKeyType];
+                    helpLabel.style.display = keyboardKeyNames[activeKeyType] ? "": "none";
+                }
+            }
+        });
+    }
+
     getButton(row, col) {
         if (row == "nav")
             return NAV_BUTTONS[col];
@@ -123,7 +159,7 @@ export default class LayoutEngine {
         }
     }
 
-    static renderContent(element, text1 = "", text2 = "", text3 = "", keynames) {
+    static renderContent(element, text1 = "", text2 = "", text3 = "") {
         element.replaceChildren();
 
         const parts = [
@@ -145,16 +181,14 @@ export default class LayoutEngine {
             }
 
             // Add help label
-            if (keynames && keynames[activeKeyType]) {
-                const helpLabelContainer = document.createElement("div");
-                helpLabelContainer.className = "help-overlay-container";
-                const helpLabel = document.createElement("div");
-                helpLabel.className = "help-overlay";
-                helpLabel.textContent = keynames[activeKeyType];
-                helpLabel.style.backgroundColor = helpColour;
-                helpLabelContainer.appendChild(helpLabel);
-                span.appendChild(helpLabelContainer);
-            }
+            const helpLabelContainer = document.createElement("div");
+            helpLabelContainer.className = "help-overlay-container";
+            const helpLabel = document.createElement("div");
+            helpLabel.className = `help-overlay help-${activeKeyType}`;
+            helpLabel.textContent = "";
+            helpLabel.style.backgroundColor = helpColour;
+            helpLabelContainer.appendChild(helpLabel);
+            span.appendChild(helpLabelContainer);
 
             element.appendChild(span);
         }
@@ -180,7 +214,8 @@ export default class LayoutEngine {
             "userKeybinds",
             JSON.stringify(this.userKeyboardMap)
         );
-        console.log(this.userKeyboardMap, JSON.parse(localStorage.getItem("userKeybinds")))
+        console.log(this.userKeyboardMap, JSON.parse(localStorage.getItem("userKeybinds")));
+        this.nameHelpLabels();
     }
 
     readBindsStorage() {
@@ -189,5 +224,6 @@ export default class LayoutEngine {
             parsedStorage = JSON.parse(localStorage.getItem("userKeybinds"));
         } catch {;}
         this.userKeyboardMap = parsedStorage;
+        this.nameHelpLabels();
     }
 }

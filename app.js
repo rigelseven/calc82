@@ -686,7 +686,7 @@ function attachListeners() {
         document.documentElement.style.setProperty('--show-help', 'none');
     });
 
-    window.addEventListener('contextmenu', function (e) {
+    document.querySelector('.calculator').addEventListener('contextmenu', function (e) {
         e.preventDefault();
     });
 }

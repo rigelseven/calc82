@@ -291,6 +291,7 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow: hidden;
 }
 
 .help-overlay {
@@ -516,6 +517,8 @@ button:hover {
 
     container-type: size;
     font-size: 2cqb;
+
+    overflow: auto;
 }
 
 @media (max-aspect-ratio: 1) {
