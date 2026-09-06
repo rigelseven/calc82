@@ -633,7 +633,6 @@ function setTheme(theme) {
   }
 }
 
-// Event listener for explicit user click
 toggleBtn.addEventListener('click', () => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
 
@@ -643,6 +642,11 @@ toggleBtn.addEventListener('click', () => {
     setTheme('dark');
     }
 });
+
+// Read saved theme
+try {
+    setTheme(localStorage.getItem('theme'));
+} catch {;}
 
 let colonIndex = 0;
 let previousColonIndex = 0;
