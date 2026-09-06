@@ -1,4 +1,5 @@
 import Fraction from "./fraction.js";
+import trigSolver from "./trigonometry.js";
 
 export class Polar {
     constructor(modulus, argument) {
@@ -25,7 +26,7 @@ export class Polar {
                     : PI.div(2);
             }
         } else {
-            argument = Y.div(X).atan();
+            argument = trigSolver.computeInverseTrig("atan", Y.div(X));
 
             if (X.isNegative()) {
                 argument = Y.isNegative()
@@ -56,8 +57,8 @@ export class Rectangular {
         modulus = new Decimal(modulus);
         argument = new Decimal(argument);
 
-        const X = modulus.times(argument.cos());
-        const Y = modulus.times(argument.sin());
+        const X = modulus.times(trigSolver.computeTrig("cos", argument));
+        const Y = modulus.times(trigSolver.computeTrig("sin", argument));
 
         return new Rectangular(X, Y);
     }
