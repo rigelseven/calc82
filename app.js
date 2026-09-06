@@ -502,7 +502,7 @@ function attachListeners() {
             if (remapButton[0] === remapButton[1]) remapButton[1] = null;  // Prevent 'Shift-Shift'
 
             remapStep = 2;  // Press key to remap
-            remapStatus.innerText = `Press the key to assign to button '${remapButton[1]?remapButton[1]:''}${remapButton[1]?'-':''}${remapButton[0]}'...`
+            remapStatus.innerText = `Press the keyboard key to assign to button '${remapButton[1]?remapButton[1]:''}${remapButton[1]?'-':''}${remapButton[0]}'...`
             return;
         }
 
@@ -692,7 +692,7 @@ function attachListeners() {
 }
 
 // Theme toggle
-const toggleBtn = document.getElementById('theme-toggle');
+const themeToggleBtn = document.getElementById('theme-toggle');
 
 function setTheme(theme) {
     if (theme === 'system') {
@@ -704,7 +704,7 @@ function setTheme(theme) {
     }
 }
 
-toggleBtn.addEventListener('click', () => {
+themeToggleBtn.addEventListener('click', () => {
     const currentTheme = document.documentElement.getAttribute('data-theme');
 
     if (currentTheme === 'dark') {
@@ -722,11 +722,26 @@ try {
 
 const displayOverlay = document.querySelector("#overlay-display");
 
+// Settings toggle and close
+const settingsToggleBtn = document.getElementById('settings-toggle');
+const settingsPopup = document.querySelector('#settings-popup');
+const settingsCloseButton = document.querySelector('#settings-close');
+settingsToggleBtn.addEventListener('click', () => {
+    if (settingsPopup.style.display == "none") settingsPopup.style.display = "";
+    else {
+        settingsPopup.style.display = "none"
+        exitRemap();
+    }
+});
+settingsCloseButton.addEventListener('click', () => {
+    settingsPopup.style.display = "none";
+    exitRemap();
+});
+
 // Settings menu
 const remapKeyButton = document.querySelector("#settings-key-remap");
 const remapStatus = document.querySelector("#settings-key-remap-status");
 const remapKeyCancelButton = document.querySelector("#settings-key-remap-cancel");
-const remapKeyClearButton = document.querySelector("#settings-key-remap-clear");
 const remapList = document.querySelector("#settings-remap-list");
 
 remapKeyButton.addEventListener('click', () => {
@@ -779,11 +794,6 @@ function exitRemap(message="") {
     });
     if (remapList.innerHTML == "") remapList.innerText = "No keybinds yet..."
 }
-
-remapKeyClearButton.addEventListener('click', () => {
-    layoutEngine.clearRebinds();
-    exitRemap();
-});
 
 let remapStep = 0;  // Not remapping
 let remapButton = null;

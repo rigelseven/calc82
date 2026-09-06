@@ -51,13 +51,13 @@
     </div>
     <div class="menubar">
         <button class="menuitem"><img class="menuicon" src="assets/svg/help.svg" draggable="false"></img></button>
-        <button class="menuitem"><img class="menuicon" src="assets/svg/gear.svg" draggable="false"></img></button>
+        <button class="menuitem" id="settings-toggle"><img class="menuicon" src="assets/svg/gear.svg" draggable="false"></img></button>
         <button class="menuitem"><img class="menuicon" src="assets/svg/info.svg" draggable="false"></img></button>
         <button class="menuitem" id="theme-toggle"><img class="menuicon" src="assets/svg/moon.svg" draggable="false"></img></button>
         <button class="menuitem"><img class="menuicon" src="assets/svg/fullscreen.svg" draggable="false"></img></button>
     </div>
-    <div class="popup" id="settings-popup">
-        <button class="popup-close">✗</button>
+    <div class="popup" id="settings-popup" style="display:none">
+        <button class="popup-close" id="settings-close">✗</button>
         <h1>Settings</h1>
         <div id="settings-key-mapping">
             <h2>Keyboard mapping</h2>
@@ -67,8 +67,7 @@
                 <div id="settings-remap-list">Trying to read saved keybinds...</div>
                 <button id="settings-key-remap" style="display:block">Remap key</button>
                 <button id="settings-key-remap-cancel" style="display:none">Cancel</button>
-                <span id="settings-key-remap-status"></span>
-                <button id="settings-key-remap-clear" style="display:block">Reset all key mappings</button>
+                <span id="settings-key-remap-status" style="font-weight: bold;"></span>
             </div>
             <div style="font-style: italic;">Note setting a keybind will clear any existing default keybinds for that key.</div>
         </div>
@@ -76,7 +75,7 @@
         <button>Toggle debug</button><br>
         <button>Clear all local storage</button>
         <br><br>
-        <div style="font-style: italic;">For calculator settings, press <span style="font-weight: bold;">Shift</span> then <span style="font-weight: bold;">Setup</span>.</div>
+        <div style="font-style: italic;">For calculator settings, press <span style="font-weight: bold;">Shift</span> then <span style="font-weight: bold;">Mode/Setup</span>.</div>
     </div>
     <div class="debug" style="display:none;"> <!--TODO: make this toggleable-->
         <pre><code>

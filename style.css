@@ -349,6 +349,7 @@ button:hover {
 #message-display {
     position: absolute;
     align-self: flex-start;
+    pointer-events: none;
     font-size: 20cqb;
     width: 100cqw;
 }
@@ -461,7 +462,7 @@ button:hover {
 }
 
 .menuitem {
-    max-height: 5rem;
+    max-height: min(5rem, 15svh);
     text-align: center;
     color: var(--text-colour);
     background: none;
@@ -486,7 +487,7 @@ button:hover {
     }
 
     .menubar {
-        width: 5rem;
+        width: min(5rem, 15svh);
         height: 100svh;
         flex-direction: column;
     }
@@ -527,11 +528,11 @@ button:hover {
     border-radius: calc(var(--h) / 160);
     box-shadow: 0 0 calc(var(--h) / 80) var(--calc-shadow);
 
-    padding: 0 2cqb;
+    padding: 0 2svh;
     position: relative;
 
     container-type: size;
-    font-size: 2cqb;
+    font-size: 2svh;
 
     overflow: auto;
 }
@@ -553,7 +554,7 @@ button:hover {
     top: 0;
     right: 0;
 
-    font-size: 5cqb;
+    font-size: 5cqw;
     user-select: none;
 
     background: none;
@@ -561,19 +562,19 @@ button:hover {
 }
 
 h1 {
-    font-size: 5cqb;
+    font-size: 12cqw;
     font-weight: bold;
 }
 
 h2 {
-    font-size: 3cqb;
+    font-size: 8cqw;
     font-weight: bold;
     font-style: italic;
     margin-bottom: 0;
 }
 
 h3 {
-    font-size: 2.5cqb;
+    font-size: 6cqw;
     font-weight: bold;
     font-style: italic;
     margin-bottom: 0;
