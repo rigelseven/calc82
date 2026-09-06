@@ -719,6 +719,9 @@ try {
     setTheme(localStorage.getItem('theme'));
 } catch { ; }
 
+
+const displayOverlay = document.querySelector("#overlay-display");
+
 // Settings menu
 const remapKeyButton = document.querySelector("#settings-key-remap");
 const remapStatus = document.querySelector("#settings-key-remap-status");
@@ -733,6 +736,7 @@ remapKeyButton.addEventListener('click', () => {
     remapKeyButton.style.display = "none";
     remapKeyCancelButton.style.display = "block";
     document.body.classList.add('remap-hover-enabled');
+     displayOverlay.innerText = "Input disabled\n(Keyboard mapping mode)";
 });
 
 remapKeyCancelButton.addEventListener('click', () => exitRemap());
@@ -744,6 +748,7 @@ function exitRemap(message="") {
     remapKeyCancelButton.style.display = "none";
     remapKeyButton.style.display = "block";
     document.body.classList.remove('remap-hover-enabled');
+    displayOverlay.innerText = "";
 
     // Render remap list and unbind default shift/alpha keys
     remapList.innerHTML = "";

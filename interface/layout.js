@@ -214,7 +214,6 @@ export default class LayoutEngine {
             "userKeybinds",
             JSON.stringify(this.userKeyboardMap)
         );
-        console.log(this.userKeyboardMap, JSON.parse(localStorage.getItem("userKeybinds")));
         this.nameHelpLabels();
     }
 

@@ -128,6 +128,21 @@ button:hover {
     min-height: 0;
 }
 
+#overlay-display {
+    position: absolute;
+    width: 100cqw;
+    height: 100cqb;
+    font-size: 15cqb;
+    color: red;
+    
+    text-align: center;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none; 
+}
+
 #input-display {
     align-self: flex-start;
 
