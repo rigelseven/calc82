@@ -590,7 +590,7 @@ function attachListeners() {
         // Handle shift and alpha lone press
         if (event.key === shiftKey && !isShiftRebound) { isShiftKeyHeld = true; return; }
         else isShiftKeyHeld = false;
-        if (event.key === alphaKey && !isShiftRebound) { isAlphaKeyHeld = true; return; }
+        if (event.key === alphaKey && !isAlphaRebound) { isAlphaKeyHeld = true; return; }
         else isAlphaKeyHeld = false;
 
         let button = layoutEngine.getButtonFromKey(event.key);
