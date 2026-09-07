@@ -1,5 +1,3 @@
-import { generateTextAST, generateTextTokens } from "./debug.js";
-import trigSolver from "./math/trigonometry.js";
 import Calculator from "./calculator.js";
 import { InputHandler } from "./input/input.js";
 import LayoutEngine from "./interface/layout.js";
@@ -16,10 +14,6 @@ const outputDisplay = document.querySelector("#output-display");
 
 const buttonsArea = document.querySelector("#buttons-area");
 
-// debug
-const tokensDisplay = document.querySelector("#tokens");
-const astDisplay = document.querySelector("#ast");
-
 const inputHandler = new InputHandler;
 const calculator = new Calculator;
 const layoutEngine = new LayoutEngine;
@@ -32,15 +26,6 @@ function calculate(storeHistory = true) {
         if (inputHandler.inputMode !== "Review") colonIndex = 0;
 
         const { res, decimalResult, fractionResult, specialResult, tokens, ast } = calculator.calculate(value, storeHistory ? colonIndex : previousColonIndex);
-
-        tokensDisplay.textContent = "Token visualisation\n";
-        astDisplay.textContent = "AST visualisation\n";
-
-        const textAST = generateTextAST(ast);
-        astDisplay.textContent += textAST;
-
-        const textTokens = generateTextTokens(tokens[colonIndex]);
-        tokensDisplay.textContent += textTokens;
 
         if (specialResult) setOutput("special");
         else if (fractionResult) setOutput(settingsManager.getSetting("fractionMode"));
@@ -807,6 +792,12 @@ document.querySelector('#settings-clear-storage').addEventListener("click", () =
         }
     });
     window.location.reload();
+});
+
+// Toggle debug
+const debugVis = document.querySelector('#settings-debug');
+document.querySelector('#settings-toggle-debug').addEventListener("click", () => {
+    debugVis.style.display = debugVis.style.display == "none" ? "" : "none";
 });
 
 let remapStep = 0;  // Not remapping

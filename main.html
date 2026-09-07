@@ -73,18 +73,14 @@
                 <div style="font-style: italic;">Note setting a keybind will clear any existing default keybinds for that key.</div>
             </div>
             <h2>Other</h2>
-            <button>Toggle debug</button><br><br>
+            <button id="settings-toggle-debug">Toggle debug</button>
+            <div id="settings-debug" class="debug" style="display: none;">
+                <pre><code><div id="ast">AST visualisation</div></code></pre>
+                <pre><code><div id="tokens">Token visualisation</div></code></pre>
+            </div>
             <button id="settings-clear-storage">Clear all local storage</button>
             <br><br>
             <div style="font-style: italic;">For calculator settings, press <span style="font-weight: bold;">Shift</span> then <span style="font-weight: bold;">Mode/Setup</span>.</div>
         </div>
-    </div>
-    <div class="debug" style="display:none;"> <!--TODO: make this toggleable-->
-        <pre><code>
-            <div id="tokens">Token visualisation</div>
-        </code></pre>
-        <pre><code>
-            <div id="ast">AST visualisation</div>
-        </code></pre>
     </div>
 </body>

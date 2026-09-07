@@ -1,3 +1,4 @@
+import { generateTextAST, generateTextTokens } from "./debug.js";
 import Tokeniser from "./tokeniser/tokeniser.js";
 import Parser from "./parser.js"
 import Evaluator from "./evaluator/evaluator.js";
@@ -5,16 +6,30 @@ import Fraction from "./math/fraction.js";
 import { variableManager } from "./evaluator/variables.js";
 import { Polar, Rectangular } from "./math/polRec.js";
 
+// debug
+const tokensDisplay = document.querySelector("#tokens");
+const astDisplay = document.querySelector("#ast");
+
 export default class Calculator {
     calculate(expression, n=0) {
         console.log(expression);         
+
+        tokensDisplay.textContent = "Token visualisation\n";
+        astDisplay.textContent = "AST visualisation\n";
+
         const tokeniser = new Tokeniser(expression);
         const tokens = tokeniser.tokenise();
         console.log(tokens);
 
+        const textTokens = generateTextTokens(tokens[n]);
+        tokensDisplay.textContent += textTokens;
+
         const parser = new Parser(tokens[n]);
         const [ast, storeVar] = parser.parse();
         console.log(ast, storeVar);
+
+        const textAST = generateTextAST(ast);
+        astDisplay.textContent += textAST;
 
         const evaluator = new Evaluator();
         const result = evaluator.evaluate(ast);
