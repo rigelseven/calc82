@@ -209,6 +209,11 @@ export default class LayoutEngine {
         this.updateBindsStorage();
     }
 
+    checkBind(key) {
+        if (Object.hasOwn(this.userKeyboardMap, key)) return true;
+        return false;
+    }
+
     updateBindsStorage() {
         localStorage.setItem(
             "userKeybinds",

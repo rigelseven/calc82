@@ -588,9 +588,9 @@ function attachListeners() {
         }
 
         // Handle shift and alpha lone press
-        if (event.key === shiftKey && !isShiftRebound) { isShiftKeyHeld = true; return; }
+        if (event.key === shiftKey && !isShiftRebound && !layoutEngine.checkBind(shiftKey)) { isShiftKeyHeld = true; return; }
         else isShiftKeyHeld = false;
-        if (event.key === alphaKey && !isAlphaRebound) { isAlphaKeyHeld = true; return; }
+        if (event.key === alphaKey && !isAlphaRebound && !layoutEngine.checkBind(alphaKey)) { isAlphaKeyHeld = true; return; }
         else isAlphaKeyHeld = false;
 
         let button = layoutEngine.getButtonFromKey(event.key);
@@ -644,18 +644,23 @@ function attachListeners() {
         // Handle rebind button
         if (remapStep === 2) {
             const remapKey = event.key;
+            const buttonText = `${remapButton[1]?remapButton[1]:''}${remapButton[1]?'-':''}${remapButton[0]}`
+            if (remapKey === shiftKey) {
+                remapStatus.innerText = `Cannot remap keyboard Shift key. Choose another key for '${buttonText}'...`;
+                return;
+            }
             layoutEngine.rebindKey(remapButton, event.key);
-            exitRemap(`Reassigned key '${remapKey}' to '${remapButton[1]?remapButton[1]:''}${remapButton[1]?'-':''}${remapButton[0]}'.`);
+            exitRemap(`Reassigned key '${remapKey}' to '${buttonText}'.`);
             return;
         }
 
         // Handle shift and alpha lone press
-        if (event.key === shiftKey && isShiftKeyHeld && !isShiftRebound) {
+        if (event.key === shiftKey && isShiftKeyHeld && !isShiftRebound && !layoutEngine.checkBind(shiftKey)) {
             inputHandler.switchMode("Shift", false, shiftButton, alphaButton);
             isShiftKeyHeld = false;
             return;
         }
-        else if (event.key === alphaKey && isAlphaKeyHeld && !isAlphaRebound) {
+        else if (event.key === alphaKey && isAlphaKeyHeld && !isAlphaRebound && !layoutEngine.checkBind(alphaKey)) {
             inputHandler.switchMode("Alpha", false, shiftButton, alphaButton);
             isAlphaKeyHeld = false;
             return;
@@ -750,7 +755,7 @@ remapKeyButton.addEventListener('click', () => {
     remapKeyButton.style.display = "none";
     remapKeyCancelButton.style.display = "block";
     document.body.classList.add('remap-hover-enabled');
-     displayOverlay.innerText = "Input disabled\n(Keyboard mapping mode)";
+    displayOverlay.innerText = "Input disabled\n(Keyboard mapping mode)";
 });
 
 remapKeyCancelButton.addEventListener('click', () => exitRemap());
