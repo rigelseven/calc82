@@ -27,7 +27,7 @@ class VariableManager {
         this.storage[variable] = value;
 
         localStorage.setItem(
-            "variables",
+            "calc82-variables",
             JSON.stringify(this.storage)
         );
 
@@ -38,7 +38,7 @@ class VariableManager {
         for (const i of Object.keys(this.storage)) this.storage[i] = Decimal(0);
 
         localStorage.setItem(
-            "variables",
+            "calc82-variables",
             JSON.stringify(this.storage)
         );
 
@@ -63,7 +63,7 @@ class VariableManager {
 let savedVariables = [];
 try {
     savedVariables = JSON.parse(
-            localStorage.getItem("variables"));
+            localStorage.getItem("calc82-variables"));
 } catch {;}
 export const variableManager = new VariableManager(savedVariables);
 statusBar.toggle("memory", variableManager.storage["M"] != "0");

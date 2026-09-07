@@ -216,7 +216,7 @@ export default class LayoutEngine {
 
     updateBindsStorage() {
         localStorage.setItem(
-            "userKeybinds",
+            "calc82-userKeybinds",
             JSON.stringify(this.userKeyboardMap)
         );
         this.nameHelpLabels();
@@ -225,7 +225,7 @@ export default class LayoutEngine {
     readBindsStorage() {
         let parsedStorage;
         try {
-            parsedStorage = JSON.parse(localStorage.getItem("userKeybinds"));
+            parsedStorage = JSON.parse(localStorage.getItem("calc82-userKeybinds"));
         } catch {;}
         this.userKeyboardMap = parsedStorage == null ? {} : parsedStorage;
         this.nameHelpLabels();

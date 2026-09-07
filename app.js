@@ -702,10 +702,10 @@ const themeToggleBtn = document.getElementById('theme-toggle');
 function setTheme(theme) {
     if (theme === 'system') {
         document.documentElement.removeAttribute('data-theme');
-        localStorage.removeItem('theme');
+        localStorage.removeItem('calc82-theme');
     } else {
         document.documentElement.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
+        localStorage.setItem('calc82-theme', theme);
     }
 }
 
@@ -720,7 +720,7 @@ themeToggleBtn.addEventListener('click', () => {
 
 // Read saved theme
 try {
-    setTheme(localStorage.getItem('theme'));
+    setTheme(localStorage.getItem('calc82-theme'));
 } catch { ; }
 
 
@@ -798,6 +798,16 @@ function exitRemap(message="") {
     });
     if (remapList.innerHTML == "") remapList.innerText = "No keybinds yet..."
 }
+
+// Clear local storage
+document.querySelector('#settings-clear-storage').addEventListener("click", () => {
+    Object.keys(localStorage).forEach(key => {
+        if (key.startsWith(`calc82-`)) {
+            localStorage.removeItem(key);
+        }
+    });
+    window.location.reload();
+});
 
 let remapStep = 0;  // Not remapping
 let remapButton = null;

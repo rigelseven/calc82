@@ -6,7 +6,7 @@ class TrigSolver {
         statusBar.toggle('rad', angleMode == 'rad');
         statusBar.toggle('deg', angleMode == 'deg');
         statusBar.toggle('gra', angleMode == 'gra');
-        localStorage.setItem("angleMode", angleMode);
+        localStorage.setItem("calc82-angleMode", angleMode);
 
         this.PI = Decimal.acos(-1);
         this.HALF_PI = this.PI.div(2);
@@ -21,7 +21,7 @@ class TrigSolver {
 
         this.angleMode = angleMode;
 
-        localStorage.setItem("angleMode", angleMode);
+        localStorage.setItem("calc82-angleMode", angleMode);
     }
 
     computeTrig(fn, a) {
@@ -192,6 +192,6 @@ class TrigSolver {
     }
 }
 
-const savedAngleMode = localStorage.getItem("angleMode");
+const savedAngleMode = localStorage.getItem("calc82-angleMode");
 const trigSolver = new TrigSolver(savedAngleMode ? savedAngleMode : "rad");
 export default trigSolver;

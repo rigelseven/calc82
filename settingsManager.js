@@ -9,7 +9,7 @@ class SettingsManager {
     setSetting(setting, value) {
         this.settings[setting] = value;
         localStorage.setItem(
-            "settings",
+            "calc82-settings",
             JSON.stringify(this.settings)
         );
         if (setting == "displayMode") this.updateDisplayStatus();
@@ -22,7 +22,7 @@ class SettingsManager {
     clearSettings() {
         this.settings = defaultSettings;
         localStorage.setItem(
-            "settings",
+            "calc82-settings",
             JSON.stringify(this.settings)
         );
         console.log("Settings cleared!"); // do not remove
@@ -44,7 +44,7 @@ const defaultSettings = {
 
 let savedSettings = null;
 try {
-    savedSettings = JSON.parse(localStorage.getItem("settings"));
+    savedSettings = JSON.parse(localStorage.getItem("calc82-settings"));
 } catch {;};
 
 let settings = {};
