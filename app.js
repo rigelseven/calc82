@@ -708,6 +708,42 @@ try {
     setTheme(localStorage.getItem('calc82-theme'));
 } catch { ; }
 
+// Fullscreen button
+const fullscreenToggleBtn = document.getElementById('fullscreen-toggle');
+
+fullscreenToggleBtn.addEventListener('click', () => {
+    if (!document.fullscreenElement) {
+    // If no element is in fullscreen, enter fullscreen mode
+    document.documentElement.requestFullscreen().catch((err) => {
+        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+    });
+    } else {
+    document.exitFullscreen();
+    }
+});
+
+// Exit fullscreen button
+const fullscreenExitBtn = document.getElementById('fullscreen-exit');
+
+fullscreenExitBtn.addEventListener('click', () => {
+    if (document.fullscreenElement)
+        document.exitFullscreen();
+});
+
+// Fullscreen change
+document.addEventListener('fullscreenchange', () => {
+    if (document.fullscreenElement) onFullscreenEnter();
+    else onFullscreenExit();
+});
+
+function onFullscreenEnter() {
+    fullscreenToggleBtn.querySelector('img').src="assets/svg/fullscreen-exit.svg";
+}
+
+function onFullscreenExit() {
+    fullscreenToggleBtn.querySelector('img').src="assets/svg/fullscreen.svg";
+}
+
 
 const displayOverlay = document.querySelector("#overlay-display");
 

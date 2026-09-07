@@ -92,6 +92,20 @@ body {
     grid-template-rows: 0.2fr 2fr 7fr;
 }
 
+:fullscreen .calculator {
+    height: min(
+        calc(100svh),
+        calc(100vw * 2)
+    );
+    padding: calc(var(--h) / 160);
+    border: none;
+    box-shadow: none;
+}
+
+:fullscreen body {
+    background-color: var(--calc-colour);
+}
+
 button {
     -webkit-appearance: none;
     -moz-appearance: none;
@@ -495,17 +509,14 @@ button:hover {
     box-sizing: border-box;
 }
 
-/* wide screen */
-@media (min-aspect-ratio: 3 / 4) {
-    body {
-        flex-direction: row;
-    }
+body {
+    flex-direction: row;
+}
 
-    .menubar {
-        width: min(5rem, 15svh);
-        height: 100svh;
-        flex-direction: column;
-    }
+.menubar {
+    width: min(5rem, 15svh);
+    height: 100svh;
+    flex-direction: column;
 }
 
 /* Narrow screen */
@@ -524,10 +535,20 @@ button:hover {
 
     .menubar {
         width: 100%;
+        height: auto;
+        flex-direction: row;
+    }
+    
+    :fullscreen .menubar {
+        display: none;
     }
 
     .menuitem {
         max-height: 7.5svh;
+    }
+
+    :fullscreen #fullscreen-exit {
+        display: block;
     }
 }
 
@@ -630,4 +651,19 @@ code {
     display: flex;
     flex-direction: column;
     padding: 5cqw 10cqw;
+}
+
+#fullscreen-exit {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: max(8svh, 8svw);
+    aspect-ratio: 1;
+    border: none;
+    background: none;
+    display: none;
+}
+
+#fullscreen-exit img {
+    width: 100%;
 }
