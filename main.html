@@ -56,26 +56,28 @@
         <button class="menuitem" id="theme-toggle"><img class="menuicon" src="assets/svg/moon.svg" draggable="false"></img></button>
         <button class="menuitem"><img class="menuicon" src="assets/svg/fullscreen.svg" draggable="false"></img></button>
     </div>
-    <div class="popup" id="settings-popup" style="display:none">
+    <div class="popup-wrapper" id="settings-popup" style="display:none">
         <button class="popup-close" id="settings-close">✗</button>
-        <h1>Settings</h1>
-        <div id="settings-key-mapping">
-            <h2>Keyboard mapping</h2>
-            <div style="font-style: italic;">(Hold <span style="font-weight: bold;">h</span> to view full key map.)</div>
-            <h3>User keyboard map:</h3>
-            <div class="settings-remap-list-container">
-                <div id="settings-remap-list">Trying to read saved keybinds...</div>
-                <button id="settings-key-remap" style="display:block">Remap key</button>
-                <button id="settings-key-remap-cancel" style="display:none">Cancel</button>
-                <span id="settings-key-remap-status" style="font-weight: bold;"></span>
+        <div class="popup">
+            <h1>Settings</h1>
+            <div id="settings-key-mapping">
+                <h2>Keyboard mapping</h2>
+                <div style="font-style: italic;">(Hold <span style="font-weight: bold;">h</span> to view full key map.)</div>
+                <h3>User keyboard map:</h3>
+                <div class="settings-remap-list-container">
+                    <div id="settings-remap-list">Trying to read saved keybinds...</div>
+                    <button id="settings-key-remap" style="display:block">Remap key</button>
+                    <button id="settings-key-remap-cancel" style="display:none">Cancel</button>
+                    <span id="settings-key-remap-status" style="font-weight: bold;"></span>
+                </div>
+                <div style="font-style: italic;">Note setting a keybind will clear any existing default keybinds for that key.</div>
             </div>
-            <div style="font-style: italic;">Note setting a keybind will clear any existing default keybinds for that key.</div>
+            <h2>Other</h2>
+            <button>Toggle debug</button><br>
+            <button>Clear all local storage</button>
+            <br><br>
+            <div style="font-style: italic;">For calculator settings, press <span style="font-weight: bold;">Shift</span> then <span style="font-weight: bold;">Mode/Setup</span>.</div>
         </div>
-        <h2>Other</h2>
-        <button>Toggle debug</button><br>
-        <button>Clear all local storage</button>
-        <br><br>
-        <div style="font-style: italic;">For calculator settings, press <span style="font-weight: bold;">Shift</span> then <span style="font-weight: bold;">Mode/Setup</span>.</div>
     </div>
     <div class="debug" style="display:none;"> <!--TODO: make this toggleable-->
         <pre><code>

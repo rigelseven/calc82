@@ -257,20 +257,20 @@ button:hover {
     transition: background-color 0.2s ease-out;
 }
 
-.remap-hover-enabled .input-button:hover,
-.remap-hover-enabled .nav-button:hover {
+.calc-key-selector .input-button:hover,
+.calc-key-selector .nav-button:hover {
     outline: 1cqb solid var(--main-colour);
     z-index: 10000;
 }
 
-.remap-hover-enabled .label-shift:hover {
+.calc-key-selector .label-shift:hover {
     outline: 1cqb solid var(--shift-colour);
     z-index: 10000;
     border-radius: 0.5cqb;
     cursor: pointer;
 }
 
-.remap-hover-enabled .label-alpha:hover {
+.calc-key-selector .label-alpha:hover {
     outline: 1cqb solid var(--alpha-colour);
     z-index: 10000;
     border-radius: 0.5cqb;
@@ -531,12 +531,11 @@ button:hover {
     }
 }
 
-.popup {
+.popup-wrapper {
     border: 1px solid var(--calc-border-colour);
     max-height: 80svh;
     height: 100%;
     aspect-ratio: 1/2;
-    overflow: scroll;
     box-sizing: border-box;
 
     background-color: var(--screen-colour);
@@ -547,13 +546,17 @@ button:hover {
     position: relative;
 
     container-type: size;
-    font-size: 2svh;
+    font-size: calc(var(--h) / 50);
 
-    overflow: auto;
+        overflow: scroll;
+}
+
+.popup {
+    overflow: hidden;
 }
 
 @media (max-aspect-ratio: 1) {
-    .popup {
+    .popup-wrapper {
         position: absolute;
         top: 50%;
         left: 50%;
@@ -561,6 +564,27 @@ button:hover {
 
         width: calc(var(--h) / 2);
         margin: 0;
+        z-index: 10001;
+    }
+
+    .calc-key-selector .popup-wrapper {
+        height: 15%;
+        top: 15%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .calc-key-selector .popup * {
+        display: none;
+    }
+
+    .calc-key-selector .popup #settings-key-mapping,
+    .calc-key-selector .popup .settings-remap-list-container,
+    .calc-key-selector .popup #settings-key-remap-status {
+        display: flex;
+        justify-content: center;
+        flex-direction: column-reverse;
     }
 }
 

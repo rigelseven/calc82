@@ -754,7 +754,7 @@ remapKeyButton.addEventListener('click', () => {
     remapStatus.innerText = "Click a calculator button to remap...";
     remapKeyButton.style.display = "none";
     remapKeyCancelButton.style.display = "block";
-    document.body.classList.add('remap-hover-enabled');
+    document.body.classList.add('calc-key-selector');
     displayOverlay.innerText = "Input disabled\n(Keyboard mapping mode)";
 });
 
@@ -766,7 +766,7 @@ function exitRemap(message="") {
     remapStatus.innerText = message;
     remapKeyCancelButton.style.display = "none";
     remapKeyButton.style.display = "block";
-    document.body.classList.remove('remap-hover-enabled');
+    document.body.classList.remove('calc-key-selector');
     displayOverlay.innerText = "";
 
     // Render remap list and unbind default shift/alpha keys
