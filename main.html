@@ -84,18 +84,20 @@
         </div>
     </div>
     <div class="popup-wrapper" id="help-popup" style="display:none">
-        <button class="popup-close" id="help-close">✗</button>
-        <div class="help">
+        <div class="popup">
+            <button class="popup-close" id="help-close">✗</button>
             <h1>Help</h1>
             <h2>Function Browser</h2>
             <div id="function-browser">
                 <button id="help-button-lookup" style="display:block">Lookup by button</button>
                 <button id="help-button-lookup-cancel" style="display:none">Cancel</button>
-                <span id="help-button-lookup-status" style="font-weight: bold;"></span>
                 <input type="text" id="help-text-lookup" placeholder="Lookup by text" style="display: none;">
-                <div id="function-browser-result" style="display: none;">
-                </div>
+                <div id="function-browser-result" style="display: none;"></div>
+                <span id="help-button-lookup-status" style="font-weight: bold;"></span>
             </div>
+            <h2>Key bindings</h2>
+            <div>Hold <span style="font-weight: bold;">h</span> to view full key map.</div>
+            <div>Change key bindings in the <span style="font-weight: bold;">settings</span> tab.</div>
         </div>
     </div>
     <button id="fullscreen-exit"><img src="assets/svg/fullscreen-exit.svg" draggable="false"></img></button>

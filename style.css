@@ -597,13 +597,20 @@ body {
     }
 
     .calc-key-selector .popup * {
-        display: none;
+        display: none !important;
+    }
+
+    .calc-key-selector #function-browser {
+        border: none;
     }
 
     .calc-key-selector .popup #settings-key-mapping,
     .calc-key-selector .popup .settings-remap-list-container,
-    .calc-key-selector .popup #settings-key-remap-status {
-        display: flex;
+    .calc-key-selector .popup #settings-key-remap-status,
+    .calc-key-selector .popup #function-browser,
+    .calc-key-selector .popup #help-button-lookup-status,
+    .calc-key-selector .popup #help-button-lookup-cancel {
+        display: flex !important;
         justify-content: center;
         flex-direction: column-reverse;
     }
@@ -621,9 +628,16 @@ body {
     border: none;
 }
 
+.popup button {
+    padding: 1cqw;
+    margin: 2cqw 0;
+}
+
 #function-browser {
     border: 1px solid var(--screen-border-colour);
     padding: 2cqw;
+    display: flex;
+    flex-direction: column;
 }
 
 #function-browser-results {
@@ -684,6 +698,10 @@ code {
     display: flex;
     flex-direction: column;
     padding: 5cqw 10cqw;
+}
+
+.settings-remove-user-keybind {
+    margin: 0 !important;
 }
 
 #fullscreen-exit {
