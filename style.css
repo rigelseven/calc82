@@ -563,17 +563,16 @@ body {
     border-radius: calc(var(--h) / 160);
     box-shadow: 0 0 calc(var(--h) / 80) var(--calc-shadow);
 
-    padding: 0 2svh 2svh 2svh;
     position: relative;
 
     container-type: size;
     font-size: calc(var(--h) / 50);
-
-        overflow: scroll;
 }
 
 .popup {
-    overflow: hidden;
+    overflow: scroll;
+    height: 100%;
+    padding: 0 2svh;
 }
 
 @media (max-aspect-ratio: 1) {

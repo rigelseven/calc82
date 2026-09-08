@@ -901,7 +901,6 @@ function renderHelpBox(helpElement) {
     const warning = document.createElement("div");
 
     // Render element contents
-    console.log(helpElement.Name, helpElement.Example)
     if (helpElement.Name != undefined && helpElement.Name.startsWith("$") && helpElement.Name.endsWith("$"))
         katex.render(`${helpElement.Name.slice(1, -1)}`, title);
     else title.textContent = helpElement.Name ?? "";
@@ -932,9 +931,27 @@ function clearHelpBox() {
     helpBox.style.display="none";
 }
 
+// About toggle and close
+const aboutToggleBtn = document.getElementById('about-toggle');
+const aboutPopup = document.querySelector('#about-popup');
+const aboutCloseButton = document.querySelector('#about-close');
+aboutToggleBtn.addEventListener('click', () => {
+    const aboutDisplay = aboutPopup.style.display;
+    closePopups();
+    if (aboutDisplay == "none") aboutPopup.style.display = "";
+    else {
+        aboutPopup.style.display = "none"
+        exitRemap();
+    }
+});
+aboutCloseButton.addEventListener('click', () => {
+    closePopups();
+});
+
 function closePopups() {
     settingsPopup.style.display = "none";
     helpPopup.style.display = "none";
+    aboutPopup.style.display = "none";
 }
 
 // Clear local storage
