@@ -35,10 +35,6 @@ class HistoryManager {
         return this.history[this.historyPosition];
     }
 
-    getHistory() {
-        return this.history[this.historyPosition];
-    }
-
     prevHistory() {
         this.historyPosition = Math.max(0, this.historyPosition - 1);
         this.checkHistoryArrows()
