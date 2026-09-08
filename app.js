@@ -575,8 +575,8 @@ function attachListeners() {
         // Always block / (for remapping)
         if (event.key === '/') event.preventDefault();
 
-        // Ignore if in rebinding mode
-        if (remapStep > 0) {
+        // Ignore if in rebinding mode or help mode
+        if (remapStep > 0 || helpLookupStep) {
             return;
         }
 
