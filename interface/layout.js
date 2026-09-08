@@ -4,6 +4,8 @@ export default class LayoutEngine {
     constructor() {
         this.buttons = {};
         this.userKeyboardMap = {};
+        this.leftKey = null;
+        this.rightKey = null;
     }
     
     createButtons() {
@@ -92,10 +94,16 @@ export default class LayoutEngine {
     nameHelpLabels() {
         // Label based on the button map and user-defined map.
 
+        // Store left and right for key repeat
+        this.leftKey = "ArrowLeft";
+        this.rightKey = "ArrowRight";
+
         const reversedUserMap = Object.fromEntries(
             Object.entries(this.userKeyboardMap).map(([key, value]) => {
                 if (value[0] == "Shift") return ["Shift,Shift", key];  // Shift and alpha are displayed above
                 if (value[0] == "Alpha") return ["Alpha,Alpha", key];
+                if (value[0] == "left") this.leftKey = key;  // Store left and right for key repeat
+                if (value[0] == "right") this.rightKey = key;
                 return [value, key];
             })
         );

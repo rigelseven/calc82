@@ -596,8 +596,8 @@ function attachListeners() {
             event.preventDefault();
             // Prevent repeat except arrow keys to ends
             if ((event.repeat) && !(
-                (event.key === "ArrowLeft" && inputHandler.cursorPosition != 0) ||
-                (event.key === "ArrowRight" && inputHandler.cursorPosition != inputHandler.inputTokens.length))
+                (event.key === layoutEngine.leftKey && inputHandler.cursorPosition != 0) ||
+                (event.key === layoutEngine.rightKey && inputHandler.cursorPosition != inputHandler.inputTokens.length))
             ) {
                 return;
             }
