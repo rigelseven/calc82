@@ -1,0 +1,105 @@
+{
+    "Shift": {
+        "Name": "Shift",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Modifier",
+
+        "Description": "Toggle the Shift state of the calculator. Press Shift then the target button to use the function specified by the yellow text."
+    },
+
+    "Alpha": {
+        "Name": "Alpha",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Modifier",
+
+        "Description": "Toggle the Alpha state of the calculator. Press Alpha then the target button to use the function specified by the red text."
+    },
+
+    "Mode": {
+        "Name": "Mode",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Menu",
+
+        "Description": "Open the Mode menu to switch to other modes.",
+
+        "Warning": "Only the Compute mode is currently implemented."
+    },
+
+    "Shift-Mode": {
+        "Name": "Setup",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Menu",
+
+        "Description": "Open the Setup menu to change calculator settings. Contains angle mode and output mode settings."
+    },
+
+    "On": {
+        "Name": "On",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Action",
+
+        "Description": "Exits the currently open menu."
+    },
+    
+
+    "Abs": {
+        "Name": "Abs",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the absolute value of an expression."
+    },
+
+    "Cube": {
+        "Name": "$x^3$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the third power of an expression."
+    },
+
+    "Alpha-Cube": {
+        "Name": ":",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Colon",
+
+        "Description": "Input multiple expressions and calculate them in order.",
+        "Example": "$\\text{Ans}+1:\\text{Ans}+2$"
+    },
+
+
+    "Sin": {
+        "Name": "sin",
+        "Family": "Trigonometry",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the sine of an expression. Depends on angle mode."
+    },
+
+    "Cos": {
+        "Name": "cos",
+        "Family": "Trigonometry",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the cosine of an expression. Depends on angle mode."
+    },
+
+    "Tan": {
+        "Name": "tan",
+        "Family": "Trigonometry",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the tangent of an expression. Depends on angle mode."
+    }
+}

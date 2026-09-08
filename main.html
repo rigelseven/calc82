@@ -50,7 +50,7 @@
         </div>
     </div>
     <div class="menubar">
-        <button class="menuitem"><img class="menuicon" src="assets/svg/help.svg" draggable="false"></img></button>
+        <button class="menuitem" id="help-toggle"><img class="menuicon" src="assets/svg/help.svg" draggable="false"></img></button>
         <button class="menuitem" id="settings-toggle"><img class="menuicon" src="assets/svg/gear.svg" draggable="false"></img></button>
         <button class="menuitem"><img class="menuicon" src="assets/svg/info.svg" draggable="false"></img></button>
         <button class="menuitem" id="theme-toggle"><img class="menuicon" src="assets/svg/moon.svg" draggable="false"></img></button>
@@ -81,6 +81,21 @@
             <button id="settings-clear-storage">Clear all local storage</button>
             <br><br>
             <div style="font-style: italic;">For calculator settings, press <span style="font-weight: bold;">Shift</span> then <span style="font-weight: bold;">Mode/Setup</span>.</div>
+        </div>
+    </div>
+    <div class="popup-wrapper" id="help-popup" style="display:none">
+        <button class="popup-close" id="help-close">✗</button>
+        <div class="help">
+            <h1>Help</h1>
+            <h2>Function Browser</h2>
+            <div id="function-browser">
+                <button id="help-button-lookup" style="display:block">Lookup by button</button>
+                <button id="help-button-lookup-cancel" style="display:none">Cancel</button>
+                <span id="help-button-lookup-status" style="font-weight: bold;"></span>
+                <input type="text" id="help-text-lookup" placeholder="Lookup by text" style="display: none;">
+                <div id="function-browser-result" style="display: none;">
+                </div>
+            </div>
         </div>
     </div>
     <button id="fullscreen-exit"><img src="assets/svg/fullscreen-exit.svg" draggable="false"></img></button>

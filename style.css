@@ -621,6 +621,39 @@ body {
     border: none;
 }
 
+#function-browser {
+    border: 1px solid var(--screen-border-colour);
+    padding: 2cqw;
+}
+
+#function-browser-results {
+    border: 1px solid var(--screen-border-colour);
+    padding: 2cqw;
+    overflow-y: scroll;
+}
+
+#function-browser-result {
+    border: 1px solid var(--screen-border-colour);
+    padding: 2cqw;
+    height: 50%;
+}
+
+.function-browser-result-title {
+    font-size: 8cqw;
+    font-weight: bold;
+    font-style: italic;
+}
+
+.function-browser-result-subtitle {
+    font-weight: bold;
+    font-style: italic;
+}
+
+.function-browser-result-warning {
+    color: red;
+    font-style: italic;
+}
+
 h1 {
     font-size: 12cqw;
     font-weight: bold;

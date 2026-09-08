@@ -7,7 +7,8 @@ import { display } from "./interface/display.js";
 import { menuManager } from "./interface/menu.js";
 import { statusBar } from "./interface/statusbar.js";
 import { settingsManager } from "./settingsManager.js";
-import { getAllPrimeFactors } from "./math/factorise.js"
+import { getAllPrimeFactors } from "./math/factorise.js";
+import { findFunction } from "./functionBrowser.js";
 
 const inputDisplay = document.querySelector("#input-display");
 const outputDisplay = document.querySelector("#output-display");
@@ -476,41 +477,46 @@ function attachListeners() {
 
         // Select button to rebind
         if (remapStep > 0) {
-            const closestLabel = event.target.closest(".label-text");
-            let remapModifier = null;
-            if (closestLabel && closestLabel.classList) {
-                if (closestLabel.classList.contains("label-shift")) remapModifier = "Shift";
-                else if (closestLabel.classList.contains("label-alpha")) remapModifier = "Alpha"
-            }
-            remapButton = [layoutEngine.getButtonKey(button_id[0], button_id[1]), remapModifier];
-
-            if (remapButton[0] === remapButton[1]) remapButton[1] = null;  // Prevent 'Shift-Shift'
-
+            remapButton = selectButtonFromEvent(event, button_id);
             remapStep = 2;  // Press key to remap
             remapStatus.innerText = `Press the keyboard key to assign to button '${remapButton[1]?remapButton[1]:''}${remapButton[1]?'-':''}${remapButton[0]}'...`
             return;
+        }
+
+
+        // Select button to lookup
+        if (helpLookupStep > 0) {
+            helpLookupButton = selectButtonFromEvent(event, button_id);
+            const buttonText = `${helpLookupButton[1]?helpLookupButton[1]:''}${helpLookupButton[1]?'-':''}${helpLookupButton[0]}`
+            const helpElement = findFunction(buttonText);
+
+            if (helpElement) renderHelpBox(helpElement);
+            else clearHelpBox();
+
+            exitHelpLookup();
+            return
         }
 
         // Ignore already tracked pointer
         const button = layoutEngine.getButton(button_id[0], button_id[1]);
 
         if (button[4].Main !== "Shift" && button[4].Main !== "Alpha") {
-        if (activeButtons.has(event.pointerId)) return;
+            if (activeButtons.has(event.pointerId)) return;
 
-        activeButtons.set(event.pointerId, button_element);
+            activeButtons.set(event.pointerId, button_element);
 
-        const inputButton = button_element.classList.contains('nav-button')
-            ? button_element : button_element?.querySelector(".input-button");
-        if (inputButton) {
-            inputButton.classList.add(
-                `pressed-${inputHandler.mode == "Menu"
-                    ? "Main"
-                    : inputHandler.mode}`
-            );
-        }
+            const inputButton = button_element.classList.contains('nav-button')
+                ? button_element : button_element?.querySelector(".input-button");
+            if (inputButton) {
+                inputButton.classList.add(
+                    `pressed-${inputHandler.mode == "Menu"
+                        ? "Main"
+                        : inputHandler.mode}`
+                );
+            }
 
-        // Capture this particular pointer
-        button_element?.setPointerCapture(event.pointerId);
+            // Capture this particular pointer
+            button_element?.setPointerCapture(event.pointerId);
         }
         handleButton(button);
     });
@@ -683,6 +689,20 @@ function attachListeners() {
     });
 }
 
+function selectButtonFromEvent(event, button_id) {
+    const closestLabel = event.target.closest(".label-text");
+    let remapModifier = null;
+    if (closestLabel && closestLabel.classList) {
+        if (closestLabel.classList.contains("label-shift")) remapModifier = "Shift";
+        else if (closestLabel.classList.contains("label-alpha")) remapModifier = "Alpha"
+    }
+    remapButton = [layoutEngine.getButtonKey(button_id[0], button_id[1]), remapModifier];
+
+    if (remapButton[0] === remapButton[1]) remapButton[1] = null;  // Prevent 'Shift-Shift'
+
+    return remapButton;
+}
+
 // Theme toggle
 const themeToggleBtn = document.getElementById('theme-toggle');
 
@@ -754,14 +774,16 @@ const settingsToggleBtn = document.getElementById('settings-toggle');
 const settingsPopup = document.querySelector('#settings-popup');
 const settingsCloseButton = document.querySelector('#settings-close');
 settingsToggleBtn.addEventListener('click', () => {
-    if (settingsPopup.style.display == "none") settingsPopup.style.display = "";
+    const settingsDisplay = settingsPopup.style.display;
+    closePopups();
+    if (settingsDisplay == "none") settingsPopup.style.display = "";
     else {
         settingsPopup.style.display = "none"
         exitRemap();
     }
 });
 settingsCloseButton.addEventListener('click', () => {
-    settingsPopup.style.display = "none";
+    closePopups();
     exitRemap();
 });
 
@@ -822,6 +844,99 @@ function exitRemap(message="") {
     if (remapList.innerHTML == "") remapList.innerText = "No keybinds yet..."
 }
 
+// Help toggle and close
+const helpToggleBtn = document.getElementById('help-toggle');
+const helpPopup = document.querySelector('#help-popup');
+const helpCloseButton = document.querySelector('#help-close');
+helpToggleBtn.addEventListener('click', () => {
+    const helpDisplay = helpPopup.style.display;
+    closePopups();
+    if (helpDisplay == "none") helpPopup.style.display = "";
+    else {
+        helpPopup.style.display = "none"
+        exitRemap();
+    }
+});
+helpCloseButton.addEventListener('click', () => {
+    closePopups();
+    exitHelpLookup();
+});
+
+// Function browser
+const helpLookupBtn = document.querySelector("#help-button-lookup");
+const helpLookupStatus = document.querySelector("#help-button-lookup-status");
+const helpLookupCancelButton = document.querySelector("#help-button-lookup-cancel");
+
+helpLookupBtn.addEventListener('click', () => {
+    helpLookupStep = 1;
+    helpLookupStatus.innerText = "Click a calculator button to lookup...";
+    helpLookupBtn.style.display = "none";
+    helpLookupCancelButton.style.display = "block";
+    document.body.classList.add('calc-key-selector');
+    displayOverlay.innerText = "Input disabled\n(Help lookup mode)";
+});
+
+helpLookupCancelButton.addEventListener('click', () => exitHelpLookup());
+
+function exitHelpLookup(message="") {
+    helpLookupStep = 0;
+    helpLookupButton = null;
+    helpLookupStatus.innerText = message;
+    helpLookupCancelButton.style.display = "none";
+    helpLookupBtn.style.display = "block";
+    document.body.classList.remove('calc-key-selector');
+    displayOverlay.innerText = "";
+}
+
+function renderHelpBox(helpElement) {
+    clearHelpBox();
+    const helpBox = document.querySelector("#function-browser-result");
+    helpBox.style.display="block";
+
+    // Create elements
+    const title = document.createElement("div");
+    const subtitle = document.createElement("div");
+    const description = document.createElement("div");
+    const example = document.createElement("div");
+    const warning = document.createElement("div");
+
+    // Render element contents
+    console.log(helpElement.Name, helpElement.Example)
+    if (helpElement.Name != undefined && helpElement.Name.startsWith("$") && helpElement.Name.endsWith("$"))
+        katex.render(`${helpElement.Name.slice(1, -1)}`, title);
+    else title.textContent = helpElement.Name ?? "";
+    subtitle.innerText = `${helpElement.Type}>${helpElement.Action} (${helpElement.Family})`;
+    description.innerText = helpElement.Description ?? "";
+    if (helpElement.Example != undefined && helpElement.Example.startsWith("$") && helpElement.Example.endsWith("$"))
+        katex.render(`${helpElement.Example.slice(1, -1)}`, example);
+    else example.textContent = helpElement.Example ?? "";
+    warning.innerText = helpElement.Warning ?? "";
+
+    // Add classes
+    title.classList.add("function-browser-result-title")
+    subtitle.classList.add("function-browser-result-subtitle")
+
+    warning.classList.add("function-browser-result-warning")
+
+    // Append to main box
+    helpBox.appendChild(title);
+    helpBox.appendChild(subtitle);
+    helpBox.appendChild(description);
+    helpBox.appendChild(example);
+    helpBox.appendChild(warning);
+}
+
+function clearHelpBox() {
+    const helpBox = document.querySelector("#function-browser-result");
+    helpBox.innerHTML = "";
+    helpBox.style.display="none";
+}
+
+function closePopups() {
+    settingsPopup.style.display = "none";
+    helpPopup.style.display = "none";
+}
+
 // Clear local storage
 document.querySelector('#settings-clear-storage').addEventListener("click", () => {
     Object.keys(localStorage).forEach(key => {
@@ -840,6 +955,8 @@ document.querySelector('#settings-toggle-debug').addEventListener("click", () =>
 
 let remapStep = 0;  // Not remapping
 let remapButton = null;
+let helpLookupStep = 0;  // Not in help lookup mode
+let helpLookupButton = null;
 
 let colonIndex = 0;
 let previousColonIndex = 0;
