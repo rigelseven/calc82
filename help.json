@@ -60,13 +60,13 @@
         "Name": "$x^3$",
         "Family": "Arithmetic",
         "Type": "Button",
-        "Action": "Function",
+        "Action": "Postfix",
 
         "Description": "Calculate the third power of an expression."
     },
 
     "Alpha-Cube": {
-        "Name": ":",
+        "Name": ": (Colon)",
         "Family": "Arithmetic",
         "Type": "Button",
         "Action": "Colon",
@@ -75,6 +75,191 @@
         "Example": "$\\text{Ans}+1:\\text{Ans}+2$"
     },
 
+    "Invert": {
+        "Name": "$x^{-1}$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Postfix",
+
+        "Description": "Calculate the inverse of an expression."
+    },
+
+    "Factorial": {
+        "Name": "$x!$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Postfix",
+
+        "Description": "Calculate the factorial of an integer.",
+
+       "Warning": "Only positive integer factorials are supported."
+    },
+
+
+    "Fraction": {
+        "Name": "$\\frac{\\blacksquare}{\\square}$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Binary",
+
+        "Description": "Create a fraction with a numerator and denominator. Consumes existing tokens to the left and right."
+    },
+
+    "Shift-Fraction": {
+        "Name": "$\\blacksquare\\frac{\\square}{\\square}$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Binary",
+
+        "Description": "Create a mixed fraction with a whole, numerator, and denominator. Consumes existing tokens to the left and right."
+    },
+
+    "Sqrt": {
+        "Name": "$\\sqrt{\\blacksquare}$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the square root of an expression."
+    },
+
+    "Shift-Sqrt": {
+        "Name": "$\\sqrt[3]{\\blacksquare}$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the cube root of an expression."
+    },
+
+    "Square": {
+        "Name": "$x^2$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Postfix",
+
+        "Description": "Calculate the second power of an expression."
+    },
+
+    "Power": {
+        "Name": "$x^\\blacksquare$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Binary",
+
+        "Description": "Calculate the result of an expression raised to another expression."
+    },
+
+    "Shift-Power": {
+        "Name": "$\\sqrt[\\blacksquare]{\\square}$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Binary",
+
+        "Description": "Calculate an arbitrary root of an expression.",
+
+        "Warning": "Note that even roots of a negative number are undefined."
+    },
+
+    "Log": {
+        "Name": "log",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the base-10 logarithm of an expression."
+    },
+
+    "Shift-Log": {
+        "Name": "$10^\\blacksquare$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the result of 10 raised to an expression."
+    },
+
+    "Ln": {
+        "Name": "ln",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the natural (base-e) logarithm of an expression."
+    },
+
+    "Shift-Ln": {
+        "Name": "$e^\\blacksquare$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the result of Euler's number raised to an expression."
+    },
+
+
+    "UnaryMinus": {
+        "Name": "(-)",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Unary",
+
+        "Description": "Unary minus. Change the sign of an expression result."
+    },
+
+    "Alpha-UnaryMinus": {
+        "Name": "A",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Variable",
+
+        "Description": "Recall the value stored in variable A."
+    },
+
+    "Degree": {
+        "Name": "$\\degree ' \"$",
+        "Family": "Output",
+        "Type": "Button",
+        "Action": "Output",
+
+        "Description": "If an output is present, express it in degree-minute-second form. Depends on angle mode."
+    },
+
+    "Shift-Degree": {
+        "Name": "FACT",
+        "Family": "Output",
+        "Type": "Button",
+        "Action": "Output",
+
+        "Description": "If an output is present, perform prime factorisation on it. If factors are found, display them."
+    },
+
+    "Alpha-Degree": {
+        "Name": "B",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Variable",
+
+        "Description": "Recall the value stored in variable B."
+    },
+
+    "Hyp": {
+        "Name": "hyp",
+        "Family": "Trigonometry",
+        "Type": "Button",
+        "Action": "Menu",
+
+        "Description": "Opens the hyperbolic trig menu."
+    },
+
+    "Alpha-Hyp": {
+        "Name": "C",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Variable",
+
+        "Description": "Recall the value stored in variable C."
+    },
 
     "Sin": {
         "Name": "sin",
@@ -83,6 +268,26 @@
         "Action": "Function",
 
         "Description": "Calculate the sine of an expression. Depends on angle mode."
+    },
+
+    "Shift-Sin": {
+        "Name": "$\\textsf{sin}^{-1}$",
+        "Family": "Trigonometry",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the inverse sine of an expression. Finds a result between -π and π (-90° and 90°). Depends on angle mode.",
+
+        "Warning": "The inverse sine function is defined over the domain [-1,1]."
+    },
+
+    "Alpha-Sin": {
+        "Name": "D",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Variable",
+
+        "Description": "Recall the value stored in variable D."
     },
 
     "Cos": {
@@ -94,12 +299,533 @@
         "Description": "Calculate the cosine of an expression. Depends on angle mode."
     },
 
+    "Shift-Cos": {
+        "Name": "$\\textsf{cos}^{-1}$",
+        "Family": "Trigonometry",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the inverse cosine of an expression. Finds a result between 0 and 2π (0° and 180°). Depends on angle mode.",
+
+        "Warning": "The inverse cosine function is defined over the domain [-1,1]."
+    },
+
+    "Alpha-Cos": {
+        "Name": "E",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Variable",
+
+        "Description": "Recall the value stored in variable E."
+    },
+
     "Tan": {
         "Name": "tan",
         "Family": "Trigonometry",
         "Type": "Button",
         "Action": "Function",
 
-        "Description": "Calculate the tangent of an expression. Depends on angle mode."
+        "Description": "Calculate the tangent of an expression. Depends on angle mode.",
+
+        "Warning": "The tangent function is not defined at its poles."
+    },
+
+    "Shift-Tan": {
+        "Name": "$\\textsf{tan}^{-1}$",
+        "Family": "Trigonometry",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Calculate the inverse tangent of an expression. Finds a result between π and π (0° and 180°). Depends on angle mode."
+    },
+
+    "Alpha-Tan": {
+        "Name": "F",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Variable",
+
+        "Description": "Recall the value stored in variable F."
+    },
+
+
+    "Recall": {
+        "Name": "RCL (Recall)",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Modifier",
+
+        "Description": "Toggle the Recall state of the calculator. Press RCL then the target variable to recall it."
+    },
+
+    "Shift-Recall": {
+        "Name": "STO (Store)",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Modifier",
+
+        "Description": "Toggle the STO state of the calculator. When a valid expression is entered, press STO then the target variable."
+    },
+
+    "Engineering": {
+        "Name": "ENG (Engineering)",
+        "Family": "Output",
+        "Type": "Button",
+        "Action": "Output",
+
+        "Description": "If an output is present, express it in engineering notation. If the output is already in engineering notation, shift the decimal place left by 3."
+    },
+
+    "Shift-Engineering": {
+        "Name": "← (Engineering)",
+        "Family": "Output",
+        "Type": "Button",
+        "Action": "Output",
+
+        "Description": "If an output is present, express it in engineering notation and shift the decimal place by 3. If the output is already in engineering notation, shift the decimal place right by a further 3."
+    },
+
+    "LParen": {
+        "Name": "(",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Parenthesis",
+
+        "Description": "Expressions inside parentheses are evaluated first."
+    },
+
+    "Shift-LParen": {
+        "Name": "%",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Postfix",
+
+        "Description": "Convert a percentage expression into a decimal (that is, multiply it by 100)."
+    },
+
+    "RParen": {
+        "Name": ")",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Parenthesis",
+
+        "Description": "Expressions inside parentheses are evaluated first."
+    },
+
+    "Shift-RParen": {
+        "Name": ", (Comma)",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Delimiter",
+
+        "Description": "Delimiter for separating variables in multivariable functions.",
+
+        "Example": "$\\textbf{GCD}(6,27)$"
+    },
+
+    "Alpha-RParen": {
+        "Name": "X",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Variable",
+
+        "Description": "Recall the value stored in variable X."
+    },
+
+    "StandardToDecimal": {
+        "Name": "$\\mathsf{\\small{S}{\\Leftrightarrow}{D}}$",
+        "Family": "Output",
+        "Type": "Button",
+        "Action": "Output",
+
+        "Description": "If an output is present, try to express it as a fraction. If it is already a fraction, express it as a decimal."
+    },
+
+    "Shift-StandardToDecimal": {
+        "Name": "$\\mathsf{\\small{{\\scriptstyle a}\\frac{b}{c}}{\\Leftrightarrow}{\\frac{d}{c}}}$",
+        "Family": "Output",
+        "Type": "Button",
+        "Action": "Output",
+
+        "Description": "If an output is present, try to express it as a mixed fraction. If it is already a mixed fraction, express it as a fraction."
+    },
+
+    "Alpha-StandardToDecimal": {
+        "Name": "Y",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Variable",
+
+        "Description": "Recall the value stored in variable Y."
+    },
+
+    "MemoryPlus": {
+        "Name": "M+",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Variable",
+
+        "Description": "Evaluate the current expression. If successfull, add the result to the variable M."
+    },
+
+    "Shift-MemoryPlus": {
+        "Name": "M-",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Variable",
+
+        "Description": "Evaluate the current expression. If successfull, subtract the result from the variable M."
+    },
+
+    "Alpha-MemoryPlus": {
+        "Name": "M+",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Variable",
+
+        "Description": "Recall the value stored in variable M."
+    },
+
+    "7": {
+        "Name": "7",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Digit",
+
+        "Description": "The digit 7."
+    },
+
+    "8": {
+        "Name": "8",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Digit",
+
+        "Description": "The digit 8."
+    },
+
+    "9": {
+        "Name": "9",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Digit",
+
+        "Description": "The digit 9."
+    },
+
+    "Shift-9": {
+        "Name": "CLR (Clear)",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Menu",
+
+        "Description": "Open the Clear menu, where setup and memory can be cleared."
+    },
+
+    "Del": {
+        "Name": "DEL (Delete)",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Input",
+
+        "Description": "Delete the symbol to the left of the cursor. If there is no symbol to the left, delete a symbol to the right."
+    },
+
+    "Shift-Del" : {
+        "Name": "INS",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "None",
+
+        "Description": "This function does nothing in MathIO mode.",
+
+        "Warning": "LineIO mode is not implemented yet."
+    },
+
+    "AllClear": {
+        "Name": "AC (All Clear)",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Input",
+
+        "Description": "Delete all input and exit any menu."
+    },
+
+    "Shift-AllClear" : {
+        "Name": "OFF",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "None",
+
+        "Description": "This function does nothing."
+    },
+
+    "4": {
+        "Name": "4",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Digit",
+
+        "Description": "The digit 4."
+    },
+
+    "5": {
+        "Name": "5",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Digit",
+
+        "Description": "The digit 5."
+    },
+
+    "6": {
+        "Name": "6",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Digit",
+
+        "Description": "The digit 6."
+    },
+
+    "Shift-6": {
+        "Name": "VERIFY",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "None",
+
+        "Description": "This function does nothing.",
+
+        "Warning": "VERIFY mode is not implemented yet."
+    },
+
+    "Multiply": {
+        "Name": "×",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Binary",
+
+        "Description": "Multiply two expressions together."
+    },
+
+    "Shift-Multiply" : {
+        "Name": "nPr (Permutation)",
+        "Family": "Combinatorics",
+        "Type": "Button",
+        "Action": "Binary",
+
+        "Description": "Calculate the number of permutations to arrange r items from a set of n items."
+    },
+
+    "Alpha-Multiply" : {
+        "Name": "GCD",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Find the greatest common denominator of two integers.",
+
+        "Example": "$\\textbf{GCD}(6,27)$"
+    },
+
+    "Divide": {
+        "Name": "÷",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Binary",
+
+        "Description": "Divide an expression by another."
+    },
+
+    "Shift-Divide" : {
+        "Name": "nCr (Choose)",
+        "Family": "Combinatorics",
+        "Type": "Button",
+        "Action": "Binary",
+
+        "Description": "Calculate the number of ways to choose r items from a set of n items."
+    },
+
+
+    "Alpha-Divide" : {
+        "Name": "LCM",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Find the lowest common multiple of two integers.",
+
+        "Example": "$\\textbf{LCM}(6,27)$"
+    },
+
+
+    "1": {
+        "Name": "1",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Digit",
+
+        "Description": "The digit 1."
+    },
+
+    "2": {
+        "Name": "2",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Digit",
+
+        "Description": "The digit 2."
+    },
+
+    "3": {
+        "Name": "3",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Digit",
+
+        "Description": "The digit 3."
+    },
+
+    "Plus": {
+        "Name": "+",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Binary",
+
+        "Description": "Add two expressions together."
+    },
+
+    "Shift-Plus" : {
+        "Name": "Pol (Polar)",
+        "Family": "Trigonometry",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Convert rectangular coordinates (X,Y) to polar coordinates. If the result is used as part of another expression, only the modulus is preserved. Depends on angle mode.",
+
+        "Example": "$\\text{Pol}(3,4)$"
+    },
+
+    "Minus": {
+        "Name": "-",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Binary",
+
+        "Description": "Subtract one expression from another."
+    },
+
+    "Shift-Minus" : {
+        "Name": "Pol (Polar)",
+        "Family": "Trigonometry",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Convert polar coordinates (r,θ) to rectangular coordinates. If the result is used as part of another expression, only the X component is preserved. Depends on angle mode.",
+
+        "Example": "$\\text{Rec}(\\sqrt{2},45)$"
+    },
+
+
+    "0": {
+        "Name": "0",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Digit",
+
+        "Description": "The digit 0."
+    },
+
+    "Shift-0": {
+        "Name": "Rnd (Round)",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Round the expression to the nearest integer. In the case of equal distance, round up."
+    },
+
+    "Decimal": {
+        "Name": ". (Decimal)",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Decimal",
+
+        "Description": "A decimal place."
+    },
+
+    "Shift-Decimal": {
+        "Name": "Ran# (Random)",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Special",
+
+        "Description": "Returns a random number between 0 and 1. Not a function (no parentheses are expected)."
+    },
+
+    "Alpha-Decimal": {
+        "Name": "RanInt (Random Int)",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Function",
+
+        "Description": "Returns a random integer between the specified bounds (inclusive).",
+
+        "Example": "$\\text{RanInt(1,10)}$"
+    },
+
+    "ExponentialDigit": {
+        "Name": "$\\small{\\times}10^x$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Digit",
+
+        "Description": "A symbol used to create scientific notation from a number and integer. The number to the left will be multiplied by 10 to the power of the integer on the right. Note that no power symbol is expected.",
+
+        "Example": "$3.7{\\footnotesize\\times{\\texttt{10}}}3$"
+    },
+
+    "Shift-ExponentialDigit": {
+        "Name": "$\\pi$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Constant",
+
+        "Description": "The constant pi."
+    },
+
+    "Alpha-ExponentialDigit": {
+        "Name": "$e$",
+        "Family": "Arithmetic",
+        "Type": "Button",
+        "Action": "Constant",
+
+        "Description": "The constant e."
+    },
+
+    "Ans": {
+        "Name": "Abs",
+        "Family": "Variables",
+        "Type": "Button",
+        "Action": "Variable",
+
+        "Description": "Recall the result of the last calculation."
+    },
+
+    "Shift-Ans" : {
+        "Name": "DRG▶",
+        "Family": "Trigonometry",
+        "Type": "Button",
+        "Action": "Menu",
+
+        "Description": "Open the menu of inline angle type conversions."
+    },
+
+    "Calculate": {
+        "Name": "= (Calculate)",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Action",
+
+        "Description": "Evaluate the current input and display it."
     }
 }
