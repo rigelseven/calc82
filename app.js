@@ -28,6 +28,8 @@ function calculate(storeHistory = true) {
 
         const { res, decimalResult, fractionResult, specialResult, tokens, ast } = calculator.calculate(value, storeHistory ? colonIndex : previousColonIndex);
 
+        inputHandler.setReview();
+        
         if (specialResult) setOutput("special");
         else if (fractionResult) setOutput(settingsManager.getSetting("fractionMode"));
         else setOutput("decimal");
@@ -43,7 +45,6 @@ function calculate(storeHistory = true) {
             }
         }
 
-        inputHandler.setReview();
         renderInput();
 
         if (storeHistory) historyManager.pushHistory(extractSubarray(value, previousColonIndex), fractionResult, decimalResult, specialResult);
@@ -124,6 +125,7 @@ function switchAngleMode(type = "improper") {
 }
 
 function setOutput(outputType, direction) {
+    if (inputHandler.inputMode !== "Review") return;
     if (outputType === "degminsec") {
         currentResultType = "decimal";
         const deg = calculator.decimalResult.floor();
