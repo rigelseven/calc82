@@ -46,13 +46,13 @@ export default class Parser {
     multiplication() {
         let expr = this.fraction();
 
-        while (this.match("MULTIPLY", "DIVIDE", "IMPLICITMULTIPLY")) {
+        while (this.match("MULTIPLY", "DIVIDE")) {
             const operator = this.getPreviousToken();
             const right = this.fraction();
 
             expr = {
                 type: "BinaryExpression",
-                operator: operator.type === "IMPLICITMULTIPLY" ? "MULTIPLY" : operator.type,
+                operator: operator.type,
                 pos: right.thisPos !== undefined ? right.thisPos : right.pos,
                 thisPos: operator.pos,
                 left: expr,
@@ -64,10 +64,10 @@ export default class Parser {
     }
 
     fraction() {
-        let expr = this.power();
+        let expr = this.unary();
 
         while (this.match("FRACTION")) {
-            const middle = this.power();
+            const middle = this.unary();
             if (!this.match("FRACTION")) {
                 return {
                     type: "FractionExpression",
@@ -77,7 +77,7 @@ export default class Parser {
                 };
             }
 
-            const right = this.power();
+            const right = this.unary();
 
             return {
                 type: "FractionExpression",
@@ -88,25 +88,6 @@ export default class Parser {
             };
         }
 
-        return expr;
-    }
-
-    power() {
-        let expr = this.unary();
-
-        while(this.match("POWER", "ROOT")) {
-            const operator = this.getPreviousToken();
-            const right = this.unary();
-            expr = {
-                type: "BinaryExpression",
-                pos: right.thisPos !== undefined ? right.thisPos : right.pos,
-                thisPos: operator.pos,
-                operator: operator.type,
-                left: expr,
-                right
-            }
-
-        }
         return expr;
     }
 
@@ -121,7 +102,27 @@ export default class Parser {
             };
 
         }
-        return this.postfix();
+        return this.implicit();
+    }
+
+    implicit() {
+        let expr = this.postfix();
+
+        while (this.match("IMPLICITMULTIPLY")) {
+            const operator = this.getPreviousToken();
+            const right = this.fraction();
+
+            expr = {
+                type: "BinaryExpression",
+                operator: "MULTIPLY",
+                pos: right.thisPos !== undefined ? right.thisPos : right.pos,
+                thisPos: operator.pos,
+                left: expr,
+                right
+            }
+
+        }
+        return expr;
     }
 
     postfix() {
@@ -150,7 +151,28 @@ export default class Parser {
             };
         }
     
-        return this.primary();
+        return this.power();
+    }
+
+    // Moved down in the AST as it is always surrounded by brackets.
+    // If LineIO is implemented, this needs to be moved to a proper position.
+    power() {
+        let expr = this.primary();
+
+        while(this.match("POWER", "ROOT")) {
+            const operator = this.getPreviousToken();
+            const right = this.primary();
+            expr = {
+                type: "BinaryExpression",
+                pos: right.thisPos !== undefined ? right.thisPos : right.pos,
+                thisPos: operator.pos,
+                operator: operator.type,
+                left: expr,
+                right
+            }
+
+        }
+        return expr;
     }
 
     primary() {
