@@ -74,13 +74,13 @@ class MenuManager {
                         return "ClearIO";
                     case "ClearSetup":
                         settingsManager.clearSettings();
-                        trigSolver.setAngleMode("rad");
+                        trigSolver.setAngleMode("deg");
                         return this.leaveMenus();
                     case "ClearAll":                     
                         variableManager.clearVariables();
                         historyManager.clearHistory();
                         settingsManager.clearSettings();
-                        trigSolver.setAngleMode("rad");
+                        trigSolver.setAngleMode("deg");
                         return "ClearIO";
                 }
             }

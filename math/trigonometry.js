@@ -193,5 +193,5 @@ class TrigSolver {
 }
 
 const savedAngleMode = localStorage.getItem("calc82-angleMode");
-const trigSolver = new TrigSolver(savedAngleMode ? savedAngleMode : "rad");
+const trigSolver = new TrigSolver(savedAngleMode ? savedAngleMode : "deg");
 export default trigSolver;
