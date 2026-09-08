@@ -492,6 +492,9 @@ function attachListeners() {
         }
 
         // Ignore already tracked pointer
+        const button = layoutEngine.getButton(button_id[0], button_id[1]);
+
+        if (button[4].Main !== "Shift" && button[4].Main !== "Alpha") {
         if (activeButtons.has(event.pointerId)) return;
 
         activeButtons.set(event.pointerId, button_element);
@@ -508,8 +511,7 @@ function attachListeners() {
 
         // Capture this particular pointer
         button_element?.setPointerCapture(event.pointerId);
-
-        const button = layoutEngine.getButton(button_id[0], button_id[1]);
+        }
         handleButton(button);
     });
 
@@ -661,7 +663,7 @@ function attachListeners() {
         layoutEngine.getButtonFromKey(event.key, "Variable"),
         layoutEngine.getButtonFromKey(counterpart),
         layoutEngine.getButtonFromKey(counterpart, "Variable")]) {
-            if (button !== undefined) {
+            if (button !== undefined && button[0][4].Main != "Shift" && button[0][4].Main != "Alpha") {
                 event.preventDefault();
                 button[2].classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store", "pressed-Recall");
                 layoutEngine.getButtonFromKey(counterpart)?.[2]?.classList.remove("pressed-Main", "pressed-Shift", "pressed-Alpha", "pressed-Store", "pressed-Recall");
