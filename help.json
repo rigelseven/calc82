@@ -827,5 +827,44 @@
         "Action": "Action",
 
         "Description": "Evaluate the current input and display it."
+    },
+
+    "up": {
+        "Name": "↑ (Up)",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Navigation",
+
+        "Description": "If there is an input cursor, try to move the cursor up. If there is an output, instead move to the previous calculation in history. If in a menu, move to the previous page."
+    },
+
+
+    "right": {
+        "Name": "→ (Right)",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Navigation",
+
+        "Description": "If there is an input cursor, try to move the cursor right."
+    },
+
+
+    "left": {
+        "Name": "← (Left)",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Navigation",
+
+        "Description": "If there is an input cursor, try to move the cursor left."
+    },
+
+
+    "Down": {
+        "Name": "↓ (Down)",
+        "Family": "Calculator",
+        "Type": "Button",
+        "Action": "Navigation",
+
+        "Description": "If there is an input cursor, try to move the cursor down. If there is an output, instead move to the next calculation in history. If in a menu, move to the next page."
     }
 }
