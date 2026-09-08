@@ -46,13 +46,13 @@ export default class Parser {
     multiplication() {
         let expr = this.fraction();
 
-        while (this.match("MULTIPLY", "DIVIDE")) {
+        while (this.match("MULTIPLY", "DIVIDE", "IMPLICITMULTIPLY")) {
             const operator = this.getPreviousToken();
             const right = this.fraction();
 
             expr = {
                 type: "BinaryExpression",
-                operator: operator.type,
+                operator: operator.type === "IMPLICITMULTIPLY" ? "MULTIPLY" : operator.type,
                 pos: right.thisPos !== undefined ? right.thisPos : right.pos,
                 thisPos: operator.pos,
                 left: expr,
@@ -121,27 +121,7 @@ export default class Parser {
             };
 
         }
-        return this.implicit();
-    }
-
-    implicit() {
-        let expr = this.postfix();
-
-        while (this.match("IMPLICITMULTIPLY")) {
-            const operator = this.getPreviousToken();
-            const right = this.fraction();
-
-            expr = {
-                type: "BinaryExpression",
-                operator: "MULTIPLY",
-                pos: right.thisPos !== undefined ? right.thisPos : right.pos,
-                thisPos: operator.pos,
-                left: expr,
-                right
-            }
-
-        }
-        return expr;
+        return this.postfix();
     }
 
     postfix() {
