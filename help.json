@@ -465,7 +465,7 @@
         "Type": "Button",
         "Action": "Variable",
 
-        "Description": "Evaluate the current expression. If successfull, add the result to the variable M."
+        "Description": "Evaluate the current expression. If successful, add the result to the variable M."
     },
 
     "Shift-MemoryPlus": {
@@ -474,11 +474,11 @@
         "Type": "Button",
         "Action": "Variable",
 
-        "Description": "Evaluate the current expression. If successfull, subtract the result from the variable M."
+        "Description": "Evaluate the current expression. If successful, subtract the result from the variable M."
     },
 
     "Alpha-MemoryPlus": {
-        "Name": "M+",
+        "Name": "M",
         "Family": "Variables",
         "Type": "Button",
         "Action": "Variable",
@@ -859,7 +859,7 @@
     },
 
 
-    "Down": {
+    "down": {
         "Name": "↓ (Down)",
         "Family": "Calculator",
         "Type": "Button",
