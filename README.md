@@ -1,23 +1,21 @@
 # calc82: because calculators are for everyone.
-A calculator web-app inspired by the Casio fx-82 series of scientific calculators. Try it here: [placeholderlink]
+A calculator web-app inspired by the Casio fx-82 series of scientific calculators. Try it here: https://rigelseven.github.io/calc82
 
 <div align="center">
     <img src="images/quadratic.gif" height="400" alt="calc82 solving the quadratic formula">
 </div>
 
-## Quick start
-Go to [placeholderlink] and start calculating! For help, press the ? (Help) sidebar button.
-
 ## Key features
 - Familiar user interface
 - Algebraic input
+- Extensive, modifiable keyboard bindings
 - Supports 15 significant figures of precision between 1e-100 to 1e100
 - Supports trigonometry, combinatorics, logarithmics and other complex functions
 - Memory persists between browser sessions
 - Works fully offline
 
 ## How it works
-At its core, calc82 uses a **recursive descent parser** to transform a string of input tokens into an **abstract syntax tree**. This allows correct operator precedence to be used. The tokens and AST visualisation can be seen under the settings tab by pressing 'toggle debug'.
+At its core, calc82 uses a **recursive descent parser** to transform a string of input tokens into an **abstract syntax tree**. This allows correct operator precedence to be used during evaluation. The tokens and AST visualisation can be seen under the settings tab by pressing 'toggle debug'.
 
 <img src="images/ast.png" height="200" alt="Abstract syntax tree created by the calculator">
 
