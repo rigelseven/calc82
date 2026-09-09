@@ -17,6 +17,14 @@
     <script defer src="./lib/katex/katex.min.js" crossorigin="anonymous"></script>
     <link rel="preload" href="lib/katex/fonts/KaTeX_Typewriter-Regular.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preload" href="lib/katex/fonts/KaTeX_Main-Bold.woff2" as="font" type="font/woff2" crossorigin>
+    <script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+        .catch(err => console.error('Service Worker registration failed:', err));
+        });
+    }
+    </script>
     <script type="module" src="app.bundle.js"></script>
 </head>
 
@@ -110,6 +118,10 @@
             <h2>Q&A</h2>
             <div style="font-weight: bold;">How do I change to radians?</div>
             <div style="font-style: italic;">Press <span style="font-weight: bold;">Shift</span> then <span style="font-weight: bold;">Mode/Setup</span> for calculator settings :)</div>
+            <br>
+            <div style="font-weight: bold;">How do I select a menu option?</div>
+            <div style="font-style: italic;">Press the corresponding number button.</div>
+
         </div>
     </div>
     <div class="popup-wrapper" id="about-popup" style="display:none">
