@@ -28,7 +28,7 @@ In the `src/` directory, run `esbuild app.js --bundle --outfile=app.bundle.js`
 Host the application from the `src/` directory. Example: `python3 -m http.server`
 
 ### Third-party dependencies
-This project makes use of **decimal.js** and **KaTeX** libraries. These dependencies are directly included under `lib/src`.
+This project makes use of **decimal.js** and **KaTeX** libraries. These dependencies are directly included under `src/lib`.
 
 **decimal.js**\
 Version: v10.6.0 (Modified for calc82)\
