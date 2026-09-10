@@ -126,7 +126,7 @@ export default class Parser {
     }
 
     postfix() {
-        let expr = this.variable();
+        let expr = this.power();
 
         while (this.match("FACTORIAL", "PERCENT", "DEGREES", "RADIANS", "GRADIANS")) {
             const operator = this.getPreviousToken();
@@ -142,26 +142,14 @@ export default class Parser {
         return expr;
     }
 
-    variable() {
-        if (this.match("VARIABLE")) {
-            return {
-                type: "Variable",
-                pos: this.getPreviousToken().pos,
-                name: this.getPreviousToken().value
-            };
-        }
-    
-        return this.power();
-    }
-
     // Moved down in the AST as it is always surrounded by brackets.
     // If LineIO is implemented, this needs to be moved to a proper position.
     power() {
-        let expr = this.primary();
+        let expr = this.variable();
 
         while(this.match("POWER", "ROOT")) {
             const operator = this.getPreviousToken();
-            const right = this.primary();
+            const right = this.variable();
             expr = {
                 type: "BinaryExpression",
                 pos: right.thisPos !== undefined ? right.thisPos : right.pos,
@@ -173,6 +161,18 @@ export default class Parser {
 
         }
         return expr;
+    }
+
+    variable() {
+        if (this.match("VARIABLE")) {
+            return {
+                type: "Variable",
+                pos: this.getPreviousToken().pos,
+                name: this.getPreviousToken().value
+            };
+        }
+    
+        return this.primary();
     }
 
     primary() {
