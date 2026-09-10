@@ -5,6 +5,7 @@ import Evaluator from "./evaluator/evaluator.js";
 import Fraction from "./math/fraction.js";
 import { variableManager } from "./evaluator/variables.js";
 import { Polar, Rectangular } from "./math/polRec.js";
+import { plus, minus } from "./math/arithmetic.js";
 
 // debug
 const tokensDisplay = document.querySelector("#tokens");
@@ -43,8 +44,8 @@ export default class Calculator {
         if (result instanceof Rectangular) specialResult = ["Rectangular", result.X, result.Y];
 
         if (storeVar !== null) variableManager.setVariable(storeVar, result);
-        if (storeVar === "MPLUS") variableManager.setVariable("M", variableManager.getVariable("M").plus(result));
-        else if (storeVar === "MMINUS") variableManager.setVariable("M", variableManager.getVariable("M").minus(result));
+        if (storeVar === "MPLUS") variableManager.setVariable("M", plus(variableManager.getVariable("M"), result));
+        else if (storeVar === "MMINUS") variableManager.setVariable("M", minus(variableManager.getVariable("M"), result));
         else variableManager.setVariable("Ans", result);
         console.log(variableManager.getVariable("M"));
 
