@@ -30,7 +30,7 @@ export default class Tokeniser {
 
             // Multi char operators
             if (c.type in MULTICHAR) {
-                if (c.type === "POWER" && this.getPreviousCharacter().type == "POWER") {
+                if (c.type === "POWER" && this.getPreviousCharacter().type == "POWER" && c.exp !== "end") {
                     throw new Error(`Syntax error: Disallowed power token`, {cause: {type: "Syntax ERROR", position: this.position}})
                 }
                 for (let token of MULTICHAR[c.type][c.exp]) {
