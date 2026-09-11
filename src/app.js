@@ -322,7 +322,7 @@ function handleButton(button, forceMode = null) {
                     const finalMenuAction = menuManager.handleMenuAction(menuAction)
                     if (finalMenuAction == "Exit") {
                         inputHandler.switchMode("Main", true, shiftButton, alphaButton);
-                        if (inputHandler.inputMode == "Review") calculate(false);
+                        //if (inputHandler.inputMode == "Review") calculate(false);
                         renderInput();
                         outputDisplay.style.display = "";
                         historyManager.checkHistoryArrows();
