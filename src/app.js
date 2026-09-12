@@ -326,6 +326,10 @@ function handleButton(button, forceMode = null) {
                         renderInput();
                         outputDisplay.style.display = "";
                         historyManager.checkHistoryArrows();
+                        setOutputFormat();
+                        if (calculator.specialResult) setOutput("special");
+                        else if (calculator.fractionResult) setOutput(settingsManager.getSetting("fractionMode"));
+                        else setOutput("decimal");
                     }
                     else {
                         inputHandler.switchMode("Menu", true, shiftButton, alphaButton);
